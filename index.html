@@ -453,8 +453,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#contributing-to-this-guide">Вклад в руководство</a></li>
 </ul>
 </li>
-<li><a href="#prerequisites">Необходимые пакеты</a></li>
-<li><a href="#Why-Package-Software-with-RPM">Зачем упаковывать программное обеспечение с помощью RPM?</a></li>
+<li><a href="#welcome-apt">Система управления пакетами. Знакомство с APT</a>
+<ul class="sectlevel2">
+<li><a href="#usage-apt">Использование APT</a></li>
+<li><a href="#apt-installation">Установка и обновление пакета</a></li>
+</ul>
+</li>
+<li><a href="#prerequisites">Установка необходимых пакетов для процесса сборки</a></li>
+<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a></li>
 <li><a href="#packaging-software">Программное обеспечение для упаковки</a>
 <ul class="sectlevel2">
 <li><a href="#rpm-packages">RPM Пакеты</a>
@@ -475,53 +481,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="#hello-world">Ваш Первый пакет RPM</a>
-<ul class="sectlevel3">
-<li><a href="#rpm-macros">RPM Макросы</a></li>
-<li><a href="#patching-software">Программное обеспечение для исправления ошибок</a></li>
-<li><a href="#putting-source-code-into-tarball">Создание Tarball с исходным кодом</a></li>
-<li><a href="#using_Make">Make</a></li>
-<li><a href="#version-control-systems">Система контроля версий</a></li>
-<li><a href="#Gear_ALT">Окружение Gear</a></li>
-<li><a href="#Hasher_ALT">Окружение Hasher</a></li>
-</ul>
-</li>
-<li><a href="#advanced-topics">Дополнительные материалы</a>
-<ul class="sectlevel2">
-<li><a href="#Signing-Packages">Подпись пакетов</a>
-<ul class="sectlevel3">
-<li><a href="#Adding-a-Signature-to-a-Package">Добавление подписи к пакету</a></li>
-<li><a href="#Replacing-a-Package-Signature">Замена подписи пакета</a></li>
-<li><a href="#Build-time-Signing">Подпись во время сборки</a></li>
-</ul>
-</li>
-<li><a href="#more-on-macros">Подробнее о макросах</a>
-<ul class="sectlevel3">
-<li><a href="#defining-your-own">Определение Ваших Собственных Макросов</a></li>
-<li><a href="#setup">%setup</a></li>
-<li><a href="#files">%files</a></li>
-<li><a href="#built-in-macros">Встроенные макросы</a></li>
-<li><a href="#rpm-distribution-macros">RPM Макросы, предоставляемые дистрибутивом</a></li>
-</ul>
-</li>
-<li><a href="#custom-macros">Пользовательские макросы</a></li>
-<li><a href="#epoch-scriptlets-and-triggers">Epoch, Скриптлеты и Триггеры</a>
-<ul class="sectlevel3">
-<li><a href="#epoch">Epoch</a></li>
-<li><a href="#triggers-and-scriptlets">Скриптлеты и Триггеры</a></li>
-</ul>
-</li>
-<li><a href="#rpm-conditionals">Условные обозначения RPM</a>
-<ul class="sectlevel3">
-<li><a href="#_синтаксис_условий_rpm">Синтаксис условий RPM</a></li>
-<li><a href="#_примеры_условий_rpm">Примеры условий RPM</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#_новые_возможности_rpm_в_rhel_7">Appendix A: Новые возможности RPM в RHEL 7</a></li>
-<li><a href="#_ссылки_на_источники">Appendix B: Ссылки на источники</a></li>
-<li><a href="#_выражение_благодарности">Appendix C: Выражение благодарности</a></li>
 </ul>
 </div>
 </div>
@@ -546,7 +505,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dt class="hdlist1">Расширенные сценарии упаковки.</dt>
 <dd>
 <p>Эта ссылка на справочный материал для упаковщиков RPM, работающих с расширенными сценариями упаковки RPM.
-<a href="#advanced-topics">Дополнительные материалы</a>.</p>
+<a href="#advanced-topics">[advanced-topics]</a>.</p>
 </dd>
 </dl>
 </div>
@@ -624,10 +583,73 @@ print("Hello World")</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="prerequisites">Необходимые пакеты</h2>
+<h2 id="welcome-apt">Система управления пакетами. Знакомство с APT</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Чтобы следовать этому руководству, Вам понадобятся пакеты, упомянутые ниже.</p>
+<p>Для установки, удаления и обновления программ и поддержания целостности системы в Linux в первую очередь стали использоваться <em>менеджеры пакетов</em> (такие, как RPM в дистрибутивах <code>RedHat</code> или dpkg в <code>Debian GNU/Linux</code>). С точки зрения менеджера пакетов программное обеспечение представляет собой набор компонентов — программных <em>пакетов</em>. Такие компоненты содержат в себе набор исполняемых программ и вспомогательных файлов, необходимых для корректной работы ПО. Менеджеры пакетов дают возможность унифицировать и автоматизировать сборку бинарных пакетов и облегчают установку программ, позволяя проверять наличие необходимых для работы устанавливаемой программы компонент подходящей версии непосредственно в момент установки, а также производя все необходимые процедуры для регистрации программы во всех операционных средах пользователя. Сразу после установки программа оказывается доступна пользователю из командной строки и появляется в меню всех графических оболочек.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Благодаря менеджерам пакетов, пользователю Linux обычно не требуется непосредственно обращаться к установочным процедурам отдельных программ или непосредственно работать с каталогами, в которых установлены исполняемые файлы и компоненты программ (обычно это <code>/usr/bin, /usr/share/имя_пакета</code>) — всю работу делает менеджер пакетов. Поэтому установку, обновление и удаление программ в Linux обычно называют управлением пакетами.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="usage-apt">Использование APT</h3>
+<div class="paragraph">
+<p>Система APT состоит из нескольких утилит. Главной и наиболее часто используемой является утилита управления пакетами <strong>apt-get</strong>: она автоматически определяет зависимости между пакетами и строго следит за их соблюдением при выполнении любой из следующих операций: установка, удаление или обновление пакетов.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Использование утилит APT возможно только с правами root (режим суперпользователя)!
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>apt-get</strong> позволяет устанавливать в систему пакеты, требующие для своей работы другие, пока ещё не установленные. В этом случае он определяет, какие пакеты необходимо установить, и устанавливает их, пользуясь всеми доступными репозиториями. Для того, чтобы apt-get мог использовать тот или иной репозиторий, информацию о нем необходимо поместить в файл <code>/etc/apt/sources.list</code> и выполнить команду:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># apt-get update</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Эту команду необходимо также выполнять каждый раз, когда Вы собираетесь работать с репозиторием после длительного перерыва, так как при поиске пакетов APT должен руководствоваться базой данных, отражающей актуальное состояние репозитория. Такая база данных создаётся заново каждый раз, когда в репозитории происходит изменение: добавление, удаление или переименование пакета. Для ускорения работы <strong>apt-get</strong> хранит локальную копию базы данных, которая через некоторое время может уже не соответствовать реальному состоянию репозитория.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="apt-installation">Установка и обновление пакета</h3>
+<div class="paragraph">
+<p>Установка пакета с помощью APT выполняется командой:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># apt-get install имя_пакета</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Команда <strong>apt-get install <em>имя_пакета</em></strong> используется и для обновления уже установленного пакета или группы пакетов. В этом случае apt-get дополнительно проверяет, не обновилась ли версия пакета в репозитории по сравнению с установленным в системе.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="prerequisites">Установка необходимых пакетов для процесса сборки</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Чтобы следовать данному руководству, Вам потребуется установить следующие пакеты:</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -642,36 +664,91 @@ print("Hello World")</code></pre>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>В ALT Linux p10:</p>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ su --
+<pre class="CodeRay highlight"><code data-lang="bash">$ su -
 Password:
 $ apt-get update
 .
 .
 .
-$ apt-get install gcc rpm-build rpmlint make python bash gear hasher patch rpmdevtools</code></pre>
+$ apt-get install gcc rpm-build rpmlint make python gear hasher patch</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="Why-Package-Software-with-RPM">Зачем упаковывать программное обеспечение с помощью RPM?</h2>
+<h2 id="Why-Package-Software-with-RPM">Введение в пакетные менеджеры</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Менеджер пакетов RPM (RPM) - это система управления пакетами, которая работает на Red Hat Enterprise Linux, CentOS и Fedora. RPM упрощает распространение, управление и обновление программного обеспечения, создаваемого для Red Hat Enterprise Linux, CentOS и Fedora. Многие поставщики программного обеспечения распространяют своё программное обеспечение через обычный архив (например, tarball). Однако, упаковка программного обеспечения в пакеты RPM имеет ряд преимуществ. Эти преимущества описаны ниже.</p>
+<p><strong>RPM</strong> — это семейство пакетных менеджеров, применяемых в различных дистрибутивах GNU/Linux, в том числе и в проекте <a href="https://www.altlinux.org/Sisyphus">Sisyphus</a> и в дистрибутивах <a href="https://www.altlinux.org/Releases">ALT Linux</a>. Практически каждый крупный проект, использующий RPM, имеет свою версию пакетного менеджера, отличающуюся от остальных.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Различия между представителями семейства RPM выражаются в: </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>наборе макросов, используемых в .spec-файлах,</p>
+</li>
+<li>
+<p>различном поведении RPM при сборке «по умолчанию» — при отсутствии каких-либо указаний в .spec-файлах,</p>
+</li>
+<li>
+<p>формате строк зависимостей,</p>
+</li>
+<li>
+<p>мелких отличиях в семантике операций (например, в операциях сравнения версий пакетов),</p>
+</li>
+<li>
+<p>мелких отличиях в формате файлов.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
 </div>
 <div class="paragraph">
-<p>С помощью RPM Вы можете:</p>
+<p>Для пользователя различия чаще всего заключаются в невозможности поставить «неродной» пакет из-за проблем с зависимостями или из-за формата пакета.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">RPM в проекте Sisyphus также не является исключением. Основные особенности RPM в ALT Linux и Sisyphus от RPM других крупных проектов заключаются в следующем: </dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>обширный набор макросов для упаковки различных типов пакетов,</p>
+</li>
+<li>
+<p>отличающееся поведение «по умолчанию» для уменьшения количества шаблонного кода в .spec-файлах,</p>
+</li>
+<li>
+<p>наличие механизмов для автоматического поиска межпакетных зависимостей,</p>
+</li>
+<li>
+<p>наличие так называемых set-version зависимостей (начиная с <code>4.0.4-alt98.46</code> ), обеспечивающих дополнительный контроль за изменением ABI библиотек,</p>
+</li>
+<li>
+<p>до <code>p8</code> и выпусков <code>8.x</code> включительно&#8201;&#8212;&#8201;очень древняя версия «базового» RPM (4.0.4), от которого началось развитие ветки RPM в Sisyphus (в Sisyphus и <code>p9</code> осуществлён частичный переход на <code>rpm 4.13</code>).</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Многие поставщики программного обеспечения распространяют своё программное обеспечение через обычный архив (например, <code>tarball</code>). Однако, упаковка программного обеспечения в пакеты RPM имеет ряд преимуществ.</p>
+</div>
+<div class="paragraph">
+<p>С помощью RPM пользователь может:</p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Устанавливать, переустанавливать, удалять, обновлять и проверять пакеты</dt>
 <dd>
-<p>Пользователи могут использовать стандартные средства управления пакетами (например, Yum или PackageKit) для установки, переустановки, удаления, обновления и проверки ваших пакетов RPM.</p>
+<p>Пользователи могут использовать стандартные средства управления пакетами для установки, переустановки, удаления, обновления и проверки ваших пакетов RPM.</p>
 </dd>
 <dt class="hdlist1">Использовать базу данных установленных пакетов для запроса и проверки пакетов</dt>
 <dd>
@@ -679,19 +756,15 @@ $ apt-get install gcc rpm-build rpmlint make python bash gear hasher patch rpmde
 </dd>
 <dt class="hdlist1">Использовать метаданные для описания пакетов, инструкций по их установке и т. д.</dt>
 <dd>
-<p>Каждый пакет RPM содержит метаданные, описывающие компоненты пакета, версию, выпуск, размер, URL-адрес проекта, инструкции по установке и так далее</p>
+<p>Каждый пакет RPM содержит метаданные, описывающие компоненты пакета, версию, выпуск, размер, URL-адрес проекта, инструкции по установке и так далее.</p>
 </dd>
-<dt class="hdlist1">Упаковывать нетронутые исходные коды программного обеспечения в исходные и двоичные пакеты</dt>
+<dt class="hdlist1">Упаковывать нетронутые исходные коды программного обеспечения в исходные и бинарные пакеты</dt>
 <dd>
-<p>RPM позволяет вам брать нетронутые исходные коды программного обеспечения и упаковывать их в исходные и двоичные пакеты для ваших пользователей. В исходных пакетах у Вас есть первозданные исходные тексты вместе с любыми использованными исправлениями, а также полные инструкции по сборке. Такая конструкция облегчает обслуживание пакетов по мере выпуска новых версий вашего программного обеспечения.</p>
+<p>RPM позволяет брать нетронутые исходные коды программного обеспечения и упаковывать их в исходные и бинарные пакеты. В исходных пакетах у Вас есть первозданные исходные тексты вместе с любыми использованными patch-ами, а также полные инструкции по сборке. Такая конструкция облегчает обслуживание пакетов по мере выпуска новых версий ПО.</p>
 </dd>
-<dt class="hdlist1">Добавлять пакеты в репозитории Yum</dt>
+<dt class="hdlist1">Установить цифровую подпись упаковки</dt>
 <dd>
-<p>Вы можете добавить свой пакет в репозиторий Yum, который позволяет клиентам легко находить и развертывать ваше программное обеспечение.</p>
-</dd>
-<dt class="hdlist1">Установить цифровую подпись Ваших упаковок</dt>
-<dd>
-<p>Используя ключ подписи GPG, Вы можете подписать посылку цифровой подписью, чтобы пользователи могли проверить подлинность упаковки.</p>
+<p>Используя ключ подписи GPG, Вы можете подписать пакет цифровой подписью, чтобы пользователи могли проверить подлинность упаковки.</p>
 </dd>
 </dl>
 </div>
@@ -1286,1262 +1359,10 @@ $ rpmbuild -bb ~/rpmbuild/SPECS/cello.spec</code></pre>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="hello-world">Ваш Первый пакет RPM</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Создание пакета RPM может быть сложным. Вот полный рабочий файл спецификации RPM, в котором несколько вещей пропущены и упрощены.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">Name:       hello-world
-Version:    1
-Release:    1
-Summary:    Most simple RPM package
-License:    FIXME
-
-%description
-This is my first RPM package, which does nothing.
-
-%prep
-# we have no source, so nothing here
-
-%build
-cat &gt; hello-world.sh &lt;&lt;EOF
-#!/usr/bin/bash
-echo Hello world
-EOF
-
-%install
-mkdir -p %{buildroot}/usr/bin/
-install -m 755 hello-world.sh %{buildroot}/usr/bin/hello-world.sh
-
-%files
-/usr/bin/hello-world.sh
-
-%changelog
-# let's skip this for now</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Сохраните этот файл как <code>hello-world.spec</code>.</p>
-</div>
-<div class="paragraph">
-<p>Теперь используйте эти команды:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpmdev-setuptree
-$ rpmbuild -ba hello-world.spec</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Команда <code>rpmdev-setuptree</code> создает несколько рабочих каталогов. Поскольку эти каталоги постоянно хранятся в $HOME, эту команду не нужно использовать снова.</p>
-</div>
-<div class="paragraph">
-<p>Команда  <code>rpmbuild</code> создает фактический пакет rpm. Вывод этой команды может быть похож на:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="txt">... [SNIP]
-Wrote: /home/mirek/rpmbuild/SRPMS/hello-world-1-1.src.rpm
-Wrote: /home/mirek/rpmbuild/RPMS/x86_64/hello-world-1-1.x86_64.rpm
-Executing(%clean): /bin/sh -e /var/tmp/rpm-tmp.wgaJzv
-+ umask 022
-+ cd /home/mirek/rpmbuild/BUILD
-+ /usr/bin/rm -rf /home/mirek/rpmbuild/BUILDROOT/hello-world-1-1.x86_64
-+ exit 0</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Файл <code>/home/mirek/rpmbuild/RPMS/x86_64/hello-world-1-1.x86_64.rpm</code> является Вашим первым пакетом RPM. Его можно установить в систему и протестировать.</p>
-</div>
-<div class="sect3">
-<h4 id="rpm-macros">RPM Макросы</h4>
-<div class="paragraph">
-<p><a href="https://rpm-software-management.github.io/rpm/manual/macros.html">Макрос RPM</a> - это прямая замена текста, которая может быть условно назначена на основе необязательной оценки оператора при использовании определенной встроенной функциональности. Это означает, что Вы можете заставить RPM выполнять замены текста за Вас.</p>
-</div>
-<div class="paragraph">
-<p>Это полезно, например, при многократной ссылке на <em>Version</em> упакованного программного обеспечения в файле спецификации. Вы определяете <em>Version</em> только один раз - в макросе <code>%{version}</code>. Затем используйте <code>%{version}</code> во всем файле спецификации. Каждый раз, во время определения строки <code>%{version}</code>, в конечном итоге будет подставлена <em>Version</em> программы, которую вы определили ранее.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Если Вы видите незнакомый макрос, Вы можете узнать о нём с помощью:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --eval %{_MACRO}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Например:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --eval %{_bindir}
-/usr/bin
-
-$ rpm --eval %{_libexecdir}
-/usr/libexec</code></pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Распространённым макросом является <code>%{?dist}</code>, который обозначает “тег распространения”. Он сигнализирует, какой дистрибутив используется для сборки.</p>
-</div>
-<div class="paragraph">
-<p>Например:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash"># On a RHEL 7.x machine
-$ rpm --eval %{?dist}
-.el7
-
-# On a Fedora 23 machine
-$ rpm --eval %{?dist}
-.fc23</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Больше информации о макросах см. в разделе <a href="#more-on-macros">Подробнее о макросах</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="patching-software">Программное обеспечение для исправления ошибок</h3>
-<div class="paragraph">
-<p><strong>Patch</strong> - это исходный код, который исправляет другой исходный код. Он отформатирован как <em>diff</em>, потому что представляет разницу между двумя версиями текста. Разница создаётся с помощью утилиты <code>diff</code>, которая затем применяется к исходному коду с помощью утилиты <a href="http://savannah.gnu.org/projects/patch/">patch</a>.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Разработчики программного обеспечения часто используют системы контроля версий, такие как <a href="https://git-scm.com/">git</a>, для управления своей кодовой базой. Такие инструменты предоставляют свои собственные методы создания различий или исправления программного обеспечения.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>В следующем примере мы создаем исправление из исходного кода с помощью
-<code>diff</code>, а затем используем <code>patch</code>. Исправление использует в следующих разделах при создании RPM и работе со .spec-файлом. <a href="#working-with-spec-files">Работа со SPEC файлами</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="putting-source-code-into-tarball">Создание Tarball с исходным кодом</h3>
-<div class="paragraph">
-<p>В приведенных ниже примерах мы помещаем каждую из трех программ  <code>Hello World</code> в архив, сжатый с помощью
-<a href="https://www.gnu.org/software/gzip/">gzip</a>. Программное обеспечение часто выпускается таким образом, чтобы позже быть упакованным для распространения.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="using_Make">Make</h3>
-
-</div>
-<div class="sect2">
-<h3 id="version-control-systems">Система контроля версий</h3>
-<div class="paragraph">
-<p>При работе с RPMs желательно использовать
-<a href="https://en.wikipedia.org/wiki/Version_control">Системы контроля версий</a> (VCS), такую как <a href="https://git-scm.com/">git</a>, для управления компонентами программного обеспечения, которое мы упаковываем.
-Следует отметить, что хранение бинарных файлов в системе контроля версий нецелесообразно, поскольку это резко увеличивает размер исходного репозитория, поскольку эти инструменты разработаны для обработки различий в файлах (часто оптимизированных для текстовых файлов), чему не поддаются бинарные файлы, поэтому обычно сохраняется весь бинарные файл целиком. Существуют некоторые утилиты, популярные среди upstream проектов с открытым исходным кодом, которые решают эту проблему, либо сохраняя SPEC файл, где исходный код находится в VCS (т. е. - он не находится в сжатом архиве для распространения ), либо помещая в VCS только SPEC-файл и патчи и загружается сжатый архив updtream исходного кода  в так называемый «кэш просмотра».</p>
-</div>
-<div class="paragraph">
-<p>В этом разделе мы рассмотрим два различных варианта использования системы контроля версий
-<a href="https://git-scm.com/">git</a> для управления содержимым, которое в конечном итоге будет преобразовано в пакет RPM. Первый называется <a href="https://github.com/dgoodwin/tito">tito</a>,
-второй - <a href="https://github.com/release-engineering/dist-git">dist-git</a>.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Вам нужно будет установить пакет <code>git</code> в Вашу систему, он понадобится нам для изучения данного раздела.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Gear_ALT">Окружение Gear</h3>
-
-</div>
-<div class="sect2">
-<h3 id="Hasher_ALT">Окружение Hasher</h3>
-
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="advanced-topics">Дополнительные материалы</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>В этой главе рассматриваются темы, которые выходят за рамки вводного руководства, но часто полезны в реальной упаковке RPM.</p>
-</div>
-<div class="sect2">
-<h3 id="Signing-Packages">Подпись пакетов</h3>
-<div class="paragraph">
-<p>Подпись пакета - это способ защитить пакет для конечного пользователя. Безопасная транспортировка может быть достигнута с помощью реализации протокола HTTPS. Такой метод используют, когда пакет загружается непосредственно перед установкой. Однако пакеты часто загружаются заранее и хранятся в локальных репозиториях перед их использованием. Пакеты подписываются, чтобы гарантировать, что никакая третья сторона не сможет изменить содержимое пакета.</p>
-</div>
-<div class="paragraph">
-<p>Существует три способа подписи пакета:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="#Adding-a-Signature-to-a-Package">Добавление подписи к уже существующему пакету</a>.</p>
-</li>
-<li>
-<p><a href="#Replacing-a-Package-Signature">Замена подписи на уже существующем пакете</a>.</p>
-</li>
-<li>
-<p><a href="#Build-time-Signing">
-Подпись пакета во время сборки</a>.</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="Adding-a-Signature-to-a-Package">Добавление подписи к пакету</h4>
-<div class="paragraph">
-<p>В большинстве случаев пакеты создаются без подписи. Подпись добавляется непосредственно перед выпуском пакета.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы добавить другую подпись к пакету, используйте опцию <code>--addsign</code>. Наличие более чем одной подписи позволяет зафиксировать путь владения пакетом от разработчика пакета до конечного пользователя.</p>
-</div>
-<div class="paragraph">
-<p>В качестве примера подразделение компании создает пакет и подписывает его ключом подразделения. Затем штаб-квартира компании проверяет подпись пакета и добавляет корпоративную подпись к пакету, заявляя, что подписанный пакет является подлинным.</p>
-</div>
-<div class="paragraph">
-<p>С двумя подписями пакеи попадает к продавцу. Продавец проверяет подписи и, если они проверяются, также добавляет свою подпись.</p>
-</div>
-<div class="paragraph">
-<p>Теперь пакет отправляется в компанию, которая желает его развернуть. Проверив каждую подпись на упаковке, они знают, что это подлинная копия, не изменившаяся с момента её первого создания. В зависимости от внутреннего контроля внедряющей компании, они могут добавить свою собственную подпись, чтобы заверить своих сотрудников в том, что пакет получил их корпоративное одобрение.</p>
-</div>
-<div class="paragraph">
-<p>Вывод из команды <code>--addsign</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --addsign blather-7.9-1.i386.rpm
-            Enter pass phrase:
-
-Pass phrase is good.
-blather-7.9-1.i386.rpm:</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Для проверки подписей пакета с несколькими подписями:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --checksig blather-7.9-1.i386.rpm
-blather-7.9-1.i386.rpm: size pgp pgp md5 OK</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Два обозначения <code>pgp</code> в выходных данных команды <code>rpm --checksig</code> показывают, что пакет был подписан дважды.</p>
-</div>
-<div class="paragraph">
-<p>RPM позволяет добавлять одну и ту же подпись несколько раз. Параметр <code>--addsign</code>
-не проверяет наличие нескольких идентичных подписей.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --addsig blather-7.9-1.i386.rpm
-              Enter pass phrase:
-
-Pass phrase is good.
-blather-7.9-1.i386.rpm:
-$ rpm --addsig blather-7.9-1.i386.rpm
-              Enter pass phrase:
-
-Pass phrase is good.
-blather-7.9-1.i386.rpm:
-$ rpm --addsig blather-7.9-1.i386.rpm
-              Enter pass phrase:
-
-Pass phrase is good.
-blather-7.9-1.i386.rpm:
-$ rpm --checksig blather-7.9-1.i386.rpm
-blather-7.9-1.i386.rpm: size pgp pgp pgp pgp md5 OK</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>На выходе команды <code>rpm --checksig</code> отображается четыре подписи.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="Replacing-a-Package-Signature">Замена подписи пакета</h4>
-<div class="paragraph">
-<p>Чтобы изменить открытый ключ без необходимости пересобирать каждый пакет, используйте опцию <code>--resign</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --resign blather-7.9-1.i386.rpm
-            Enter pass phrase:
-
-Pass phrase is good.
-blather-7.9-1.i386.rpm:</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Использование опции <code>--resign</code> с несколькими пакетами:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --resign b*.rpm
-            Enter pass phrase:
-
-Pass phrase is good.
-blather-7.9-1.i386.rpm:
-bother-3.5-1.i386.rpm:</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="Build-time-Signing">Подпись во время сборки</h4>
-<div class="paragraph">
-<p>Чтобы подписать пакет во время сборки, используйте команду <code>rpmbuild</code> с параметром <code>--sign</code>. Для этого необходимо ввести кодовую фразу PGP.</p>
-</div>
-<div class="paragraph">
-<p>Для примера:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -ba --sign blather-7.9.spec
-            Enter pass phrase:
-
-Pass phrase is good.
-* Package: blather
-…
-Binary Packaging: blather-7.9-1
-Finding dependencies...
-…
-Generating signature: 1002
-Wrote: /usr/src/redhat/RPMS/i386/blather-7.9-1.i386.rpm
-…
-Source Packaging: blather-7.9-1
-…
-Generating signature: 1002
-Wrote: /usr/src/redhat/SRPMS/blather-7.9-1.src.rpm</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Сообщение "Generating signature" появляется как в бинарном, так и в исходном разделах упаковки. Число, следующее за сообщением, указывает на то, что добавленная подпись была создана с использованием  PGP.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>При использовании опции <code>--sign</code> в <code>rpmbuild</code>, используйте только аргументы <code>-bb</code> или <code>-ba</code> для сборки пакета. Аргумент <code>-ba</code> обозначает сборку бинарных <strong>и</strong> исходных пакетов.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Чтобы проверить подпись пакета, используйте комманду <code>--checksig</code>. Для примера:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --checksig blather-7.9-1.i386.rpm
-blather-7.9-1.i386.rpm: size pgp md5 OK</code></pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="Building-Multiple-Packages">Сборка нескольких пакетов</h5>
-<div class="paragraph">
-<p>При сборке нескольких пакетов используйте следующий синтаксис, чтобы избежать многократного ввода кодовой фразы
-PGP. Например, при сборке пакетов <code>blather</code> и <code>bother</code>, подпишите их, следуя примеру ниже:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -ba --sign b*.spec
-              Enter pass phrase:
-
-Pass phrase is good.
-* Package: blather
-…
-Binary Packaging: blather-7.9-1
-…
-Generating signature: 1002
-Wrote: /usr/src/redhat/RPMS/i386/blather-7.9-1.i386.rpm
-…
-Source Packaging: blather-7.9-1
-…
-Generating signature: 1002
-Wrote: /usr/src/redhat/SRPMS/blather-7.9-1.src.rpm
-…
-* Package: bother
-…
-Binary Packaging: bother-3.5-1
-…
-Generating signature: 1002
-Wrote: /usr/src/redhat/RPMS/i386/bother-3.5-1.i386.rpm
-…
-Source Packaging: bother-3.5-1
-…
-Generating signature: 1002
-Wrote: /usr/src/redhat/SRPMS/bother-3.5-1.src.rpm</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="more-on-macros">Подробнее о макросах</h3>
-<div class="paragraph">
-<p>Существует множество встроенных макросов RPM, и мы рассмотрим некоторые из них в следующем разделе, однако исчерпывающий список можно найти на странице
-<a href="https://rpm-software-management.github.io/rpm/manual/macros.html">RPM Official Documentation</a>.</p>
-</div>
-<div class="paragraph">
-<p>Существуют также макросы, предоставляемые Вашим дистрибутивом
-<a href="https://en.wikipedia.org/wiki/Linux">Linux</a>, в этом разделе мы рассмотрим некоторые из них, предоставляемые <a href="https://getfedora.org/">Fedora</a>,
-<a href="https://www.centos.org/">CentOS</a> и
-<a href="https://www.redhat.com/en/technologies/linux-platforms">RHEL</a>, а также предоставим информацию о том, как проверить Вашу систему, чтобы узнать о других, которые мы не рассматриваем, или для их обнаружения в других дистрибутивах Linux на основе RPM</p>
-</div>
-<div class="sect3">
-<h4 id="defining-your-own">Определение Ваших Собственных Макросов</h4>
-<div class="paragraph">
-<p>Вы можете определить свои собственные макросы. Ниже приводится выдержка из
-<a href="https://rpm-software-management.github.io/rpm/manual/macros.html">RPM Official Documentation</a>,  в которой содержится исчерпывающая информация о возможностях макросов.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы определить макрос, используйте:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">%global &lt;name&gt;[(opts)] &lt;body&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Все пробелы, окружающие  <code>\ </code>, удаляются.  Имя может состоять из буквенно-цифровых символов и символа <code>_</code>,  и должно иметь длину не менее 3 символов. Макрос без поля <code>(opts)</code> является “простым” в том смысле, что выполняется только рекурсивное расширение макроса. Параметризованный макрос содержит поле <code>(opts)</code> field. The
-<code>opts</code> - (строка в круглых скобках) передается точно так же, как и в getopt(3)  для обработки
-argc/argv  в начале вызова макроса.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Более старый SPEC файлы RPM могут использовать шаблон макроса <code>%define &lt;name&gt; &lt;body&gt;</code>. Различия между макросами <code>%define</code> и <code>%global</code> заключаются в следующем:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>%define</code> имеет локальную область действия, что означает, что он применяется только к указанной части SPEC файла. Кроме того, тело макроса  <code>%define</code> расширяется при использовании.</p>
-</li>
-<li>
-<p><code>%global</code> имеет глобальную область действия, что означает, что он применяется ко всему SPEC файлу.
-Кроме того, тело макроса <code>%global</code> асширяется во время определения.</p>
-</li>
-</ul>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Пример:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>%global githash 0ec4e58
-%global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Макросы всегда оцениваются, даже в комментариях. Иногда это безобидно. Но во втором примере мы выполняем команду python, чтобы получить содержимое макроса. Эта команда будет выполняться даже тогда, когда Вы закомментируете макрос, или когда Вы вводите имя макроса в %changelog. Чтобы закомментировать макрос, используйте
-<code>%%</code>. Например: <code>%%global</code>.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="setup">%setup</h4>
-<div class="paragraph">
-<p>Макрос  <code>%setup</code> можно использовать для сборки пакета с помощью tarball.
-Стандартное поведение макроса <code>%setup</code> можно увидеть в выходных данных <code>rpmbuild</code>.
-В начале каждой фазы макрос выводит <code>Executing(%something)</code>.
-Например:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.DhddsG</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Выходные данные оболочки устанавливаются с включенным <code>set -x</code>. Чтобы просмотреть содержимое
-<code>/var/tmp/rpm-tmp.DhddsG</code>, используйте опцию <code>--debug</code>, поскольку <code>rpmbuild</code> удаляет временные файлы после успешной сборки. Здесь отображается настройка переменных среды, например:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">cd '/builddir/build/BUILD'
-rm -rf 'cello-1.0'
-/usr/bin/gzip -dc '/builddir/build/SOURCES/cello-1.0.tar.gz' | /usr/bin/tar -xof -
-STATUS=$?
-if [ $STATUS -ne 0 ]; then
-  exit $STATUS
-fi
-cd 'cello-1.0'
-/usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Макрос <code>%setup</code> гарантирует, что мы работаем в правильном каталоге, удаляет остатки предыдущих сборок, распаковывает исходный архив и устанавливает некоторые привилегии по умолчанию. Существует несколько вариантов настройки поведения макроса
-<code>%setup</code>.</p>
-</div>
-<div class="sect4">
-<h5 id="setup-q">%setup -q</h5>
-<div class="paragraph">
-<p>Параметр <code>-q</code>  ограничивает детализацию макроса  <code>%setup</code>. Вместо <code>tar -xof</code> выполняется только <code>tar -xvvof</code>. Этот параметр должен быть использован в качестве первого.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="setup-n">%setup -n</h5>
-<div class="paragraph">
-<p>В некоторых случаях каталог из расширенного архива имеет другое имя, чем ожидалось <code>%{name}-%{version}</code>. Это может привести к ошибке макроса <code>%setup</code>.  Имя каталога должно быть указано параметром <code>-n directory_name</code>.</p>
-</div>
-<div class="paragraph">
-<p>Например, если имя пакета  <code>cello</code>, но исходный код заархивирован в <code>hello-1.0.tgz</code> и содержит каталог <code>hello/</code>, содержимое SPEC файла должно быть следующим:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">Name: cello
-Source0: https://example.com/%{name}/release/hello-%{version}.tar.gz
-…
-%prep
-%setup -n hello</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="setup-c">%setup -c</h5>
-<div class="paragraph">
-<p>Параметр  <code>-c</code> можно использовать, если архив исходного кода не содержит никаких подкаталогов и после распаковки файлы из архива заполняют текущий каталог. Опция <code>-c</code> создает каталог и переходит к расширению архива. Наглядный пример:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">/usr/bin/mkdir -p cello-1.0
-cd 'cello-1.0'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Каталог не изменяется после расширения архива.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="setup-dt">%setup -D и -T</h5>
-<div class="paragraph">
-<p>Параметр <code>-D</code>  отключает удаление каталога исходного кода. Этот параметр полезен, если макрос <code>%setup</code> используется несколько раз. По сути, параметр <code>-D</code> означает, что сделующие строки не используются:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">rm -rf 'cello-1.0'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Параметр<code>-T</code> отключает расширение хранилища исходного кода, удаляя следующую строку из скрипта:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">/usr/bin/gzip -dc '/builddir/build/SOURCES/cello-1.0.tar.gz' | /usr/bin/tar -xvvof -</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="setup-ab">%setup -a и -b</h5>
-<div class="paragraph">
-<p>Параметры <code>-a</code> и <code>-b</code> расширяют определённые источники.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Параметр <code>-b</code> (расшифровывается как <code>before</code>) расширяет определенные источники перед входом в рабочий каталог.</p>
-</li>
-<li>
-<p>Параметр <code>-a</code> (расшифровывается как  <code>after</code>) расширяет эти источники после входа. Их аргументами являются исходные номера из преамбулы файла спецификации.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Например, допустим, что архив <code>cello-1.0.tar.gz</code> содержит пустой каталог <code>examples</code>, и примеры поставляются в отдельных
-<code>examples.tar.gz</code> tarball архивах, и они разархивируются в каталог с тем же именем. В этом случае используйте <code>-a 1</code>, так как мы хотим разархивировать <code>Source1</code> после входа в рабочий каталог:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">Source0: https://example.com/%{name}/release/%{name}-%{version}.tar.gz
-Source1: examples.tar.gz
-…
-%prep
-%setup -a 1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Но если бы примеры были в отдельном <code>cello-1.0-examples.tar.gz</code> tarball архиве, который расширяется до <code>cello-1.0/examples</code>, используйте параметры <code>-b 1</code>, поскольку <code>Source1</code> должен быть разархивирован перед входом в рабочий каталог:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">Source0: https://example.com/%{name}/release/%{name}-%{version}.tar.gz
-Source1: %{name}-%{version}-examples.tar.gz
-…
-%prep
-%setup -b 1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Вы также можете использовать комбинацию всех этих опций.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="files">%files</h4>
-<div class="paragraph">
-<p>Общие  “расширенные” макросы RPM, необходимые в разделе <code>%files</code>:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Макрос</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Описание</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">%license</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Макрос идентифицирует файл, указанный в списке, как файл ЛИЦЕНЗИИ, и он будет установлен и помечен как таковой RPM. Пример: <code>%license LICENSE</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">%doc</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Этот макрос идентифицирует файл, указанный как документация, и он будет установлен и помечен RPM как таковой. Это часто используется не только для документации об упаковываемом программном обеспечении, но и для примеров кода и различных элементов, которые должны сопровождать документацию. Пример: <code>%doc README</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">%dir</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Макрос указывает, что путь является каталогом, которым должен владеть этот RPM. Это важно, чтобы манифест RPM-файла точно знал, какие каталоги очищать при удалении. Пример: <code>%dir %{_libdir}/%{name}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">%config(noreplace)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Указывает, что следующий файл является файлом конфигурации и поэтому не должен перезаписываться (или заменяться) при установке или обновлении пакета, если файл был изменен по сравнению с исходной контрольной установкой. В случае внесения изменений файл будет создан с добавлением <code>.rpmnew</code> в конец имени файла при обновлении или установке, чтобы ранее существующий или измененный файл в целевой системе не был изменен. Пример: <code>%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf</code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="built-in-macros">Встроенные макросы</h4>
-<div class="paragraph">
-<p>В Вашей системе есть много встроенных макросов RPM, и самый быстрый способ просмотреть их все - это просто выполнить команду <code>rpm --showrc</code>. Обратите внимание, что это будет содержать много выходных данных, поэтому его часто используют в сочетании с каналом для <code>grep</code>.</p>
-</div>
-<div class="paragraph">
-<p>Вы также можете найти информацию о макросах RPM, которые поставляются непосредственно с версией RPM Вашей системы, просмотрев выходные данные   <code>rpm -ql rpm</code> , обратив внимание на файлы с названием <code>macros</code> в структуре каталогов.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="rpm-distribution-macros">RPM Макросы, предоставляемые дистрибутивом</h4>
-<div class="paragraph">
-<p>Различные дистрибутивы будут предоставлять разные наборы рекомендуемых макросов RPM в зависимости от языковой реализации упаковываемого программного обеспечения или конкретных рекомендаций рассматриваемого дистрибутива.</p>
-</div>
-<div class="paragraph">
-<p>Они часто предоставляются в виде самих пакетов RPM и могут быть установлены с помощью пакетного менеджера, такого как <a href="http://yum.baseurl.org/">yum</a> или
-<a href="https://github.com/rpm-software-management/dnf">dnf</a>. Сами файлы макросов после установки можно найти в <code>/usr/lib/rpm/macros.d/</code>, и они будут включены в вывод <code>rpm --showrc</code> по умолчанию после установки.</p>
-</div>
-<div class="paragraph">
-<p>Одним из основных примеров этого является раздел
-<a href="https://docs.fedoraproject.org/en-US/packaging-guidelines/">Fedora Packaging
-Guidelines</a>, относящийся конкретно к
-<a href="https://docs.fedoraproject.org/en-US/packaging-guidelines/_domain_specific_guidelines">Application
-Specific Guidelines</a>, который на момент написания этой статьи содержит более 60 различных наборов руководств вместе с соответствующими наборами макросов RPM для упаковки.</p>
-</div>
-<div class="paragraph">
-<p>Одним из примеров такого рода RPM может быть <a href="https://www.python.org/">Python</a>
-версии 2.x, и если у нас установлен пакет <code>python2-rpm-macros</code>
-(доступный в EPEL для RHEL 7 и CentOS 7), у нас есть ряд доступных, специфичных для python2 макросов.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -ql python2-rpm-macros
-/usr/lib/rpm/macros.d/macros.python2
-
-$ rpm --showrc | grep python2
--14: __python2  /usr/bin/python2
-CFLAGS="%{optflags}" %{__python2} %{py_setup} %{?py_setup_args} build --executable="%{__python2} %{py2_shbang_opts}" %{?1}
-CFLAGS="%{optflags}" %{__python2} %{py_setup} %{?py_setup_args} install -O1 --skip-build --root %{buildroot} %{?1}
--14: python2_sitearch   %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
--14: python2_sitelib    %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
--14: python2_version    %(%{__python2} -c "import sys; sys.stdout.write('{0.major}.{0.minor}'.format(sys.version_info))")
--14: python2_version_nodots     %(%{__python2} -c "import sys; sys.stdout.write('{0.major}{0.minor}'.format(sys.version_info))")</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В приведенном выше выводе отображаются необработанные определения макросов RPM, но нас, вероятно, больше интересует, что мы можем сделать с помощью <code>rpm --eval</code> , чтобы определить, что они делают, а также как они могут быть полезны для нас при упаковке RPMs.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --eval %{__python2}
-/usr/bin/python2
-
-$ rpm --eval %{python2_sitearch}
-/usr/lib64/python2.7/site-packages
-
-$ rpm --eval %{python2_sitelib}
-/usr/lib/python2.7/site-packages
-
-$ rpm --eval %{python2_version}
-2.7
-
-$ rpm --eval %{python2_version_nodots}
-27</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="custom-macros">Пользовательские макросы</h3>
-<div class="paragraph">
-<p>Вы можете переопределить макросы в файле <code>~/.rpmmacros</code>. Любые внесенные вами изменения повлияют на каждую сборку на Вашем компьютере.</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Существует несколько макросов, которые Вы можете использовать для переопределения</dt>
-<dt class="hdlist1"><code>%_topdir /opt/some/working/directory/rpmbuild</code></dt>
-<dd>
-<p>Вы можете создать этот каталог, включая все подкаталоги, с помощью утилиты <code>rpmdev-setuptree</code>.
-Значение этого макроса по умолчанию равно<code>~/rpmbuild</code>.</p>
-</dd>
-<dt class="hdlist1"><code>%_smp_mflags -l3</code></dt>
-<dd>
-<p>Этот макрос часто используется для передачи в Makefile, например:
-<code>make %{?_smp_mflags}</code>, и для задания количества одновременных процессов на этапе сборки. По умолчанию для него задано значение <code>-jX</code>, где X - количество ядер. Если Вы измените количество ядер, Вы можете ускорить или замедлить сборку пакетов.</p>
-</dd>
-</dl>
-</div>
-<div class="paragraph">
-<p>Хотя Вы можете определить любые новые макросы в файле <code>~/.rpmmacros</code>  это не рекомендуется, поскольку эти макросы не будут присутствовать на других компьютерах, где пользователи могут захотеть попытаться пересобрать Ваш пакет.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="epoch-scriptlets-and-triggers">Epoch, Скриптлеты и Триггеры</h3>
-<div class="paragraph">
-<p>В мире SPEC файлов RPM существуют различные разделы, которые считаются продвинутыми, поскольку они влияют не только на файл спецификации, способ сборки пакета, но и на конечный компьютер, на который устанавливается результирующий RPM. В этом разделе мы рассмотрим наиболее распространенные из них, такие как Epoch, Скриптлеты и триггеры.</p>
-</div>
-<div class="sect3">
-<h4 id="epoch">Epoch</h4>
-<div class="paragraph">
-<p>Первым в списке стоит <code>Epoch</code>, epoch - это способ определения взвешенных зависимостей на основе номеров версий. Его значение по умолчанию равно 0, если директива <code>Epoch</code>  не указана в SPEC файле. Это не рассматривалось в разделе "SPEC файл" этого руководства, потому что почти всегда вводить значени Epoch  - плохая идея, поскольку это искажает то, что вы обычно ожидаете от RPM при сравнении версий пакетов.</p>
-</div>
-<div class="paragraph">
-<p>Например, если был установлен пакет <code>foobar</code> с <code>Epoch: 1</code> и <code>Version: 1.0</code>, а кто-то другой упаковал <code>foobar</code> с<code>Version: 2.0</code> , но просто опустил директиву <code>Epoch</code> либо потому, что они не знали о её необходимости, либо просто забыли, эта новая версия никогда не будет считаться обновлением, потому что версия Epoch превалирует над традиционным маркером
-Name-Version-Release, который означает управление версиями для RPM-пакетов.</p>
-</div>
-<div class="paragraph">
-<p>Этот подход обычно используется только в случае крайней необходимости для решения проблемы с порядком обновления, которая может возникнуть как побочный эффект программного обеспечения из upstream репозитория, изменяющего схемы нумерации версий или версии, включающие буквенные символы, которые не всегда можно надёжно сравнить на основе кодирование.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="triggers-and-scriptlets">Скриптлеты и Триггеры</h4>
-<div class="paragraph">
-<p>В пакетах RPM существует ряд директив, которые можно использовать для внесения необходимых или желаемых изменений в систему во время установки RPM. Они называются <strong>скриптлеты</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Один из основных примеров того, когда и почему Вы хотели бы это сделать,  это когда установлена системная служба RPM и она предоставляет
-<a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>
-<a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">файл</a>.
-Во время установки нам нужно будет уведомить
-<a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>  о появлении нового модуля, чтобы системный администратор мог выполнить команду, аналогичную  <code>systemctl start
-foo.service</code> после установки вымышленного <code>foo</code> (который в этом примере предоставляет демон). Аналогично, нам нужно было бы отменить это действие при деинсталляции, чтобы администратор не получал ошибок из-за того, что бинарный файл демона больше не установлен, но файл модуля все еще существует в запущенной конфигурации systemd.</p>
-</div>
-<div class="paragraph">
-<p>Существует небольшая горстка распространенных скриптлетов, они похожи на “заголовки разделов”, такие как <code>%build</code> or <code>%install</code>, в том смысле, что они определяются многострочными сегментами кода, часто написанными, как стандартный сценарий оболочки
-<a href="https://en.wikipedia.org/wiki/POSIX">POSIX</a>
-, но могут быть на нескольких разных языках программирования.
-Исчерпывающий список этих доступных языков можно найти в <em>Официальной документации RPM</em>.</p>
-</div>
-<div class="paragraph">
-<p>Следующие скриптлеты:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Директива</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Описание</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%pre</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется непосредственно перед установкой пакета в целевую систему.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%post</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется сразу после установки пакета в целевой системе.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%preun</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется непосредственно перед удалением пакета из целевой системы.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%postun</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется сразу после удаления пакета из целевой системы.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Также часто для этой функции существуют макросы RPM.  В нашем предыдущем примере мы обсуждали необходимость получения  <a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>
-уведомления о новом
-<a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">unit file</a>,
-, это легко обрабатывается макросами скриптлетов systemd, как Мы можем видеть из приведенного ниже примера вывода.  Более подробную информацию об этом можно найти в
-<a href="https://fedoraproject.org/wiki/Packaging:Systemd">Fedora systemd Packaging
-Guidelines</a>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --showrc | grep systemd
--14: __transaction_systemd_inhibit      %{__plugindir}/systemd_inhibit.so
--14: _journalcatalogdir /usr/lib/systemd/catalog
--14: _presetdir /usr/lib/systemd/system-preset
--14: _unitdir   /usr/lib/systemd/system
--14: _userunitdir       /usr/lib/systemd/user
-/usr/lib/systemd/systemd-binfmt %{?*} &gt;/dev/null 2&gt;&amp;1 || :
-/usr/lib/systemd/systemd-sysctl %{?*} &gt;/dev/null 2&gt;&amp;1 || :
--14: systemd_post
--14: systemd_postun
--14: systemd_postun_with_restart
--14: systemd_preun
--14: systemd_requires
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
--14: systemd_user_post  %systemd_post --user --global %{?*}
--14: systemd_user_postun        %{nil}
--14: systemd_user_postun_with_restart   %{nil}
--14: systemd_user_preun
-systemd-sysusers %{?*} &gt;/dev/null 2&gt;&amp;1 || :
-echo %{?*} | systemd-sysusers - &gt;/dev/null 2&gt;&amp;1 || :
-systemd-tmpfiles --create %{?*} &gt;/dev/null 2&gt;&amp;1 || :
-
-$ rpm --eval %{systemd_post}
-
-if [ $1 -eq 1 ] ; then
-        # Initial installation
-        systemctl preset  &gt;/dev/null 2&gt;&amp;1 || :
-fi
-
-$ rpm --eval %{systemd_postun}
-
-systemctl daemon-reload &gt;/dev/null 2&gt;&amp;1 || :
-
-$ rpm --eval %{systemd_preun}
-
-if [ $1 -eq 0 ] ; then
-        # Package removal, not upgrade
-        systemctl --no-reload disable  &gt; /dev/null 2&gt;&amp;1 || :
-        systemctl stop  &gt; /dev/null 2&gt;&amp;1 || :
-fi</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Еще один элемент, который обеспечивает еще более детальный контроль над транзакцией RPM в целом, - это то, что известно как <strong>триггеры</strong>. По сути, это то же самое, что и скриптлет, но выполняется в очень определенном порядке операций во время транзакции установки или обновления RPM, что позволяет более точно контролировать весь процесс.</p>
-</div>
-<div class="paragraph">
-<p>Порядок, в котором выполняется каждый из них, и подробная информация о котором - приведена ниже.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">all-%pretrans
-...
-any-%triggerprein (%triggerprein from other packages set off by new install)
-new-%triggerprein
-new-%pre      for new version of package being installed
-...           (all new files are installed)
-new-%post     for new version of package being installed
-
-any-%triggerin (%triggerin from other packages set off by new install)
-new-%triggerin
-old-%triggerun
-any-%triggerun (%triggerun from other packages set off by old uninstall)
-
-old-%preun    for old version of package being removed
-...           (all old files are removed)
-old-%postun   for old version of package being removed
-
-old-%triggerpostun
-any-%triggerpostun (%triggerpostun from other packages set off by old un
-            install)
-...
-all-%posttrans</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Вышеуказанные элементы взяты из прилагаемой документации RPM, найденной в
-<code>/usr/share/doc/rpm/triggers</code> на системах Fedora и
-<code>/usr/share/doc/rpm-4.*/triggers</code> в системах RHEL 7 и CentOS 7.</p>
-</div>
-<div class="sect4">
-<h5 id="Using-Non-Shell-Scripts-in-spec-File">Использование скриптов без оболочки в SPEC файле</h5>
-<div class="paragraph">
-<p>Параметр скриптлета <code>-p</code>, в SPEC файле позволяет вызывать определенный интерпретатор вместо стандартного <code>-p&#160;/bin/sh</code>. Наглядным примером является скрипт, который выводит сообщение после установки <code>pello.py</code>.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Откройте файл <code>pello.spec</code>.</p>
-</li>
-<li>
-<p>Найдите следующую строку:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">install -m 0644 %{name}.py* %{buildroot}/usr/lib/%{name}/</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Под этой строкой вставьте следующий код:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">%post -p /usr/bin/python3
-print("This is {} code".format("python"))</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Создайте свой пакет в соответствии с главой <a href="#building-rpms">Сборка RPMS</a>.</p>
-</li>
-<li>
-<p>Установите Ваш пакет:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash"># dnf install /home/&lt;username&gt;/rpmbuild/RPMS/noarch/pello-0.1.1-1.fc27.noarch.rpm</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Результатом выполнения этой команды является следующее сообщение после установки:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>Installing       : pello-0.1.1-1.fc27.noarch                              1/1
-Running scriptlet: pello-0.1.1-1.fc27.noarch                              1/1
-This is python code</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>Чтобы использовать скрипт  Python&#160;3: Напишите строку <code>%post -p /usr/bin/python3</code>  под строкой <code>install -m</code> in a SPEC file.</p>
-</li>
-<li>
-<p>Чтобы использовать скрипт Lua: Напишите строку <code>%post -p &lt;lua&gt;</code> под строкой
-<code>install&#160;-m</code> в SPEC файле.</p>
-</li>
-<li>
-<p>Таким образом, в SPEC файле может быть указан любой интерпретатор.</p>
-</li>
-</ul>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="rpm-conditionals">Условные обозначения RPM</h3>
-<div class="paragraph">
-<p>Условные обозначения RPM позволяют условно включать различные разделы SPEC файла.</p>
-</div>
-<div class="paragraph">
-<p>Чаще всего условные обозначения имеют дело с:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>разделами, относящимися к конкретной архитектуре</p>
-</li>
-<li>
-<p>разделами, относящимися к конкретной операционной системе</p>
-</li>
-<li>
-<p>проблемами совместимости между различными версиями операционных систем</p>
-</li>
-<li>
-<p>существованием и определением макросов</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_синтаксис_условий_rpm">Синтаксис условий RPM</h4>
-<div class="paragraph">
-<p>Если <em>expression</em> истинно, то выполните какое-нибудь действие:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if expression
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если <em>expression</em> истинно, то выполните какое-нибудь действие, в другом случае выполните другое действие:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if expression
-...
-%else
-...
-%endif</pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_примеры_условий_rpm">Примеры условий RPM</h4>
-<div class="sect4">
-<h5 id="_обозначение_if">Обозначение <code>%if</code></h5>
-<div class="literalblock">
-<div class="content">
-<pre>%if 0%{?rhel} == 6
-sed -i '/AS_FUNCTION_DESCRIBE/ s/^/#/' configure.in
-sed -i '/AS_FUNCTION_DESCRIBE/ s/^/#/' acinclude.m4
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие обрабатывает совместимость между  RHEL6 и другими операционными системами с точки зрения поддержки макроса AS_FUNCTION_DESCRIBE. Когда пакет создается для RHEL, определяется макрос <code>%rhel</code> , и он расширяется до версии RHEL. Если его значение равно 6, что означает, что пакет создан для RHEL 6, , то ссылки на
-AS_FUNCTION_DESCRIBE, который не поддерживается RHEL6,  удаляются из сценариев автоконфигурации.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if 0%{?el6}
-%global ruby_sitearch %(ruby -rrbconfig -e 'puts Config::CONFIG["sitearchdir"]')
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие регулирует совместимость между Fedora версии 17 и новее и RHEL 6 с точки зрения поддержки макроса  <code>%ruby_sitearch</code> macro. Fedora версии 17 и никогда не определяет <code>%ruby_sitearch</code> по умолчанию, но RHEL6 не поддерживает этот макрос. Условие проверяет, является ли операционная система RHEL 6. Если это так,
-<code>%ruby_sitearch</code> определяется явно. Обратите внимание, что  <code>0%{?el6}</code> имеет то же значение, что и <code>0%{?rhel} == 6</code> из предыдущего примера, и он проверяет, построен ли пакет на RHEL 6.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if 0%{?fedora} &gt;= 19
-%global with_rubypick 1
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие обрабатывает поддержку инструмента выбора ruby. Если операционная система Fedora версии 19 или новее, поддерживается rubypick.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%define ruby_archive %{name}-%{ruby_version}
-%if 0%{?milestone:1}%{?revision:1} != 0
-%define ruby_archive %{ruby_archive}-%{?milestone}%{?!milestone:%{?revision:r%{revision}}}
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие обрабатывает определение макросов. Если заданы макросы <code>%milestone</code> или
-<code>%revision</code>, переопределяется макрос <code>%ruby_archive</code>, который определяет имя вышестоящего файла архива.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_специальные_варианты_обозначения_if">Специальные варианты обозначения <code>%if</code></h5>
-<div class="paragraph">
-<p>Условные обозначения <code>%ifarch</code>, <code>%ifnarch</code> и <code>%ifos</code> являются специализированными вариантами условных обозначений <code>%if</code>. Эти варианты обычно используются, поэтому у них есть свои собственные макросы.</p>
-</div>
-<div class="sect5">
-<h6 id="_обозначениеifarch">Обозначение`%ifarch`</h6>
-<div class="paragraph">
-<p>Условие <code>%ifarch</code> спользуется для начала блока SPEC файла, который зависит от архитектуры. За ним следует один или несколько спецификаторов архитектуры, каждый из которых разделен запятыми или пробелами.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%ifarch i386 sparc
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Все содержимое SPEC файла между <code>%ifarch</code> и <code>%endif</code> обрабатывается только на 32-разрядных архитектурах AMD и Intel или системах на базе Sun SPARC.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_условное_обозначение_ifnarch">Условное обозначение <code>%ifnarch</code></h6>
-<div class="paragraph">
-<p>Условие <code>%ifnarch</code> имеет обратную логику, чем условие  <code>%ifarch</code>.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%ifnarch alpha
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Все содержимое SPEC файла между <code>%ifnarch</code> и <code>%endif</code> обрабатывается только в том случае, если оно не выполняется в системе на основе Digital Alpha/AXP.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_условие_ifos">Условие <code>%ifos</code></h6>
-<div class="paragraph">
-<p>Условие <code>%ifos</code>  используется для управления обработкой на основе операционной системы сборки. За ним может следовать одно или несколько имен операционной системы.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%ifos linux
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Все содержимое SPEC файла между <code>%ifos</code> и <code>%endif</code> обрабатывается только в том случае, если сборка была выполнена в системе Linux.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_новые_возможности_rpm_в_rhel_7">Appendix A: Новые возможности RPM в RHEL 7</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Этот список документирует наиболее заметные изменения в упаковке RPM между Red Hat Enterprise Linux 6 и 7.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Добавлена новая команда <code>rpmkeys</code>, используемая для импорта связки ключей и проверки подписи.</p>
-</li>
-<li>
-<p>Добавлена новая команда <code>rpmspec</code>, используемая для запросов спецификаций и анализируемых выходных данных.</p>
-</li>
-<li>
-<p>Добавлена новая команда <code>rpmsign</code>,  используемая для подписи пакета.</p>
-</li>
-<li>
-<p>Расширения  <code>posix.exec()</code>  и <code>os.exit()</code> встроенные в  <code>%{lua:&#8230;&#8203;}</code>
-скрипты, завершают работу скрипта с ошибкой, если они не вызываются из дочернего процесса, созданного с помощью скриптлета
-<code>posix.fork()</code>.</p>
-</li>
-<li>
-<p>Сбой скриптлета <code>%pretrans</code>  приводит к пропуску установки пакета</p>
-</li>
-<li>
-<p>Скриптлеты могут быть развернуты макросом и развернуты в формате запроса во время выполнения</p>
-</li>
-<li>
-<p>Зависимости скриптлетов до транзакции и после транзакции теперь могут быть правильно выражены с помощью  <code>Requires(pretrans)</code> , <code>Requires(posttrans)</code> и
-скриптлетов.</p>
-</li>
-<li>
-<p>Добавлен тег <code>OrderWithRequires</code>  для предоставления дополнительных подсказок. Тег следует синтаксису тега  <code>Requires</code>, но не создает фактических зависимостей. Подсказки по порядку обрабатываются так, как если бы они были <code>Requires</code> при расчете порядка транзакции, только если задействованные пакеты присутствуют в одной и той же транзакции.</p>
-</li>
-<li>
-<p>The <code>%license</code>. Этот флаг можно использовать в разделе <code>%files`. Можно использовать аналогично флагу </code>%doc<code> для пометки файлов как лицензий, которые необходимо установить, несмотря на параметр </code>--nodocs``.</p>
-</li>
-<li>
-<p>Добавлен макрос <code>%autosetup</code> для автоматизации применения исправлений с дополнительной интеграцией с распределенной системой контроля версий.</p>
-</li>
-<li>
-<p>Автоматический генератор зависимостей был переписан в расширяемую и настраиваемую систему на основе правил со встроенной фильтрацией.</p>
-</li>
-<li>
-<p>Открытые ключи OpenPGP V3 больше не поддерживаются.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_ссылки_на_источники">Appendix B: Ссылки на источники</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Ниже приведены ссылки на различные темы, представляющие интерес для RPM, упаковки RPM и сборки RPM. Некоторые из них являются продвинутыми и выходят далеко за рамки вводного материала, включённого в данное руководство.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://www.softwarecollections.org/en/">Software Collections</a> -
-SoftwareCollections.org это проект с открытым исходным кодом для создания и распространения поддерживаемых сообществом коллекций программного обеспечения (SCL) для Red Hat Enterprise Linux,
-Fedora, CentOS, и Scientific Linux.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://docs.fedoraproject.org/en-US/quick-docs/creating-rpm-packages/index.html">Creating
-RPM package</a> - Пошаговое руководство по изучению основ упаковки RPM.</p>
-</div>
-<div class="paragraph">
-<p><a href="http://www.ibm.com/developerworks/library/l-rpm1/">Packaging software with
-RPM, Part 1</a>, <a href="http://www.ibm.com/developerworks/library/l-rpm2/">Part 2</a>,
-<a href="http://www.ibm.com/developerworks/library/l-rpm3/">Part 3</a> -
-Руководство по упаковке IBM RPM.</p>
-</div>
-<div class="paragraph">
-<p><a href="http://rpm.org/documentation">RPM Documentation</a> -
-Официальная документация RPM.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://docs.fedoraproject.org/en-US/packaging-guidelines/">Fedora Packaging
-Guidelines</a> -
-Официальные рекомендации по упаковке для Fedora, полезные для всех дистрибутивов на основе RPM.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://pagure.io/rpmfluff">rpmfluff</a> - библиотека python для создания пакетов RPM и их саботажа, чтобы они были взломаны контролируемыми способами.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_выражение_благодарности">Appendix C: Выражение благодарности</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Некоторые фрагменты этого текста впервые появились в
-<a href="https://rpm-packaging-guide.github.io/">RPM Packaging Guide</a>. Copyright
-&copy; 2020 Adam Miller and others. Лицензировано в соответствии с
-<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
-Attribution-ShareAlike 3.0 Unported License</a>.</p>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-16 00:40:02 +0400
+Last updated 2022-10-01 13:22:14 +0400
 </div>
 </div>
 </body>
