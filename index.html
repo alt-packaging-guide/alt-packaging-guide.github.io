@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -446,6 +446,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Оглавление</div>
 <ul class="sectlevel1">
+<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a></li>
 <li><a href="#introduction">Вступление</a>
 <ul class="sectlevel2">
 <li><a href="#pdf-version">PDF Версия</a></li>
@@ -453,18 +454,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#contributing-to-this-guide">Вклад в руководство</a></li>
 </ul>
 </li>
-<li><a href="#welcome-apt">Система управления пакетами. Знакомство с APT</a>
-<ul class="sectlevel2">
-<li><a href="#usage-apt">Использование APT</a></li>
-<li><a href="#apt-installation">Установка и обновление пакета</a></li>
-</ul>
-</li>
+<li><a href="#welcome-apt">Система управления пакетами. Знакомство с APT</a></li>
 <li><a href="#prerequisites">Установка необходимых пакетов для процесса сборки</a></li>
-<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a>
-<ul class="sectlevel2">
 <li><a href="#RPM_Commands">Основные команды RPM</a></li>
-</ul>
-</li>
 <li><a href="#packaging-software">Программное обеспечение для упаковки</a>
 <ul class="sectlevel2">
 <li><a href="#rpm-packages">RPM Пакеты</a>
@@ -490,202 +482,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="introduction">Вступление</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Руководство по упаковке RPM пакетов:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Как подготовить исходный код для упаковки в RPM.</dt>
-<dd>
-<p>Ссылка на раздел для тех, кто не имеет опыта разработки ПО.
-<a href="#preparing-software-for-packaging">[preparing-software-for-packaging]</a>.</p>
-</dd>
-<dt class="hdlist1">Как упаковать исходный код в RPM.</dt>
-<dd>
-<p>Ссылка на раздел для разработчиков ПО, которым необходимо упаковать программное обеспечение в RPMs. <a href="#packaging-software">Программное обеспечение для упаковки</a>.</p>
-</dd>
-<dt class="hdlist1">Расширенные сценарии упаковки.</dt>
-<dd>
-<p>Эта ссылка на справочный материал для упаковщиков RPM, работающих с расширенными сценариями упаковки RPM.
-<a href="#advanced-topics">[advanced-topics]</a>.</p>
-</dd>
-</dl>
-</div>
-<div class="sect2">
-<h3 id="pdf-version">PDF Версия</h3>
-<div class="paragraph">
-<p>Вы также можете скачать
-<a href="https://rpm-packaging-guide-ru.github.io/rpm-packaging-guide-ru.pdf">PDF версию
-данного документа</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="document-conventions">Файловая структура</h3>
-<div class="paragraph">
-<p>Перед тем, как приступить к сборке, нужно создать структуру каталогов, необходимую RPM, находящуюся в Вашем «домашнем» каталоге:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Выходные данные команд и содержимое текстовых файлов, включая исходный код, размещаются в блоках:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ tree ~/RPM/
-/home/user/RPM/
-|-- BUILD
-|-- BUILDROOT
-|-- RPMS
-|   |-- i586
-|   |-- x86_64
-|   `-- noarch
-|-- SOURCES
-|-- SPECS
-`-- SRPMS</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="txt">Name:           bello
-Version:
-Release:        alt1
-Summary:</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="python">#!/usr/bin/env python
-
-print("Hello World")</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Темы, представляющие интерес, или словарные термины упоминаются либо как ссылки на соответствующую документацию или веб-сайт выделены <strong>жирным</strong> шрифтом, либо <em>курсивом</em>. Первые упоминания некоторых терминов ссылаются на соответствующую документацию.</p>
-</li>
-<li>
-<p>Названия утилит, команд и других элементов, обычно встречающихся в коде, написаны <code>моноширинным</code> шрифтом.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="contributing-to-this-guide">Вклад в руководство</h3>
-<div class="paragraph">
-<p>Вы можете внести свой вклад в это руководство, отправив сообщение о проблеме или запрос на извлечение на
-<a href="https://github.com/redhat-developer/rpm-packaging-guide"> GitHub репозиторий</a>.</p>
-</div>
-<div class="paragraph">
-<p>Обе формы вклада высоко ценятся и приветствуются.</p>
-</div>
-<div class="paragraph">
-<p>Не стесняйтесь подавать заявку на решение проблемы с обратной связью, отправлять запрос на извлечение
-<a href="https://github.com/redhat-developer/rpm-packaging-guide">на GitHub</a> или и то, и другое!</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="welcome-apt">Система управления пакетами. Знакомство с APT</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Для установки, удаления и обновления программ и поддержания целостности системы в Linux в первую очередь стали использоваться <em>менеджеры пакетов</em> (такие, как RPM в дистрибутивах <code>RedHat</code> или dpkg в <code>Debian GNU/Linux</code>). С точки зрения менеджера пакетов программное обеспечение представляет собой набор компонентов — программных <em>пакетов</em>. Такие компоненты содержат в себе набор исполняемых программ и вспомогательных файлов, необходимых для корректной работы ПО. Менеджеры пакетов дают возможность унифицировать и автоматизировать сборку бинарных пакетов и облегчают установку программ, позволяя проверять наличие необходимых для работы устанавливаемой программы компонент подходящей версии непосредственно в момент установки, а также производя все необходимые процедуры для регистрации программы во всех операционных средах пользователя. Сразу после установки программа оказывается доступна пользователю из командной строки и появляется в меню всех графических оболочек.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Благодаря менеджерам пакетов, пользователю Linux обычно не требуется непосредственно обращаться к установочным процедурам отдельных программ или непосредственно работать с каталогами, в которых установлены исполняемые файлы и компоненты программ (обычно это <code>/usr/bin, /usr/share/имя_пакета</code>) — всю работу делает менеджер пакетов. Поэтому установку, обновление и удаление программ в Linux обычно называют управлением пакетами.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="usage-apt">Использование APT</h3>
-<div class="paragraph">
-<p>Система APT состоит из нескольких утилит. Главной и наиболее часто используемой является утилита управления пакетами <strong>apt-get</strong>: она автоматически определяет зависимости между пакетами и строго следит за их соблюдением при выполнении любой из следующих операций: установка, удаление или обновление пакетов.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Использование утилит APT возможно только с правами root (режим суперпользователя)!
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p><strong>apt-get</strong> позволяет устанавливать в систему пакеты, требующие для своей работы другие, пока ещё не установленные. В этом случае он определяет, какие пакеты необходимо установить, и устанавливает их, пользуясь всеми доступными репозиториями. Для того, чтобы apt-get мог использовать тот или иной репозиторий, информацию о нем необходимо поместить в файл <code>/etc/apt/sources.list</code> и выполнить команду:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash"># apt-get update</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Эту команду необходимо также выполнять каждый раз, когда Вы собираетесь работать с репозиторием после длительного перерыва, так как при поиске пакетов APT должен руководствоваться базой данных, отражающей актуальное состояние репозитория. Такая база данных создаётся заново каждый раз, когда в репозитории происходит изменение: добавление, удаление или переименование пакета. Для ускорения работы <strong>apt-get</strong> хранит локальную копию базы данных, которая через некоторое время может уже не соответствовать реальному состоянию репозитория.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="apt-installation">Установка и обновление пакета</h3>
-<div class="paragraph">
-<p>Установка пакета с помощью APT выполняется командой:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash"># apt-get install имя_пакета</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Команда <strong>apt-get install <em>имя_пакета</em></strong> используется и для обновления уже установленного пакета или группы пакетов. В этом случае apt-get дополнительно проверяет, не обновилась ли версия пакета в репозитории по сравнению с установленным в системе.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="prerequisites">Установка необходимых пакетов для процесса сборки</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Чтобы следовать данному руководству, Вам потребуется установить следующие пакеты:</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Некоторые из этих пакетов устанавливаются по умолчанию в
-<a href="https://www.altlinux.org/Releases">ALT Linux</a>. Установка проводится с правами суперпользователя.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ su -
-Password:
-# apt-get update
-.
-.
-.
-# apt-get install gcc rpm-build rpmlint make python gear hasher patch</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="Why-Package-Software-with-RPM">Введение в пакетные менеджеры</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>RPM</strong> — это семейство пакетных менеджеров, применяемых в различных дистрибутивах GNU/Linux, в том числе и в проекте <a href="https://www.altlinux.org/Sisyphus">Sisyphus</a> и в дистрибутивах <a href="https://www.altlinux.org/Releases">ALT Linux</a>. Практически каждый крупный проект, использующий RPM, имеет свою версию пакетного менеджера, отличающуюся от остальных.</p>
+<p><strong>RPM</strong> — это семейство пакетных менеджеров, применяемых в различных дистрибутивах GNU/Linux, в том числе и в проекте <a href="https://www.altlinux.org/Sisyphus">Сизиф</a> и в дистрибутивах <a href="https://www.altlinux.org/Releases">Альт</a>. Практически каждый крупный проект, использующий RPM, имеет свою версию пакетного менеджера, отличающуюся от остальных.</p>
 </div>
 <div class="dlist">
 <dl>
@@ -718,7 +518,7 @@ Password:
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">RPM в проекте Sisyphus также не является исключением. Основные особенности RPM в ALT Linux и Sisyphus от RPM других крупных проектов заключаются в следующем: </dt>
+<dt class="hdlist1">RPM в проекте Сизиф также не является исключением. Основные особенности RPM в Альт и Сизиф от RPM других крупных проектов заключаются в следующем: </dt>
 <dd>
 <div class="ulist">
 <ul>
@@ -742,19 +542,195 @@ Password:
 </dd>
 </dl>
 </div>
-<div class="sect2">
-<h3 id="RPM_Commands">Основные команды RPM</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="introduction">Вступление</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Руководство по сборке RPM пакетов:</p>
+</div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Как узнать информацию о пакете RPM без установки?</dt>
+<dt class="hdlist1">Как подготовить исходный код для сборкив RPM.</dt>
 <dd>
-<p>После скачивания пакета можно посмотреть данные о нём перед установкой. Для этого используется <strong>-qipoption</strong>, чтобы вывести информацию о пакете.</p>
+<p>Ссылка на раздел для тех, кто не имеет опыта разработки ПО.
+<a href="#preparing-software-for-packaging">[preparing-software-for-packaging]</a>.</p>
+</dd>
+<dt class="hdlist1">Как собрать исходный код в RPM.</dt>
+<dd>
+<p>Ссылка на раздел для разработчиков ПО, которым необходимо собрать программное обеспечение в RPM пакеты. <a href="#packaging-software">Программное обеспечение для упаковки</a>.</p>
+</dd>
+<dt class="hdlist1">Расширенные сценарии сборки.</dt>
+<dd>
+<p>Эта ссылка на справочный материал для сборщиков RPM, работающих с расширенными сценариями сборки RPM.
+<a href="#advanced-topics">[advanced-topics]</a>.</p>
+</dd>
+</dl>
+</div>
+<div class="sect2">
+<h3 id="pdf-version">PDF Версия</h3>
+<div class="paragraph">
+<p>Вы также можете скачать
+<a href="https://rpm-packaging-guide-ru.github.io/rpm-packaging-guide-ru.pdf">PDF версию
+данного документа</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="document-conventions">Файловая структура</h3>
+<div class="paragraph">
+<p>Перед тем, как приступить к сборке, нужно создать структуру каталогов, необходимую RPM, находящуюся в Вашем «домашнем» каталоге:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Вывод команд и содержимое текстовых файлов, включая исходный код, размещаются в каталогах:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ tree ~/RPM/
+/home/user/RPM/
+|-- BUILD
+|-- BUILDROOT
+|-- RPMS
+|   |-- i586
+|   |-- x86_64
+|   `-- noarch
+|-- SOURCES
+|-- SPECS
+`-- SRPMS</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="txt">Name:           bello
+Version:
+Release:        alt1
+Summary:</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Темы, представляющие интерес, или словарные термины упоминаются либо как ссылки на соответствующую документацию или веб-сайт выделены <strong>жирным</strong> шрифтом, либо <em>курсивом</em>. Первые упоминания некоторых терминов ссылаются на соответствующую документацию.</p>
+</li>
+<li>
+<p>Названия утилит, команд и других элементов, обычно встречающихся в коде, написаны <code>моноширинным</code> шрифтом.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="contributing-to-this-guide">Вклад в руководство</h3>
+<div class="paragraph">
+<p>Вы можете внести свой вклад в это руководство, отправив сообщение о проблеме или pull request на
+<a href="https://github.com/altlinux/alt-packaging-guide"> GitHub репозиторий</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="welcome-apt">Система управления пакетами. Знакомство с APT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для установки, удаления и обновления программ и поддержания целостности системы в Linux в первую очередь стали использоваться <em>менеджеры пакетов</em> (такие, как RPM в дистрибутивах <code>RedHat</code> или dpkg в <code>Debian GNU/Linux</code>). С точки зрения менеджера пакетов программное обеспечение представляет собой набор компонентов — программных <em>пакетов</em>. Такие компоненты содержат в себе набор исполняемых программ и вспомогательных файлов, необходимых для корректной работы ПО. Менеджеры пакетов дают возможность унифицировать и автоматизировать сборку бинарных пакетов и облегчают установку программ, позволяя проверять наличие необходимых для работы устанавливаемой программы компонент подходящей версии непосредственно в момент установки, а также производя все необходимые процедуры для регистрации программы во всех операционных средах пользователя. Сразу после установки программа оказывается доступна пользователю из командной строки и появляется в меню всех графических оболочек.</p>
+</div>
+<div class="paragraph">
+<p>Полное описание APT можно узнать, перейдя по ссылке: <a href="https://docs.altlinux.org/ru-RU/archive/2.3/html-single/junior/alt-docs-junior/ch04s09.html">Установка и удаление программ (пакетов)</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Установка пакетов в АЛЬТ Линукс осуществляется с помощью утилиты APT
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Для сокращения команд, встречающихся в тексте, будет использоваться нотация:
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>- команды без административных привелегий будут начинаться с символа &#8220;$&#8221;</p>
+</li>
+<li>
+<p>- команды без административных привелегий будут начинаться с символа &#8220;$&#8221;</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+По умолчанию <code>sudo</code> может быть отключено. Для получения административных привелегий используется команда <code>su</code>. Для включения <code>sudo</code> в стандартном режиме можно использовать команду:
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># control sudowheel enabled</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="prerequisites">Установка необходимых пакетов для процесса сборки</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Чтобы следовать данному руководству, Вам потребуется установить следующие пакеты:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Некоторые из этих пакетов устанавливаются по умолчанию в
+<a href="https://www.altlinux.org/Releases">Альт</a>. Установка проводится с правами суперпользователя.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># apt-get update
+
+# apt-get install gcc rpm-build rpmlint make python gear hasher patch</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="RPM_Commands">Основные команды RPM</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Как узнать информацию о RPM-пакете без установки?</dt>
+<dd>
+<p>После скачивания пакета можно посмотреть данные о нём перед установкой. Для этого используется <strong>-qip</strong>, чтобы вывести информацию о пакете.</p>
 </dd>
 </dl>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -qip GeoIP-1.5.0-11.el7.x86_64.rpm</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -qip GeoIP-1.5.0-11.el7.x86_64.rpm</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -793,7 +769,7 @@ http://www.maxmind.com/</code></pre>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Как установить RPM пакет?</dt>
+<dt class="hdlist1">Как установить RPM-пакет?</dt>
 <dd>
 <p>Для установки используется параметр <strong>-ivh</strong>.</p>
 </dd>
@@ -801,7 +777,7 @@ http://www.maxmind.com/</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -ivh GeoIP-1.5.0-11.el7.x86_64.rpm</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -ivh GeoIP-1.5.0-11.el7.x86_64.rpm</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -820,7 +796,7 @@ http://www.maxmind.com/</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -q GeoIP</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -q GeoIP</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -838,7 +814,7 @@ http://www.maxmind.com/</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -ql GeoIP</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -ql GeoIP</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -875,7 +851,7 @@ http://www.maxmind.com/</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">rpm -qa --last</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">rpm -qa --last|head</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -883,16 +859,16 @@ http://www.maxmind.com/</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">hasher-priv-1.6.1-alt1.x86_64                 Ср 19 окт 2022 13:37:15
-hasher-1.4.8-alt1.noarch                      Ср 19 окт 2022 13:37:15
-gpg-pubkey-cc5fdb34-540dae43                  Ср 19 окт 2022 04:02:03
-bello-0.1-alt1.noarch                         Ср 28 сен 2022 18:35:35
-cdrdao-1.2.4-alt1.x86_64                      Пн 19 сен 2022 18:09:38
-mutt-default-2.1.1.0.3.g6c0f75cca-alt1.x86_64 Вт 06 сен 2022 20:28:09
-mutt-2.1.1.0.3.g6c0f75cca-alt1.x86_64         Вт 06 сен 2022 20:28:09
-postfix-3.6.2-alt1.x86_64                     Вт 06 сен 2022 20:28:06
-sendmail-common-1.7-alt3.noarch               Вт 06 сен 2022 20:28:05
-postfix-control-1.6.1-alt1.noarch             Вт 06 сен 2022 20:28:05</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">perl-libintl-1.32-alt1.x86_64                 Вт 20 дек 2022 11:08:34
+perl-Git-2.33.5-alt1.noarch                   Вт 20 дек 2022 11:08:34
+perl-Error-0.17029-alt1.noarch                Вт 20 дек 2022 11:08:34
+git-core-2.33.5-alt1.x86_64                   Вт 20 дек 2022 11:08:34
+git-2.33.5-alt1.x86_64                        Вт 20 дек 2022 11:08:34
+diffstat-1.64-alt1.x86_64                     Вт 20 дек 2022 11:08:34
+perl-TermReadKey-2.38-alt1.1.x86_64           Вт 20 дек 2022 11:08:33
+codium-1.72.1.22284-alt1.x86_64               Вт 20 дек 2022 03:33:53
+eepm-3.19.4-alt1.noarch                       Вт 20 дек 2022 03:30:55
+kernel-modules-virtualbox-un-def-6.1.40-alt1.331600.1.x86_64 Вт 20 дек 2022 03:21:17</code></pre>
 </div>
 </div>
 <div class="dlist">
@@ -905,7 +881,7 @@ postfix-control-1.6.1-alt1.noarch             Вт 06 сен 2022 20:28:05</code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -qa | grep GeoIP</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -qa | grep GeoIP</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -926,7 +902,7 @@ postfix-control-1.6.1-alt1.noarch             Вт 06 сен 2022 20:28:05</code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -qf /usr/lib64/libGeoIP.so.1.5.0</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -qf /usr/lib64/libGeoIP.so.1.5.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -947,7 +923,7 @@ postfix-control-1.6.1-alt1.noarch             Вт 06 сен 2022 20:28:05</code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -qi GeoIP</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -qi GeoIP</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -994,7 +970,7 @@ This package includes GeoLite data created by MaxMind, available from http://www
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ sudo rpm -Uvh GeoIP-1.5.0-11.el7.x86_64.rpm</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -Uvh GeoIP-1.5.0-11.el7.x86_64.rpm</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1004,7 +980,6 @@ This package includes GeoLite data created by MaxMind, available from http://www
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash"> Preparing...                          ################################# [100%]
  package GeoIP-1.5.0-11.el7.x86_64 is already installed</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -1601,7 +1576,7 @@ $ rpmbuild -bb ~/rpmbuild/SPECS/cello.spec</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-07 11:23:47 +0400
+Last updated 2022-12-20 17:45:49 +0400
 </div>
 </div>
 </body>
