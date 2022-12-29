@@ -450,8 +450,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#introduction">Вступление</a>
 <ul class="sectlevel2">
 <li><a href="#pdf-version">PDF Версия</a></li>
-<li><a href="#document-conventions">Файловая структура</a></li>
-<li><a href="#contributing-to-this-guide">Вклад в руководство</a></li>
+<li><a href="#document-conventions">Структура документации</a></li>
 </ul>
 </li>
 <li><a href="#welcome-apt">Система управления пакетами. Знакомство с APT</a></li>
@@ -462,9 +461,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#rpm-packages">RPM-пакеты</a>
 <ul class="sectlevel3">
 <li><a href="#what-is-an-rpm">Что такое RPM-пакет?</a></li>
-<li><a href="#rpm-packaging-tools">Инструменты для упаковки RPM</a></li>
-<li><a href="#rpm-packaging-workspace">Рабочее пространство для упаковки RPM</a></li>
+<li><a href="#rpm-packaging-tools">Инструменты для сборки RPM-пакетов</a></li>
+<li><a href="#rpm-packaging-workspace">Рабочее пространство для сборки RPM-пакетов</a></li>
 <li><a href="#what-is-a-spec-file">Что такое SPEC-файл?</a></li>
+<li><a href="#spec-example">Пример .spec-файла</a></li>
 </ul>
 </li>
 </ul>
@@ -510,12 +510,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">RPM в проекте Сизиф также не является исключением. Основные особенности RPM в Альт и Сизиф от RPM других крупных проектов заключаются в следующем: </dt>
+<dt class="hdlist1">RPM в проекте Сизиф также не является исключением. Основные отличия RPM в Альт и Сизиф от RPM других крупных проектов заключаются в следующем: </dt>
 <dd>
 <div class="ulist">
 <ul>
 <li>
-<p>обширный набор макросов для упаковки различных типов пакетов,</p>
+<p>обширный набор макросов для сборки различных типов пакетов,</p>
 </li>
 <li>
 <p>отличающееся поведение «по умолчанию» для уменьшения количества шаблонного кода в .spec-файлах,</p>
@@ -569,14 +569,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="document-conventions">Файловая структура</h3>
+<h3 id="document-conventions">Структура документации</h3>
 <div class="paragraph">
 <p>Перед тем, как приступить к сборке, нужно создать структуру каталогов, необходимую RPM, находящуюся в Вашем «домашнем» каталоге:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Вывод команд и содержимое текстовых файлов, включая исходный код, размещаются в каталогах:</p>
+<p>Отображение фаловой структуры будет представлено следующим образом:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">$ tree ~/RPM/
@@ -592,6 +592,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 `-- SRPMS</code></pre>
 </div>
 </div>
+</li>
+<li>
+<p>В дальнейшем вывод команд будет продемонстрирован следующим образом:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="txt">Name:           bello
@@ -608,13 +611,6 @@ Summary:</code></pre>
 <p>Названия утилит, команд и других элементов, обычно встречающихся в коде, написаны <code>моноширинным</code> шрифтом.</p>
 </li>
 </ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="contributing-to-this-guide">Вклад в руководство</h3>
-<div class="paragraph">
-<p>Вы можете внести свой вклад в это руководство, отправив сообщение о проблеме или pull request на
-<a href="https://github.com/altlinux/alt-packaging-guide"> GitHub репозиторий</a>.</p>
 </div>
 </div>
 </div>
@@ -658,7 +654,7 @@ Summary:</code></pre>
 <p>- команды без административных привелегий будут начинаться с символа &#8220;$&#8221;</p>
 </li>
 <li>
-<p>- команды без административных привелегий будут начинаться с символа &#8220;$&#8221;</p>
+<p>- команды с административными привелегиями будут начинаться с символа &#8220;#&#8221;</p>
 </li>
 </ul>
 </div>
@@ -713,7 +709,7 @@ Summary:</code></pre>
 <h2 id="RPM_Commands">Основные команды RPM</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Для ознакомления с данным разделом потребуется скачать пакет <a href="http://ftp.altlinux.org/pub/distributions/ALTLinux/p10/branch/noarch/RPMS.classic/yodl-docs-4.03.00-alt2.noarch.rpm">Yodl-docs</a>.</p>
+<p>Для ознакомления с данным разделом потребуется пакет. В качестве примера мы будем использовать пакет <a href="http://ftp.altlinux.org/pub/distributions/ALTLinux/p10/branch/noarch/RPMS.classic/yodl-docs-4.03.00-alt2.noarch.rpm">Yodl-docs</a>.</p>
 </div>
 <div class="dlist">
 <dl>
@@ -722,6 +718,18 @@ Summary:</code></pre>
 <p>После скачивания пакета можно посмотреть данные о нём перед установкой. Для этого используется <strong>-qip</strong>, чтобы вывести информацию о пакете.</p>
 </dd>
 </dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+ключ <code>-p</code> работает не с базой RPM-пакетов, а с конкретным пакетом. Например: чтобы получить информацию о файлах, находящихся в пакете, который не установлен в систему, используют ключи <code>-qpl</code>.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -981,6 +989,18 @@ language is designed to be easy to use and extensible.</code></pre>
 	пакет yodl-docs-1:4.03.00-alt2.noarch уже установлен</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Справку по ключам можно получить, набрав в консоли команду <code>rpm --help</code>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1015,13 +1035,24 @@ language is designed to be easy to use and extensible.</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rpm-packaging-tools">Инструменты для упаковки RPM</h4>
-
+<h4 id="rpm-packaging-tools">Инструменты для сборки RPM-пакетов</h4>
+<div class="paragraph">
+<p>Пакет<code>rpmdevtools</code>, установленный на этапе <a href="#prerequisites">Необходимые пакеты</a>, предоставляет несколько утилит для сборки RPM-пакетов. Чтобы перечислить эти утилиты, выполните в консоли следующую команду:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -ql rpmdevtools | grep bin</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для получения дополнительной информации о вышеуказанных утилитах см. их страницы руководства или диалоговые окна справки.
+/</p>
+</div>
 </div>
 <div class="sect3">
-<h4 id="rpm-packaging-workspace">Рабочее пространство для упаковки RPM</h4>
+<h4 id="rpm-packaging-workspace">Рабочее пространство для сборки RPM-пакетов</h4>
 <div class="paragraph">
-<p>Чтобы создать дерево каталогов, которое является рабочей областью упаковки RPM, используйте утилиту <code>rpmdev-setuptree</code>:</p>
+<p>Чтобы создать дерево каталогов, которое является рабочей областью сборки RPM-пакетов, используйте утилиту <code>rpmdev-setuptree</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1077,6 +1108,60 @@ $ tree ~/rpmbuild/
 <div class="paragraph">
 <p>Spec-файл можно рассматривать как "инструкцию", который утилита <code>rpmbuild</code> использует для фактической сборки RPM-пакет. Он сообщает системе сборки, что делать, определяя инструкции в серии разделов. Разделы определены в <em>Преамбуле</em> и в <em>Основной части</em>. <em>Преамбула</em> содержит ряд элементов метаданных, которые используются в <em>Основной части</em>. Тело содержит основную часть инструкций.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="spec-example">Пример .spec-файла</h4>
+<div class="paragraph">
+<p>Данный пример взять из <a href="https://www.altlinux.org/SampleSpecs/program">ALT Linux Wiki</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Name: sampleprog
+Version: 1.0
+Release: alt1
+
+Summary: Sample program specfile
+Summary(ru_RU.UTF-8): Пример спек-файла для программы
+
+License: GPLv2+
+Group: Development/Other
+Url: http://www.altlinux.org/SampleSpecs/program
+
+Packager: Sample Packager &lt;sample@altlinux.org&gt;
+
+Source: %name-%version.tar
+Patch0: %name-1.0-alt-makefile-fixes.patch
+
+%description
+This specfile is provided as sample specfile for packages with programs.
+It contains most of usual tags and constructions used in such specfiles.
+
+%description -l ru_RU.UTF-8
+Этот спек-файл является примером спек-файла для пакета с программой. Он содержит
+основные теги и конструкции, используемые в подобных спек-файлах.
+
+%prep
+%setup
+%patch0 -p1
+
+%build
+%configure
+%make_build
+
+%install
+%makeinstall_std
+%find_lang %name
+
+%files -f %name.lang
+%doc AUTHORS ChangeLog NEWS README THANKS TODO contrib/ manual/
+%_bindir/*
+%_man1dir/*
+
+%changelog
+* Sat Sep 33 3001 Sample Packager &lt;sample@altlinux.org&gt; 1.0-alt1
+- initial build</code></pre>
+</div>
+</div>
 <div class="sect4">
 <h5 id="preamble-items">Пункты преамбулы</h5>
 <div class="paragraph">
@@ -1102,7 +1187,7 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Release</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Релиз пакета используется для указания номера сборки пакета при данной версии upstream-кода. Как правило, установите начальное значение равным 1%{?dist} и увеличивайте его с каждым новым выпуском пакета. Сбросьте значение до 1 при создании новой версии программного обеспечения.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Релиз пакета используется для указания номера сборки пакета при данной версии upstream-кода. Как правило, установите начальное <code>alt1</code>  и увеличивайте его с каждым новым выпуском пакета, например: alt1, alt2, alt3 и т.д. Сбросьте значение до alt1 при создании новой версии программного обеспечения.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Summary</code></p></td>
@@ -1110,11 +1195,11 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>License</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Лицензия на упаковываемое программное обеспечение.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Лицензия на собираемое программное обеспечение.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>URL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Полный URL-адрес для получения дополнительной информации о программе. Чаще всего это веб-сайт upstream-проекта для собираемого программного обеспечения.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Полный URL-адрес для получения дополнительной информации о программе. Чаще всего это ссылка на <strong>GitHub</strong> upstream-проекта для собираемого программного обеспечения.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Source0</code></p></td>
@@ -1162,7 +1247,7 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <div class="sect4">
 <h5 id="body-items">Составляющие основной части</h5>
 <div class="paragraph">
-<p>В этой таблице перечислены элементы, используемые в разделе Body (Тело, основная часть) файла спецификации RPM:</p>
+<p>В этой таблице перечислены элементы, используемые в теде файла спецификации RPM-пакета:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1180,7 +1265,7 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>%prep</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для подготовки программного обеспечения к сборке, например, распаковка архива в Source0. Эта директива может содержать сценарий оболочки.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для подготовки программного обеспечения к сборке, например, распаковка архива из Source0. Эта директива может содержать сценарий оболочки (shell скрипт).</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>%build</code></p></td>
@@ -1188,7 +1273,7 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>%install</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для копирования требуемых артефактов сборки из <code>%builddir</code> (где происходит сборка) в<code>%buildroot</code> каталог (который содержит структуру каталогов с файлами, подлежащими упаковке). Обычно это означает копирование файлов из <code>~/rpmbuild/BUILD</code> в <code>~/rpmbuild/BUILDROOT</code> и создание необходимых каталогов <code>~/rpmbuild/BUILDROOT</code>.  Это выполняется только при создании пакета, а не при установке пакета конечным пользователем. Подробности см. в разделе <a href="#working-with-spec-files">Работа со SPEC файлом</a>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Раздел, который во время сборки пакета эмулирует конечные пути установки файлов в систему. Команда или серия команд для копирования требуемых артефактов сборки из <code>%builddir</code> (где происходит сборка) в<code>%buildroot</code> каталог (который содержит структуру каталогов с файлами, подлежащими сборке). Обычно это означает копирование файлов из <code>~/rpmbuild/BUILD</code> в <code>~/rpmbuild/BUILDROOT</code> и создание необходимых каталогов <code>~/rpmbuild/BUILDROOT</code>.  Это выполняется только при создании пакета, а не при установке пакета конечным пользователем. Подробности см. в разделе <a href="#working-with-spec-files">Работа со SPEC файлом</a>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>%check</code></p></td>
