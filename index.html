@@ -467,12 +467,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#spec-example">Пример .spec-файла</a></li>
 </ul>
 </li>
+</ul>
+</li>
 <li><a href="#hello-gear">Инструмент Gear</a>
+<ul class="sectlevel2">
+<li><a href="#_вступление">Вступление</a>
 <ul class="sectlevel3">
-<li><a href="#_вступление">Вступление</a></li>
 <li><a href="#_структура_репозитория">Структура репозитория</a></li>
 <li><a href="#_правила_экспорта">Правила экспорта</a></li>
 <li><a href="#_основные_типы_устройства_gear_репозитория">Основные типы устройства gear-репозитория</a></li>
+</ul>
+</li>
+<li><a href="#quick-start-gear">Быстрый старт Gear</a>
+<ul class="sectlevel3">
+<li><a href="#_создание_gear_репозитория_путём_импорта_созданного_ранее_srpm_пакета">Создание gear-репозитория путём импорта созданного ранее srpm-пакета.</a></li>
+<li><a href="#_создание_gear_репозитория_на_основе_готового_git_репозитория">Создание gear-репозитория на основе готового git-репозитория</a></li>
+<li><a href="#_сборка_пакета_из_gear_репозитория">Сборка пакета из gear-репозитория</a></li>
+<li><a href="#_фиксация_изменений_в_репозитории">Фиксация изменений в репозитории</a></li>
 </ul>
 </li>
 </ul>
@@ -1312,16 +1323,21 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hello-gear">Инструмент Gear</h2>
+<div class="sectionbody">
 <div class="sect2">
-<h3 id="hello-gear">Инструмент Gear</h3>
-<div class="sect3">
-<h4 id="_вступление">Вступление</h4>
+<h3 id="_вступление">Вступление</h3>
+<div class="paragraph">
+<p>Gear (Get Every Archive from git package Repository) - система для работы с произвольными архивами программ. В качестве хранилища данных gear использует <code>git</code>, что позволяет работать с полной историей проекта.</p>
+</div>
 <div class="paragraph">
 <p>Основной смысл хранения исходного кода пакетов в <code>git-репозитории</code> заключается в более эффективной и удобной совместной разработке, а также в минимизации используемого дискового пространства для хранения архива репозитория за длительный срок и минимизации трафика при обновлении исходного кода.</p>
 </div>
 <div class="paragraph">
 <p>Идея gear заключается в том, чтобы с помощью одного файла с простыми правилами (для обработки которых достаточно sed и git) можно было бы собирать пакеты из произвольно устроенного git-репозитория, по аналогии с hasher, который был задуман как средство для сборки пакетов из произвольных 'srpm-пакетов'.</p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="_структура_репозитория">Структура репозитория</h4>
@@ -1477,12 +1493,178 @@ copy: *.patch</code></pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="quick-start-gear">Быстрый старт Gear</h3>
+<div class="sect3">
+<h4 id="_создание_gear_репозитория_путём_импорта_созданного_ранее_srpm_пакета">Создание gear-репозитория путём импорта созданного ранее srpm-пакета.</h4>
+<div class="paragraph">
+<p>Пусть у нас есть srpm-пакет <code>foobar-1.0-alt1.src.rpm</code>, и, к примеру, в нём находится следующее:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -qpl foobar-1.0-alt1.src.rpm
+foobar-1-fix.patch
+foobar-2-fix.patch
+foobar.icon.png
+foobar-1.0.tar.bz2
+foobar-plugins.tar.gz</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для того чтобы сделать из него gear-репозиторий, нам нужно:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Создать каталог, в котором будет располагаться наш архив:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ mkdir foobar
+$ cd foobar</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Создать новый git-репозиторий:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ git init
+Initialized empty Git repository in .git/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Получившийся пустой git-репозиторий будет выглядеть примерно следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ls -dlog .*
+drwxr-xr-x 4 4096 Aug 12 34:56 .
+drwxr-xr-x 6 4096 Aug 12 34:56 ..
+drwxr-xr-x 8 4096 Aug 12 34:56 .git</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Таким образом, git-репозиторий готов для импорта srpm-пакета.</p>
+</div>
+</li>
+<li>
+<p>В проекте <code>gear</code> есть утилита gear-srpmimport, предназначенная для автоматизации импортирования srpm-пакета в git-репозиторий:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gear-srpmimport foobar-1.0-alt1.src.rpm
+Committing initial tree deadbeefdeadbeefdeadbeefdeadbeefdeadbeef
+gear-srpmimport: Imported foobar-1.0-alt1.src.rpm
+gear-srpmimport: Created master branch</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>После выполнения импорта git-репозиторий будет выглядить следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ls -Alog
+drwxr-xr-x 1 4096 Aug 12 34:56 .gear
+drwxr-xr-x 1 4096 Aug 12 34:56 .git
+-rw-r--r-- 1 6637 Aug 12 34:56 foobar.spec
+drwxr-xr-x 3 4096 Aug 12 34:56 foobar
+drwxr-xr-x 3 4096 Aug 12 34:56 foobar-plugins
+-rw-r--r-- 1  791 Aug 12 34:56 foobar-1-fix.patch
+-rw-r--r-- 1 3115 Aug 12 34:56 foobar-2-fix.patch
+-rw-r--r-- 1  842 Aug 12 34:56 foobar.icon.png</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>При необходимости в файл правил можно вносить изменения. Например, можно убрать сжатие исходников (соответствующие изменения следует вносить и в spec-файл).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_создание_gear_репозитория_на_основе_готового_git_репозитория">Создание gear-репозитория на основе готового git-репозитория</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Создать и добавить в git-репозиторий spec-файл.</p>
+</li>
+<li>
+<p>Создать и добавить в git-репозиторий файл с правилами .gear/rules.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_сборка_пакета_из_gear_репозитория">Сборка пакета из gear-репозитория</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Сборка пакета при помощи hasher осуществляется командой gear-hsh:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gear-hsh</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Чтобы собрать старый пакет, который не содержит определения тэга Packager в spec-файле, следует отключить соответствующую проверку:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gear-hsh --no-sisyphus-check=gpg,packager</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Сборка пакета при помощи rpmbuild(8) осуществляется командой gear-rpm:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gear-rpm -ba</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_фиксация_изменений_в_репозитории">Фиксация изменений в репозитории</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Для того, чтобы сделать commit очередной сборки пакета, имеет смысл воспользоваться утилитой <code>gear-commit</code>, которая помогает сформировать список изменений на основе записи в spec-файле:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gear-commit -a</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Прежде чем сделать первый commit, не забудьте сконфигурировать ваш адрес. Это можно сделать глобально несколькими способами, например, прописав соответствующие значения в
+<code>~/.gitconfig</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ git config --global user.name 'Your Name'
+$ git config --global user.email '&lt;login&gt;@altlinux.org'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для отдельно взятого git-репозитория сконфигурировать адрес можно, прописав соответствующие значения в <code>.git/config</code> этого git-репозитория:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ git config user.name 'Your Name'
+$ git config user.email '&lt;login&gt;@altlinux.org'</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-24 12:17:20 +0400
+Last updated 2023-01-25 13:02:42 +0400
 </div>
 </div>
 </body>
