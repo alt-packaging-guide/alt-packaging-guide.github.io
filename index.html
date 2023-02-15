@@ -488,6 +488,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
+<li><a href="#Preparing_program">Подготовка программ</a>
+<ul class="sectlevel2">
+<li><a href="#what-is-source-code">Что такое Исходный код?</a></li>
+<li><a href="#manual-building">Сборка из исходников</a>
+<ul class="sectlevel3">
+<li><a href="#hand-building">Ручная сборка</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -1337,7 +1347,7 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <p>Основной смысл хранения исходного кода пакетов в <code>git-репозитории</code> заключается в более эффективной и удобной совместной разработке, а также в минимизации используемого дискового пространства для хранения архива репозитория за длительный срок и минимизации трафика при обновлении исходного кода.</p>
 </div>
 <div class="paragraph">
-<p>Идея gear заключается в том, чтобы с помощью одного файла с простыми правилами (для обработки которых достаточно sed и git) можно было бы собирать пакеты из произвольно устроенного git-репозитория, по аналогии с hasher, который был задуман как средство для сборки пакетов из произвольных 'srpm-пакетов'.</p>
+<p>Идея gear заключается в том, чтобы с помощью одного файла с простыми правилами (для обработки которых достаточно sed и git) можно было бы собирать пакеты из произвольно устроенного git-репозитория, по аналогии с hasher, который был задуман как средство для сборки пакетов из произвольных <code>srpm-пакетов</code>.</p>
 </div>
 <div class="sect3">
 <h4 id="_структура_репозитория">Структура репозитория</h4>
@@ -1661,10 +1671,141 @@ $ git config user.email '&lt;login&gt;@altlinux.org'</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="Preparing_program">Подготовка программ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В этом руководстве представлены три версии программы <code>Hello World</code> , каждая из которых написана на разных языках программирования. Программы, написанные на этих трех разных языках собираются по разному и охватывают три основных варианта использования RPM сборщиком ПО.</p>
+</div>
+<div class="sect2">
+<h3 id="what-is-source-code">Что такое Исходный код?</h3>
+<div class="paragraph">
+<p><strong>Исходный код </strong> - это понятные для человека инструкции к компьютеру, в которых описывается, как выполнить вычисления. Исходный код выражается с помощью
+[<a href="https://ru.wikipedia.org/wiki/Язык_программирования">языка программирования</a>].</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Существуют тысячи языков программирования. В этом документе представлены только три из них, но их достаточно для концептуального обзора.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Программа <code>Hello World</code>, написанная на <a href="https://www.gnu.org/software/bash/">bash</a>:</p>
+</div>
+<div class="paragraph">
+<p><code>bello</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">#!/bin/bash
+
+printf "Hello World\n"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>Hello World</code>, написанная на <a href="https://www.python.org/">Python</a>:</p>
+</div>
+<div class="paragraph">
+<p><code>pello.py</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="python">#!/usr/bin/env python
+
+print("Hello World")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>Hello World</code>, написанная на <a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a>:</p>
+</div>
+<div class="paragraph">
+<p><code>cello.c</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("Hello World\n");
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Целью каждой из трех программ является вывод строки <code>Hello World</code> в консоли.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="manual-building">Сборка из исходников</h3>
+<div class="paragraph">
+<p>В этом разделе объясняется процесс сборки программ из исходного кода.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Для исходного кода программ, написанных на компилируемых языках, происходит процесс <strong>компиляции</strong>. Этот процесс различается для разных языков. Полученный в результате сборки код становится <strong>исполняемым</strong>.</p>
+</li>
+<li>
+<p>Программы, написанные на языке с прямой интерпретацией вообще не нужно компилировать, они выполняются непосредственно интерпретатором.</p>
+</li>
+<li>
+<p>Для программ, написанных  на интерпретируемых языках с компиляцией в байт-код, исходный код компилируется в байт-код, который затем выполняется виртуальной машиной соответствующего языка.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>В этом примере демонстрируется процесс преобразования программы <code>cello.c</code>, написанной на языке <a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a> в исполняемый файл.</p>
+</div>
+<div class="paragraph">
+<p><code>cello.c</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("Hello World\n");
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="hand-building">Ручная сборка</h4>
+<div class="paragraph">
+<p>Вызовите компилятор
+[<a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a>] из коллекции компиляторов GNU  (<a href="https://gcc.gnu.org/">GCC</a>), чтобы скомпилировать исходный код в бинарный файл:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">gcc -g -o cello cello.c</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Запустите бинарный файл <code>cello</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ./cello
+Hello World</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В данном примере был продемонстирован процесс компиляци программы в исполняемый файл.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-25 13:02:42 +0400
+Last updated 2023-02-15 18:31:17 +0400
 </div>
 </div>
 </body>
