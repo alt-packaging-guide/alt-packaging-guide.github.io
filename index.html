@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="Валентин Соколов и другие.">
+<meta name="author" content="Валентин Соколов, Мария Фоканова и другие.">
 <title>Руководство по сборке RPM-пакетов для дистрибутивов Альт</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -441,7 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>Руководство по сборке RPM-пакетов для дистрибутивов Альт</h1>
 <div class="details">
-<span id="author" class="author">Валентин Соколов и другие.</span><br>
+<span id="author" class="author">Валентин Соколов, Мария Фоканова и другие.</span><br>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Оглавление</div>
@@ -451,8 +451,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#pdf-version">PDF Версия</a></li>
 <li><a href="#document-conventions">Структура документации</a></li>
+<li><a href="#_вклад_в_руководство">Вклад в руководство</a></li>
 </ul>
 </li>
+<li><a href="#contributing-to-this-guide">Вклад в руководство</a></li>
 <li><a href="#welcome-apt">Система управления пакетами. Знакомство с APT</a></li>
 <li><a href="#prerequisites">Установка необходимых пакетов для процесса сборки</a></li>
 <li><a href="#RPM_Commands">Основные команды RPM</a></li>
@@ -494,8 +496,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#manual-building">Сборка из исходников</a>
 <ul class="sectlevel3">
 <li><a href="#hand-building">Ручная сборка</a></li>
+<li><a href="#_автоматическая_сборка">Автоматическая сборка</a></li>
+<li><a href="#_интерпретируемый_код">Интерпретируемый код</a></li>
+<li><a href="#_bash">Bash</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#Join">Join</a>
+<ul class="sectlevel2">
+<li><a href="#_этапы_процедуры_принятия_в_team">Этапы процедуры принятия в Team</a></li>
+<li><a href="#_создание_заявки">Создание заявки</a></li>
 </ul>
 </li>
 </ul>
@@ -642,6 +653,19 @@ Summary:</code></pre>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_вклад_в_руководство">Вклад в руководство</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="contributing-to-this-guide">Вклад в руководство</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Вы можете внести свой вклад в это руководство, отправив запрос на принятие изменений  (Pull Request) в оригинальный
+<a href="https://github.com/altlinux/alt-packaging-guide">репозиторий</a>.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -728,6 +752,21 @@ Summary:</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash"># apt-get update
+
+Получено: 1 http://ftp.altlinux.org p10/branch/x86_64 release [4223B]
+Получено: 2 http://ftp.altlinux.org p10/branch/x86_64-i586 release [1665B]
+Получено: 3 http://ftp.altlinux.org p10/branch/noarch release [2844B]
+Получено 8732B за 0s (81,8kB/s).
+Найдено http://ftp.altlinux.org p10/branch/x86_64/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64/classic release
+Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto release
+Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic release
+Найдено http://ftp.altlinux.org p10/branch/noarch/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/noarch/classic release
+Чтение списков пакетов... Завершено
+Построение дерева зависимостей... Завершено
 
 # apt-get install gcc rpm-build rpmlint make python gear hasher patch</code></pre>
 </div>
@@ -1347,7 +1386,7 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <p>Основной смысл хранения исходного кода пакетов в <code>git-репозитории</code> заключается в более эффективной и удобной совместной разработке, а также в минимизации используемого дискового пространства для хранения архива репозитория за длительный срок и минимизации трафика при обновлении исходного кода.</p>
 </div>
 <div class="paragraph">
-<p>Идея gear заключается в том, чтобы с помощью одного файла с простыми правилами (для обработки которых достаточно sed и git) можно было бы собирать пакеты из произвольно устроенного git-репозитория, по аналогии с hasher, который был задуман как средство для сборки пакетов из произвольных <code>srpm-пакетов</code>.</p>
+<p>Идея gear заключается в том, чтобы с помощью одного файла с простыми правилами (для обработки которых достаточно sed и git) можно было бы собирать пакеты из произвольно устроенного git-репозитория, по аналогии с hasher, который был задуман как средство для сборки пакетов из произвольных 'srpm-пакетов'.</p>
 </div>
 <div class="sect3">
 <h4 id="_структура_репозитория">Структура репозитория</h4>
@@ -1779,7 +1818,7 @@ int main(void) {
 <h4 id="hand-building">Ручная сборка</h4>
 <div class="paragraph">
 <p>Вызовите компилятор
-[<a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a>] из коллекции компиляторов GNU  (<a href="https://gcc.gnu.org/">GCC</a>), чтобы скомпилировать исходный код в бинарный файл:</p>
+<a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a> из коллекции компиляторов GNU  (<a href="https://gcc.gnu.org/">GCC</a>), чтобы скомпилировать исходный код в бинарный файл:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1799,13 +1838,245 @@ Hello World</code></pre>
 <p>В данном примере был продемонстирован процесс компиляци программы в исполняемый файл.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_автоматическая_сборка">Автоматическая сборка</h4>
+<div class="paragraph">
+<p>Вместо того, чтобы проводить процесс компиляции исходного кода программы вручную, Вы можете автоматизировать сборку. Автоматизация сборки осуществляется путём создания <code>Makefile</code> и последующим запуском утилиты
+<a href="http://www.gnu.org/software/make/">GNU <code>make</code></a>.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы настроить автоматическую сборку, создайте файл с именем <code>Makefile</code> в том же каталоге, что и<code>cello.c</code>:</p>
+</div>
+<div class="paragraph">
+<p><code>Makefile</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="makefile">cello:
+        gcc -g -o cello cello.c
+
+clean:
+        rm cello</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Теперь, чтобы собрать программу, просто запустите <code>make</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ make
+make: 'cello' is up to date.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Исполняемый файл создан, <code>make clean</code> удалит его. Затем мы снова запустим <code>make</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ make clean
+rm cello
+
+$ make
+gcc -g -o cello cello.c</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Удаление бинарного файла может помочь убедиться, что при последующей сборке программа будет скомпилирована заново и не будет использоваться устаревший бинарный файл. Это может быть особенно полезно, если вы изменили код программы и хотите убедиться, что все изменения были учтены при повторной сборке.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Попытка сборки без изменений исходного кода программы ничего не даст:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ make
+make: 'cello' is up to date.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Запустим исполняемый файл:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ./cello
+Hello World</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Теперь Вы скомпилировали программу как вручную, так и с помощью инструмента сборки.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_интерпретируемый_код">Интерпретируемый код</h4>
+<div class="paragraph">
+<p>В данном разделе продемонстрирован процесс преобразования исходных текстов программ bello и pello, написанных на интерпритируемых языках python и bash</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>В двух приведенных ниже примерах строка <code>#!</code>в верхней части файла называется <a href="https://ru.wikipedia.org/wiki/Шебанг_(Unix)">shebang</a>
+и не является частью исходного кода.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://ru.wikipedia.org/wiki/Шебанг_(Unix)">shebang</a> позволяет использовать текстовый файл в качестве исполняемого файла: загрузчик системной программы анализирует строку, содержащую <strong>shebang</strong>, чтобы получить путь к бинарному исполняемому файлу, который затем используется в качестве интерпретатора языка программирования.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_компиляция_в_байт_код">Компиляция в байт-код</h5>
+<div class="paragraph">
+<p>В этом примере показан процесс трансляции в байт-код программы <code>pello.py</code>, написанной на Python, который затем выполняется виртуальной машиной Python.</p>
+</div>
+<div class="paragraph">
+<p><code>pello.py</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="python">#!/usr/bin/env python
+
+print("Hello World")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Процедура преобразования программ в байт-код различна. Это зависит от языка, виртуальной машины языка, а также инструментов и процессов, используемых этим языком.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Программы, написанные на <a href="https://www.python.org/">Python</a> часто транслируются в байт-код, но не так, как описано здесь. Следующая процедура направлена не на то, чтобы соответствовать стандартам сообщества, а на то, чтобы быть простой. Для получения практических рекомендаций по Python см. раздел
+<a href="https://docs.python.org/2/library/distribution.html">Упаковка и распространение программного обеспечения</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Трансляция <code>pello.py</code> в байт-код:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ python3 -m compileall pello.py</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В рабочем каталоге создастся подкаталог <code>pycache</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ls
+pello.py  __pycache__</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>в котором находится скомпилированный в байт-код файл:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ls ./__pycache__
+pello.cpython-39.pyc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Запустим его:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ pychon3 pello.cpython-39.pyc
+Hello world!</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bash">Bash</h4>
+
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="Join">Join</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Процедура Join - это процесс вступления в ALT Linux Team, результатом которого является возможность непосредственно участвовать в разработке репозитория Сизиф. После прохождения Join вы станете мейнтенером.</p>
+</div>
+<div class="paragraph">
+<p>Кто такой мейнтейнер?  У каждого пакета в репозитории Сизиф есть один или несколько мейнтейнеров — это те участники ALT Linux Team, которые собирают новые версии пакета, следят за ошибками, которые заводят пользователи в багтрекере и общаются с upstream-разработчиками программы.</p>
+</div>
+<div class="sect2">
+<h3 id="_этапы_процедуры_принятия_в_team">Этапы процедуры принятия в Team</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_создание_заявки">Создание заявки</h3>
+<div class="paragraph">
+<p>Необходимым этапом в создании заявки является поиск своего ментора. Когда вы нашли своего куратора процедуры join - то есть ментора, вам необходимо зафиксировать начало вашей работы. На этом этапе вам понадобятся два ресурса: <a href="https://bugzilla.altlinux.org" class="bare">https://bugzilla.altlinux.org</a>. В данном случае bugzilla выступает площадкой для процедуры вступления в ALT Linux Team. Здесь ведётся официальный диалог с участниками, вы можете посмотреть прогресс других кандидатов, какие задачи они взяли. Введите в поиске join и увидите список, относящийся к этой тематике.</p>
+</div>
+<div class="paragraph">
+<p>Для начала необходимо пройти регистрацию на Багзилле <a href="https://bugzilla.altlinux.org" class="bare">https://bugzilla.altlinux.org</a>.</p>
+</div>
+<div class="paragraph">
+<p>После того, как Вы прошли регистрацию и нашли ментора, можно начинать регестрировать заявку. Регистрация заявки происходит следующим образом: на главной странице сайта ALT Bugzilla выберете "Зарегистрировать ошибку" или "Новая ошибка". Будущие участники ALT Linux Team регистрируются в разделе
+Team Accounts: ALT Linux Team: присоединение.
+При наведении мыши будут видны подсказки к заполнению полей формы. Клик по любому из пунктов формы приведёт вас на страницу <a href="https://bugzilla.altlinux.org/page.cgi?id=fields.html#short_desc" class="bare">https://bugzilla.altlinux.org/page.cgi?id=fields.html#short_desc</a> с описанием терминов. Выберете компонент Join. Если Вы посмотрите другие компоненты, то убедитесь, что они не так популярны. При выборе уровня важности задачи учитывайте, что мейнтенеры просматривают ошибки в том числе по этому фильтру. Также будет видно, к какому разделу относится ваша задача. (Важность определяете вы сами, исходя из своих возможностей и целеполагания. Скорее, это параметр для вас.) Поставим здесь средний приоритет Р3. Платформа вашего рабочего места определяется автоматически. Здесь же вы можете изменить значения, в том числе поставить all. И научиться собирать пакеты для любых платформ.</p>
+</div>
+<div class="paragraph">
+<p>Отметим новое состояние нашей заявки.</p>
+</div>
+<div class="paragraph">
+<p>Поля Исполнитель и Приёмка заполнятся автоматически. В пункте Подписчики укажем всех, кто заинтересован в решении этой задачи. В случае join - это ментор.</p>
+</div>
+<div class="paragraph">
+<p>В стандартной форме bugzilla есть поле для заполнения адреса URL, с которым может быть связана ошибка. Так как мы регистрируем по сути наше участие в прохождении Join, отметьте страницу на вики <a href="https://www.altlinux.org/Team/Join" class="bare">https://www.altlinux.org/Team/Join</a></p>
+</div>
+<div class="paragraph">
+<p>Поле Аннотация предназначено для краткого описания сути ошибки. Так как мы заводим эту ошибку в рамках вступления в ALT Linux Team, напишем join с указанием предполагаемой почты: join user@. Проверить, не занят ли ваш ник, можно на странице: <a href="http://sisyphus.ru/ru/people/" class="bare">http://sisyphus.ru/ru/people/</a>.</p>
+</div>
+<div class="paragraph">
+<p>Пример комментария к открытой заявке на вступление в ALT Linux Team.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Псевдоним: sova
+Почта: Valentin Sokolov &lt;sova@altlinux.org&gt;
+Адрес пересылки почты: sokolovvaly.158@gmail.com
+Имя ментора: Grigory Ustinov
+Почта ментора: grenka@altlinux.org
+
+Хочу научиться собирать пакеты.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>На данном этапе прикреплять SSH-ключ и GPG-ключ необязательно. Остальные поля не заполняем.</p>
+</div>
+<div class="paragraph">
+<p>Мы создали заявку на вступление в ALT Linux Team. Её закрытие будет означать либо успешное прохождение процедуры и получение доступов к работе с Сизифом и вступление в Team, либо отказ в нём.</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-15 18:31:17 +0400
+Last updated 2023-04-17 18:19:17 +0400
 </div>
 </div>
 </body>
