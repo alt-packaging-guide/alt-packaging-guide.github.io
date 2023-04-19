@@ -446,9 +446,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Оглавление</div>
 <ul class="sectlevel1">
-<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a></li>
-<li><a href="#introduction">Вступление</a>
+<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a>
 <ul class="sectlevel2">
+<li><a href="#introduction">Вступление</a></li>
 <li><a href="#pdf-version">PDF Версия</a></li>
 <li><a href="#document-conventions">Структура документации</a></li>
 <li><a href="#_вклад_в_руководство">Вклад в руководство</a></li>
@@ -575,17 +575,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </dd>
 </dl>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="introduction">Вступление</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="introduction">Вступление</h3>
 <div class="paragraph">
 <p>Руководство по сборке RPM пакетов:</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Как подготовить исходный код для сборкив RPM.</dt>
+<dt class="hdlist1">Как подготовить исходный код для сборки RPM.</dt>
 <dd>
 <p>Ссылка на раздел для тех, кто не имеет опыта разработки ПО.
 <a href="#preparing-software-for-packaging">[preparing-software-for-packaging]</a>.</p>
@@ -600,6 +597,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <a href="#advanced-topics">[advanced-topics]</a>.</p>
 </dd>
 </dl>
+</div>
 </div>
 <div class="sect2">
 <h3 id="pdf-version">PDF Версия</h3>
@@ -617,7 +615,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>Отображение фаловой структуры будет представлено следующим образом:</p>
+<p>Отображение файловой структуры будет представлено следующим образом:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">$ tree ~/RPM/
@@ -705,10 +703,10 @@ Summary:</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>- команды без административных привелегий будут начинаться с символа &#8220;$&#8221;</p>
+<p>- команды без административных привилегий будут начинаться с символа &#8220;$&#8221;</p>
 </li>
 <li>
-<p>- команды с административными привелегиями будут начинаться с символа &#8220;#&#8221;</p>
+<p>- команды с административными привилегиями будут начинаться с символа &#8220;#&#8221;</p>
 </li>
 </ul>
 </div>
@@ -719,7 +717,7 @@ Summary:</code></pre>
 <div class="title">Примечание</div>
 </td>
 <td class="content">
-По умолчанию <code>sudo</code> может быть отключено. Для получения административных привелегий используется команда <code>su</code>. Для включения <code>sudo</code> в стандартном режиме можно использовать команду:
+По умолчанию <code>sudo</code> может быть отключено. Для получения административных привилегий используется команда <code>su</code>. Для включения <code>sudo</code> в стандартном режиме можно использовать команду:
 </td>
 </tr>
 </table>
@@ -1090,13 +1088,13 @@ language is designed to be easy to use and extensible.</code></pre>
 <div class="sect2">
 <h3 id="rpm-packages">RPM-пакеты</h3>
 <div class="paragraph">
-<p>В этом разделе рассматриваются основы cборки RPM-пакетов. Дополнительные сведения смотри в разделе
+<p>В этом разделе рассматриваются основы cборки RPM-пакетов. Дополнительные сведения находятся в разделе
 <a href="#advanced-topics">Дополнительные материалы</a>.</p>
 </div>
 <div class="sect3">
 <h4 id="what-is-an-rpm">Что такое RPM-пакет?</h4>
 <div class="paragraph">
-<p>RPM-пакет - это архив, содержащий в себе архив <a href="https://en.wikipedia.org/wiki/Cpio">.cpio</a> с файлами (скомпилированные исполняемые файлы, библиотеки и данные), а также метаданные - имя пакета, его описание, зависимости и т.д. Менеджер пакетов RPM использует эти метаданные для проверки наличия необходимых пакетов из списка зависимостей, исполнения иструкций по установке файлов и сохранения общей иформации о пакете у себя в базе.</p>
+<p>RPM-пакет - это архив, содержащий в себе архив <a href="https://en.wikipedia.org/wiki/Cpio">.cpio</a> с файлами (скомпилированные исполняемые файлы, библиотеки и данные), а также метаданные - имя пакета, его описание, зависимости и т.д. Менеджер пакетов RPM использует эти метаданные для проверки наличия необходимых пакетов из списка зависимостей, исполнения инструкций по установке файлов и сохранения общей информации о пакете у себя в базе.</p>
 </div>
 <div class="paragraph">
 <p>Существует два типа RPM-пакетов:</p>
@@ -1279,6 +1277,10 @@ It contains most of usual tags and constructions used in such specfiles.
 <td class="tableblock halign-left valign-top"><p class="tableblock">Лицензия на собираемое программное обеспечение.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Group</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для указания категории, к которой относится пакет. Указанная группа должна находиться в списке групп, известном RPM. Этот список располагается в файле /usr/lib/rpm/GROUPS, идущим вместе с пакетом rpm.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>URL</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Полный URL-адрес для получения дополнительной информации о программе. Чаще всего это ссылка на <strong>GitHub</strong> upstream-проекта для собираемого программного обеспечения.</p></td>
 </tr>
@@ -1296,7 +1298,7 @@ It contains most of usual tags and constructions used in such specfiles.
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildRequires</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых для сборки программы, написанной на скомпилированном языке. Может быть несколько записей <code>BuildRequires</code>, каждая в отдельной строке в SPEC файле.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых для сборки программы. Может быть несколько записей <code>BuildRequires</code>, каждая в отдельной строке в SPEC файле.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Requires</code></p></td>
@@ -1328,7 +1330,7 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <div class="sect4">
 <h5 id="body-items">Составляющие основной части</h5>
 <div class="paragraph">
-<p>В этой таблице перечислены элементы, используемые в теде файла спецификации RPM-пакета:</p>
+<p>В этой таблице перечислены элементы, используемые в теле файла спецификации RPM-пакета:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1608,7 +1610,7 @@ gear-srpmimport: Created master branch</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>После выполнения импорта git-репозиторий будет выглядить следующим образом:</p>
+<p>После выполнения импорта git-репозиторий будет выглядеть следующим образом:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1656,7 +1658,7 @@ drwxr-xr-x 3 4096 Aug 12 34:56 foobar-plugins
 </div>
 </li>
 <li>
-<p>Чтобы собрать старый пакет, который не содержит определения тэга Packager в spec-файле, следует отключить соответствующую проверку:</p>
+<p>Чтобы собрать старый пакет, который не содержит определения тега Packager в spec-файле, следует отключить соответствующую проверку:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">$ gear-hsh --no-sisyphus-check=gpg,packager</code></pre>
@@ -1836,7 +1838,7 @@ Hello World</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>В данном примере был продемонстирован процесс компиляци программы в исполняемый файл.</p>
+<p>В данном примере был продемонстрирован процесс компиляции программы в исполняемый файл.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1918,7 +1920,7 @@ Hello World</code></pre>
 <div class="sect3">
 <h4 id="_интерпретируемый_код">Интерпретируемый код</h4>
 <div class="paragraph">
-<p>В данном разделе продемонстрирован процесс преобразования исходных текстов программ bello и pello, написанных на интерпритируемых языках python и bash</p>
+<p>В данном разделе продемонстрирован процесс преобразования исходных текстов программ bello и pello, написанных на интерпретируемых языках python и bash</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2000,7 +2002,7 @@ pello.cpython-39.pyc</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ pychon3 pello.cpython-39.pyc
+<pre class="CodeRay highlight"><code data-lang="bash">$ python3 pello.cpython-39.pyc
 Hello world!</code></pre>
 </div>
 </div>
@@ -2021,7 +2023,7 @@ Hello world!</code></pre>
  <a href="https://www.altlinux.org/ALT_Linux_Team">ALT Linux Team</a>.</p>
 </div>
 <div class="paragraph">
-<p>Процедура Join - это процесс вступления в ALT Linux Team, результатом которого является возможность непосредственно участвовать в разработке репозитория Сизиф. После прохождения Join Вы станете мейнтенером.</p>
+<p>Процедура Join - это процесс вступления в ALT Linux Team, результатом которого является возможность непосредственно участвовать в разработке репозитория Сизиф. После прохождения Join Вы станете мейнтейнером.</p>
 </div>
 <div class="paragraph">
 <p>Кто такой мейнтейнер?  У каждого пакета в репозитории Сизиф есть один или несколько мейнтейнеров — это те участники ALT Linux Team, которые собирают новые версии пакета, следят за ошибками, которые заводят пользователи в багтрекере и общаются с upstream-разработчиками программы.</p>
@@ -2037,7 +2039,7 @@ Hello world!</code></pre>
 <p>Секретарь команды. В его обязанность входит отслеживать стадии принятия и выполнять административные действия.</p>
 </li>
 <li>
-<p>Ментор вступающего. Он помогает кандидату со вступлением, отвечает на его вопросы и принимает решение о готовности кандидата</p>
+<p>Ментор вступающего. Он помогает кандидату со вступлением, отвечает на его вопросы и принимает решение о готовности кандидата.</p>
 </li>
 <li>
 <p>Рецензент работы вступающего. Он проводит независимую оценку готовности вступающего по результатам его работы и подтверждает его готовность.</p>
@@ -2078,7 +2080,7 @@ Hello world!</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>адрес почты, на который будет производиться пересылка с адреса <em>псевдоним@altlinux.org</em>;</p>
+<p>Адрес почты, на который будет производиться пересылка с адреса <em>псевдоним@altlinux.org</em>;</p>
 </li>
 <li>
 <p>SSH-ключ (ED25519 или RSA &gt;= 4096bit). Принимающему нужна публичная часть ключа. Этот ключ будет использоваться для SSH-доступа на ресурсы Sisyphus (<a href="https://www.altlinux.org/Git.alt">git.alt</a> и другие);</p>
@@ -2089,21 +2091,21 @@ Hello world!</code></pre>
 </ol>
 </div>
 <div class="paragraph">
-<p>Если у вас ещё нет SSH- или GPG-ключа, прочтите статью <a href="https://www.altlinux.org/Работа_с_ключами_разработчика">Работа с ключами разработчика</a>.</p>
+<p>Если у Вас ещё нет SSH- или GPG-ключа, прочтите статью <a href="https://www.altlinux.org/Работа_с_ключами_разработчика">Работа с ключами разработчика</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_создание_заявки">Создание заявки</h3>
 <div class="paragraph">
-<p>Когда Вы нашли своего куратора процедуры join - ментора, Вам необходимо зафиксировать начало вашей работы. На этом этапе вам понадобятся два ресурса: <a href="https://bugzilla.altlinux.org">BugZilla</a>. В данном случае bugzilla выступает площадкой для процедуры вступления в ALT Linux Team. Здесь ведётся официальный диалог с участниками, Вы можете посмотреть прогресс других кандидатов, узнать, какие задачи они взяли. Введите в поиске <code>join</code> и увидите список, относящийся к этой тематике.</p>
+<p>Когда Вы нашли своего куратора процедуры join - ментора, Вам необходимо зафиксировать начало вашей работы. На этом этапе вам понадобится <a href="https://bugzilla.altlinux.org">BugZilla</a>. В данном случае bugzilla выступает площадкой для процедуры вступления в ALT Linux Team. Здесь ведётся официальный диалог с участниками, Вы можете посмотреть прогресс других кандидатов, узнать, какие задачи они взяли. Введите в поиске <code>join</code> и увидите список, относящийся к этой тематике.</p>
 </div>
 <div class="paragraph">
-<p>Для начала необходимо пройти регистрацию на Багзилле <a href="https://bugzilla.altlinux.org">BugZilla</a>.</p>
+<p>Для начала необходимо пройти регистрацию на <a href="https://bugzilla.altlinux.org">BugZilla</a>.</p>
 </div>
 <div class="paragraph">
 <p>После того, как Вы прошли регистрацию и нашли ментора, можно начинать регистрировать заявку. Регистрация заявки происходит следующим образом: на главной странице сайта ALT Bugzilla выберите <code>"Зарегистрировать ошибку"</code> или <code>"Новая ошибка"</code>. Будущие участники ALT Linux Team регистрируются в разделе
 <code>Team Accounts: ALT Linux Team: присоединение</code>.
-При наведении мыши будут видны подсказки к заполнению полей формы. Клик по любому из пунктов формы приведёт вас на страницу <a href="https://bugzilla.altlinux.org/page.cgi?id=fields.html#short_desc">Поля ошибок</a> с описанием терминов. Выберите компонент <em>Join</em>. Если Вы посмотрите другие компоненты, то убедитесь, что они не так популярны. При выборе уровня важности задачи учитывайте, что мейнтенеры просматривают ошибки в том числе по этому фильтру. Также будет видно, к какому разделу относится ваша задача. (Важность определяете Вы сами, исходя из своих возможностей и целеполагания. Скорее, это параметр для вас.) Поставим здесь средний приоритет <code>Р3</code>. Платформа определяется автоматически. Здесь же Вы можете изменить значения, в том числе поставить all, и научиться собирать пакеты для любых платформ.</p>
+При наведении мыши будут видны подсказки к заполнению полей формы. Клик по любому из пунктов формы приведёт Вас на страницу <a href="https://bugzilla.altlinux.org/page.cgi?id=fields.html#short_desc">Поля ошибок</a> с описанием терминов. Выберите компонент <em>Join</em>. Если Вы посмотрите другие компоненты, то убедитесь, что они не так популярны. При выборе уровня важности задачи учитывайте, что мейнтейнеры просматривают ошибки в том числе по этому фильтру. Также будет видно, к какому разделу относится ваша задача. (Важность определяете Вы сами, исходя из своих возможностей и целеполагания. Скорее, это параметр для Вас.) Поставим здесь средний приоритет <code>Р3</code>. Платформа определяется автоматически. Здесь же Вы можете изменить значения, в том числе поставить all, и научиться собирать пакеты для любых платформ.</p>
 </div>
 <div class="paragraph">
 <p>Отметим новое состояние нашей заявки.</p>
