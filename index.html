@@ -446,14 +446,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Оглавление</div>
 <ul class="sectlevel1">
-<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a>
+<li><a href="#introduction">Вступление</a>
 <ul class="sectlevel2">
-<li><a href="#introduction">Вступление</a></li>
 <li><a href="#pdf-version">PDF Версия</a></li>
 <li><a href="#document-conventions">Структура документации</a></li>
-<li><a href="#_вклад_в_руководство">Вклад в руководство</a></li>
 </ul>
 </li>
+<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a></li>
 <li><a href="#contributing-to-this-guide">Вклад в руководство</a></li>
 <li><a href="#welcome-apt">Система управления пакетами. Знакомство с APT</a></li>
 <li><a href="#prerequisites">Установка необходимых пакетов для процесса сборки</a></li>
@@ -490,17 +489,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="#Preparing_program">Подготовка программ</a>
+<li><a href="#_примеры_сборки_пакетов_с_использованием_инструментов_альт">Примеры сборки пакетов с использованием инструментов Альт</a>
 <ul class="sectlevel2">
-<li><a href="#what-is-source-code">Что такое Исходный код?</a></li>
-<li><a href="#manual-building">Сборка из исходников</a>
-<ul class="sectlevel3">
-<li><a href="#hand-building">Ручная сборка</a></li>
-<li><a href="#_автоматическая_сборка">Автоматическая сборка</a></li>
-<li><a href="#_интерпретируемый_код">Интерпретируемый код</a></li>
-<li><a href="#_bash">Bash</a></li>
-</ul>
-</li>
+<li><a href="#_подготовка_пространства">Подготовка пространства</a></li>
+<li><a href="#_написание_spec_файла_и_правил_gear">Написание spec файла и правил Gear</a></li>
+<li><a href="#_описание_пакета_с_исходными_текстами_на_c">Описание пакета с исходными текстами на C++</a></li>
 </ul>
 </li>
 <li><a href="#Join">Join</a>
@@ -508,12 +501,79 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_процедура_принятия_в_team">Процедура принятия в Team</a></li>
 <li><a href="#_сбор_информации">Сбор информации</a></li>
 <li><a href="#_создание_заявки">Создание заявки</a></li>
+<li><a href="#_создание_ssh_и_gpg_ключей">Создание SSH и GPG ключей</a>
+<ul class="sectlevel3">
+<li><a href="#_ssh_key">SSH Key</a></li>
+<li><a href="#_gpg_key">GPG Key</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="introduction">Вступление</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Уважаемый читатель! Данное руководство нацелено на подробное изучение сборки пакетов "с нуля". Для того, чтобы следовать ему, убедительная просьба внимательно читать текст, переходить по ссылкам, которые представлены в тексте. В них может быть предоставлена дополнительная информация, раскрывающая те темы, которые кратко описаны в данной документации.</p>
+</div>
+<div class="sect2">
+<h3 id="pdf-version">PDF Версия</h3>
+<div class="paragraph">
+<p>Вы также можете скачать
+<a href="https://alt-packaging-guide.github.io/alt-packaging-guide.pdf">PDF версию
+данного документа</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="document-conventions">Структура документации</h3>
+<div class="paragraph">
+<p>Перед тем, как приступить к сборке, нужно создать структуру каталогов, необходимую RPM, находящуюся в Вашем «домашнем» каталоге:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Отображение файловой структуры будет представлено следующим образом:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ tree ~/RPM/
+/home/user/RPM/
+|-- BUILD
+|-- BUILDROOT
+|-- RPMS
+|   |-- i586
+|   |-- x86_64
+|   `-- noarch
+|-- SOURCES
+|-- SPECS
+`-- SRPMS</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>В дальнейшем вывод команд будет продемонстрирован следующим образом:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="txt">Name:           bello
+Version:
+Release:        alt1
+Summary:</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Темы, представляющие интерес, или словарные термины упоминаются либо как ссылки на соответствующую документацию или веб-сайт выделены <strong>жирным</strong> шрифтом, либо <em>курсивом</em>. Первые упоминания некоторых терминов ссылаются на соответствующую документацию.</p>
+</li>
+<li>
+<p>Названия утилит, команд и других элементов, обычно встречающихся в коде, написаны <code>моноширинным</code> шрифтом.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="Why-Package-Software-with-RPM">Введение в пакетные менеджеры</h2>
 <div class="sectionbody">
@@ -574,87 +634,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </dd>
 </dl>
-</div>
-<div class="sect2">
-<h3 id="introduction">Вступление</h3>
-<div class="paragraph">
-<p>Руководство по сборке RPM пакетов:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Как подготовить исходный код для сборки RPM.</dt>
-<dd>
-<p>Ссылка на раздел для тех, кто не имеет опыта разработки ПО.
-<a href="#preparing-software-for-packaging">[preparing-software-for-packaging]</a>.</p>
-</dd>
-<dt class="hdlist1">Как собрать исходный код в RPM.</dt>
-<dd>
-<p>Ссылка на раздел для разработчиков ПО, которым необходимо собрать программное обеспечение в RPM пакеты. <a href="#packaging-software">Программное обеспечение для упаковки</a>.</p>
-</dd>
-<dt class="hdlist1">Расширенные сценарии сборки.</dt>
-<dd>
-<p>Эта ссылка на справочный материал для сборщиков RPM, работающих с расширенными сценариями сборки RPM.
-<a href="#advanced-topics">[advanced-topics]</a>.</p>
-</dd>
-</dl>
-</div>
-</div>
-<div class="sect2">
-<h3 id="pdf-version">PDF Версия</h3>
-<div class="paragraph">
-<p>Вы также можете скачать
-<a href="https://alt-packaging-guide.github.io/alt-packaging-guide.pdf">PDF версию
-данного документа</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="document-conventions">Структура документации</h3>
-<div class="paragraph">
-<p>Перед тем, как приступить к сборке, нужно создать структуру каталогов, необходимую RPM, находящуюся в Вашем «домашнем» каталоге:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Отображение файловой структуры будет представлено следующим образом:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ tree ~/RPM/
-/home/user/RPM/
-|-- BUILD
-|-- BUILDROOT
-|-- RPMS
-|   |-- i586
-|   |-- x86_64
-|   `-- noarch
-|-- SOURCES
-|-- SPECS
-`-- SRPMS</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>В дальнейшем вывод команд будет продемонстрирован следующим образом:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="txt">Name:           bello
-Version:
-Release:        alt1
-Summary:</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Темы, представляющие интерес, или словарные термины упоминаются либо как ссылки на соответствующую документацию или веб-сайт выделены <strong>жирным</strong> шрифтом, либо <em>курсивом</em>. Первые упоминания некоторых терминов ссылаются на соответствующую документацию.</p>
-</li>
-<li>
-<p>Названия утилит, команд и других элементов, обычно встречающихся в коде, написаны <code>моноширинным</code> шрифтом.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_вклад_в_руководство">Вклад в руководство</h3>
-
 </div>
 </div>
 </div>
@@ -1372,6 +1351,18 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Конструкция <code>%setup</code> в Sisyphus RPM использует флаг <code>-q</code> (quiet) по умолчанию. Запись %setup -q и %setup - полностью идентичны. Если использовать конструкцию с флагом <code>-v</code>, то будет выведена дополнительная информация в логах сборки
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -1714,303 +1705,480 @@ $ git config user.email '&lt;login&gt;@altlinux.org'</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="Preparing_program">Подготовка программ</h2>
+<h2 id="_примеры_сборки_пакетов_с_использованием_инструментов_альт">Примеры сборки пакетов с использованием инструментов Альт</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>В этом руководстве представлены три версии программы <code>Hello World</code> , каждая из которых написана на разных языках программирования. Программы, написанные на этих трех разных языках собираются по разному и охватывают три основных варианта использования RPM сборщиком ПО.</p>
+<p>Для примера сборки пакета будем использовать программу для вывода системных уведомлений о текущей дате и времени.
+Ссылка на github-репозиторий с исходными текстами программ на языках C++ (<a href="https://github.com/MakDaffi/notification">Notification</a>) и Python (<a href="https://github.com/danila-Skachedubov/DBusTimer_example">DBusTimer_Example</a>)</p>
+</div>
+<div class="paragraph">
+<p>Структура репозиториев для данных программ идентична: Главный файл (.cpp или .py) и два юнита systemd (.service и .timer)</p>
+</div>
+<div class="paragraph">
+<p>Вдаваться в подробности написания кода мы не будем, так как основная цель - сборка пакета, а не разработка приложения. </p>
+</div>
+<div class="paragraph">
+<p>Файл .timer - юнит systemd, который при истечении заданного времени будет вызывать скрипт .py, который выводит уведомление о дате и времени. После срабатывания таймер снова начинает отсчёт до запуска скрипта.</p>
+</div>
+<div class="paragraph">
+<p>Файл .service - содержит описание, расположение скрипта .py и интерпретатора, который будет обрабатывать скрипт.</p>
 </div>
 <div class="sect2">
-<h3 id="what-is-source-code">Что такое Исходный код?</h3>
+<h3 id="_подготовка_пространства">Подготовка пространства</h3>
 <div class="paragraph">
-<p><strong>Исходный код </strong> - это понятные для человека инструкции к компьютеру, в которых описывается, как выполнить вычисления. Исходный код выражается с помощью
-[<a href="https://ru.wikipedia.org/wiki/Язык_программирования">языка программирования</a>].</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Существуют тысячи языков программирования. В этом документе представлены только три из них, но их достаточно для концептуального обзора.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Программа <code>Hello World</code>, написанная на <a href="https://www.gnu.org/software/bash/">bash</a>:</p>
-</div>
-<div class="paragraph">
-<p><code>bello</code></p>
+<p>Первым шагом Вам необходимо склонировать репозиторий в Вашу рабочую директорию, используя команду <code>git clone (адрес репозитория DBusTimer_Example из ссылки выше)</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">#!/bin/bash
+<pre class="CodeRay highlight"><code data-lang="bash">$ git clone https://github.com/danila-Skachedubov/DBusTimer_example.git
 
-printf "Hello World\n"</code></pre>
+Cloning into 'DBusTimer_example'...
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 5 (delta 0), reused 5 (delta 0), pack-reused 0
+Receiving objects: 100% (5/5), done.</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>Hello World</code>, написанная на <a href="https://www.python.org/">Python</a>:</p>
+<p>В рабочей директории появится каталог с названием проекта: DBusTimer_Example.</p>
 </div>
 <div class="paragraph">
-<p><code>pello.py</code></p>
+<p>Создадим каталог <code>.gear</code> и перейдём в него.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="python">#!/usr/bin/env python
-
-print("Hello World")</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">DBusTimer_example $ mkdir .gear
+DBusTimer_example $ cd .gear/
+.gear $</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>Hello World</code>, написанная на <a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a>:</p>
-</div>
-<div class="paragraph">
-<p><code>cello.c</code></p>
+<p>В каталоге <code>.gear</code> создадим два файла: правила для <code>gear - rules</code> и <code>spec</code> файл - <code>dbustimer.spec</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="c">#include &lt;stdio.h&gt;
-
-int main(void) {
-    printf("Hello World\n");
-    return 0;
-}</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">.gear $ touch rules dbustimer.spec</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Целью каждой из трех программ является вывод строки <code>Hello World</code> в консоли.</p>
+<p>После всех изменений содержание каталога проекта примет следующий вид:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">DBusTimer_example $ ls -la
+итого 28
+drwxr-xr-x  4 sova domain users 4096 апр 20 14:20 .
+drwxr-xr-x 10 sova domain users 4096 апр 20 14:06 ..
+drwxr-xr-x  2 sova domain users 4096 апр 20 14:24 .gear
+drwxr-xr-x  8 sova domain users 4096 апр 20 14:06 .git
+-rwxr-xr-x  1 sova domain users  413 апр 20 14:06 script_dbus.py
+-rw-r--r--  1 sova domain users  186 апр 20 14:06 script_dbus.service
+-rw-r--r--  1 sova domain users  106 апр 20 14:06 script_dbus.timer
+DBusTimer_example $ ls .gear/
+dbustimer.spec  rules</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="manual-building">Сборка из исходников</h3>
+<h3 id="_написание_spec_файла_и_правил_gear">Написание spec файла и правил Gear</h3>
 <div class="paragraph">
-<p>В этом разделе объясняется процесс сборки программ из исходного кода.</p>
+<p>Следующим этапом сборки будет написание <code>spec</code> файла и правил для gear.</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="paragraph">
+<p>В каталоге .gear откроем файл <code>rules</code>. Заполним его следующим содержимымЖ</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">tar: .
+spec: .gear/dbustimer.spec</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Первая строка указывает, что проект будет упакован в <code>.tar</code> архив. Вторая строка указывает путь к расположению <code>.spec</code> файла.
+На этом этапе редактирование <code>rules</code> заканчивается.</p>
+</div>
+<div class="paragraph">
+<p>Перейдём к написанию <code>.spec</code> файла.</p>
+</div>
+<div class="paragraph">
+<p>В заголовке или шапке спек файла находятся секции Name, Version, Release, Summary, License, Group, BuildArch, BuildRequires, Source0.</p>
+</div>
+<div class="paragraph">
+<p>Заполнив данные секции, заголовок spec файла примет вид:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Name: dbustimer
+Version: 0.4
+Release: alt1
+
+Summary: Display system time
+License: GPLv3+
+Group: Other
+BuildArch: noarch
+
+BuildRequires: rpm-build-python3</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Стандартная схема Name-Version-Release, содержащая в себе имя пакета, его версию и релиз сборки. Поле Summary включает в себя краткое описание пакета. License - лицензия, под которой выпускается данное ПО. В данном случае - GPLv3. Группа - категория, к которой относится пакет. Так как это тестовый пакет для примера, выставим группу "Other". BuildRequires - пакеты, необходимые для <em>сборки</em>. Так как исходный код написан на python3, нам необходим пакет <code>rpm-build-python3</code> с макросами для сборки скриптов Python. Source0 - путь к архиву с исходниками (%name-%version.tar). На этом заголовок .spec файла заканчивается.</p>
+</div>
+<div class="paragraph">
+<p>Далее - тело, или основная часть .spec файла. В ней описывается сам процесс сборки и инструкции к преобразованию исходных файлов.</p>
+</div>
+<div class="paragraph">
+<p>Начнём с заполнения полей <code>%description</code> и <code>%prep</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">%description
+This program displays notifications about the system time with a frequency of one hour.
+
+%prep
+%setup -q</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В секции <code>%description</code> находится краткое описание программы. Секция <code>%prep</code> отвечает за подготовку программы к сборке. Макрос <code>%setup</code> распаковывает исходный код перед компиляцией.</p>
+</div>
+<div class="paragraph">
+<p>В секции %install описаны инструкции, как установить файлы пакета в систему конечного пользователя.</p>
+</div>
+<div class="paragraph">
+<p>Вместо того, чтобы писать пути установки файлов вручную, будем использовать предопределённые макросы:
+<code>%python3_sitelibdir_noarch</code> будет раскрываться в путь <code>/usr/lib/python3/site-packages</code>. По этому пути будет создан каталог с именем пакета, в который будет помещён файл <code>script_dbus.py</code> с правами доступа 755.</p>
+</div>
+<div class="paragraph">
+<p>Аналогичная операция будет проведена с файлами <code>script_dbus.timer</code> и <code>script_dbus.service</code>. Они должны быть установлены по пути <code>/etc/xdg/systemd/user</code>. Так как макроса, раскрывающегося в данный путь нет, будет использован макрос <code>%_sysconfdir</code>, который раскрывается в путь <code>/etc</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">%install
+
+
+mkdir -p \
+	%buildroot%python3_sitelibdir_noarch/%name/
+install -Dm0755 script_dbus.py \
+	%buildroot%python3_sitelibdir_noarch/%name/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp script_dbus.timer script_dbus.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Команда <code>mkdir -p \
+%buildroot%python3_sitelibdir_noarch/%name/</code> создаёт каталог <code>dbustimer</code> в окружении <code>buildroot</code> по пути
+<code>/usr/lib/python3/site-packages</code></p>
+</div>
+<div class="paragraph">
+<p>Следующим действием происходит установка файла <code>script_dbus.py</code> с правами 755 в каталог <code>/usr/lib/python3/site-packages/dbustimer/</code> в окружении <code>buildroot</code>.</p>
+</div>
+<div class="paragraph">
+<p>Аналогично создаётся каталог <code>%buildroot%_sysconfdir/xdg/systemd/user/</code>, в который копируются файлы .service и .timer</p>
+</div>
+<div class="paragraph">
+<p>Секция %files</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">%files
+%python3_sitelibdir_noarch/%name/script_dbus.py
+/etc/xdg/systemd/user/script_dbus.service
+/etc/xdg/systemd/user/script_dbus.timer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В секции %files описано, какие файлы и каталоги с соответствующими атрибутами должны быть скопированы из дерева сборки в rpm-пакет, а затем будут копироваться в целевую систему при установке этого пакета. Все три
+файла из пакета будут распакованы по путям, описанным в секции %install.</p>
+</div>
+<div class="paragraph">
+<p>Секция %changelog. Здесь описаны изменения внесённые в ПО, патчи, изменения методологии сборки</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">%changelog
+* Thu Apr 13 2023 Danila Skachedubov &lt;dan@altlinux.org&gt; 0.4-alt1
+- Update system
+- Changed access rights</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>После всех манипуляций Ваш .spec файл будет выглядеть следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Name: dbustimer
+Version: 0.4
+Release: alt1
+
+Summary: Display system time
+License: GPLv3+
+Group: Other
+BuildArch: noarch
+
+BuildRequires: rpm-build-python3
+
+Source0: %name-%version.tar
+
+%description
+This program displays notifications about the system time with a frequency of one hour.
+
+%prep
+%setup
+
+%install
+
+mkdir -p \
+	%buildroot%python3_sitelibdir_noarch/%name/
+install -Dm0755 script_dbus.py \
+	%buildroot%python3_sitelibdir_noarch/%name/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp script_dbus.timer script_dbus.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+
+
+%files
+%python3_sitelibdir_noarch/%name/script_dbus.py
+/etc/xdg/systemd/user/script_dbus.service
+/etc/xdg/systemd/user/script_dbus.timer
+
+%changelog
+* Thu Apr 13 2023 Danila Skachedubov &lt;dan@altlinux.org&gt; 0.4-alt1
+- Update system
+- Changed access rights</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Сохраним файл и перейдём в основную директорию нашего проекта.</p>
+</div>
+<div class="paragraph">
+<p>Теперь необходимо добавить созданные нами файлы на отслеживание git.
+Сделать это можно с помощью команды:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ git add .gear/rules .gear/dbustimer.spec</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>После добавление файлов на отслеживание, запустим сборку с помощью инструментов gear и hasher следующей командой:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gear-hsh --no-sisyphus-check --commit -v</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Если сборка прошла успешно, собранный пакет <code>dbustimer-0.4-alt1.noarch.rpm</code> будет находится в каталоге <code>~/hasher/repo/x86_64/RPMS.hasher/</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_описание_пакета_с_исходными_текстами_на_c">Описание пакета с исходными текстами на C++</h3>
+<div class="paragraph">
+<p>Ссылка на GitHub репозиторий: <a href="https://github.com/MakDaffi/notification">Notification</a>.</p>
+</div>
+<div class="paragraph">
+<p>Данная программа выводит системное уведомление о текущей дате и времени в формате: <code>День недели, месяц, число, чч:мм:сс, год.</code></p>
+</div>
+<div class="paragraph">
+<p>В репозитории находятся следующие файлы:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Для исходного кода программ, написанных на компилируемых языках, происходит процесс <strong>компиляции</strong>. Этот процесс различается для разных языков. Полученный в результате сборки код становится <strong>исполняемым</strong>.</p>
+<p>.gear  -  каталог с правилами gear и .spec файлом</p>
 </li>
 <li>
-<p>Программы, написанные на языке с прямой интерпретацией вообще не нужно компилировать, они выполняются непосредственно интерпретатором.</p>
+<p>Makefile — набор инструкций для программы make, которая собирает данный проект.</p>
 </li>
 <li>
-<p>Для программ, написанных  на интерпретируемых языках с компиляцией в байт-код, исходный код компилируется в байт-код, который затем выполняется виртуальной машиной соответствующего языка.</p>
+<p>notify.cpp - исходный код программы</p>
 </li>
-</ul>
+<li>
+<p>notify.service - юнит данной программы для systemd</p>
+</li>
+<li>
+<p>notify.timer - юнит systemd, запускающий вывод уведомления о дате и времени с переодичностью в один час.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>В этом примере демонстрируется процесс преобразования программы <code>cello.c</code>, написанной на языке <a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a> в исполняемый файл.</p>
+<p>В каталоге .gear находятся два файла:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>rules - правила для упаковки архива для gear</p>
+</li>
+<li>
+<p>notify.spec - файл спецификации для сборки пакета</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p><code>cello.c</code></p>
+<p>Остановимся подробнее на этих двух файлах.</p>
+</div>
+<div class="paragraph">
+<p>Перейдём к содержанию файла <code>rules</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="c">#include &lt;stdio.h&gt;
+<pre class="CodeRay highlight"><code data-lang="bash">tar: .
+spec: .gear/notify.spec</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Первая строка - указания для gear, в какой формат упаковать файлы для последующей сборки. В данном проекте архив будет иметь вид <code>name-version.tar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Вторая строка - путь к .spec файлу с инструкциями по сборке текущего пакета.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Name: notify
+Version: 0.1
+Release: alt1
 
-int main(void) {
-    printf("Hello World\n");
-    return 0;
-}</code></pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="hand-building">Ручная сборка</h4>
-<div class="paragraph">
-<p>Вызовите компилятор
-<a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">C</a> из коллекции компиляторов GNU  (<a href="https://gcc.gnu.org/">GCC</a>), чтобы скомпилировать исходный код в бинарный файл:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">gcc -g -o cello cello.c</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Запустите бинарный файл <code>cello</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ ./cello
-Hello World</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В данном примере был продемонстрирован процесс компиляции программы в исполняемый файл.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_автоматическая_сборка">Автоматическая сборка</h4>
-<div class="paragraph">
-<p>Вместо того, чтобы проводить процесс компиляции исходного кода программы вручную, Вы можете автоматизировать сборку. Автоматизация сборки осуществляется путём создания <code>Makefile</code> и последующим запуском утилиты
-<a href="http://www.gnu.org/software/make/">GNU <code>make</code></a>.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы настроить автоматическую сборку, создайте файл с именем <code>Makefile</code> в том же каталоге, что и<code>cello.c</code>:</p>
-</div>
-<div class="paragraph">
-<p><code>Makefile</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="makefile">cello:
-        gcc -g -o cello cello.c
+Summary: Display system time every hour
+License: GPLv3+
+Group: Other
 
-clean:
-        rm cello</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Теперь, чтобы собрать программу, просто запустите <code>make</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ make
-make: 'cello' is up to date.</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Исполняемый файл создан, <code>make clean</code> удалит его. Затем мы снова запустим <code>make</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ make clean
-rm cello
+BuildRequires: make
+BuildRequires: gcc-c++
+BuildRequires: libsystemd-devel Работа с ключами разработчика.
 
-$ make
-gcc -g -o cello cello.c</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Удаление бинарного файла может помочь убедиться, что при последующей сборке программа будет скомпилирована заново и не будет использоваться устаревший бинарный файл. Это может быть особенно полезно, если вы изменили код программы и хотите убедиться, что все изменения были учтены при повторной сборке.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Попытка сборки без изменений исходного кода программы ничего не даст:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ make
-make: 'cello' is up to date.</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Запустим исполняемый файл:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ ./cello
-Hello World</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Теперь Вы скомпилировали программу как вручную, так и с помощью инструмента сборки.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_интерпретируемый_код">Интерпретируемый код</h4>
-<div class="paragraph">
-<p>В данном разделе продемонстрирован процесс преобразования исходных текстов программ bello и pello, написанных на интерпретируемых языках python и bash</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>В двух приведенных ниже примерах строка <code>#!</code>в верхней части файла называется <a href="https://ru.wikipedia.org/wiki/Шебанг_(Unix)">shebang</a>
-и не является частью исходного кода.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://ru.wikipedia.org/wiki/Шебанг_(Unix)">shebang</a> позволяет использовать текстовый файл в качестве исполняемого файла: загрузчик системной программы анализирует строку, содержащую <strong>shebang</strong>, чтобы получить путь к бинарному исполняемому файлу, который затем используется в качестве интерпретатора языка программирования.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_компиляция_в_байт_код">Компиляция в байт-код</h5>
-<div class="paragraph">
-<p>В этом примере показан процесс трансляции в байт-код программы <code>pello.py</code>, написанной на Python, который затем выполняется виртуальной машиной Python.</p>
-</div>
-<div class="paragraph">
-<p><code>pello.py</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="python">#!/usr/bin/env python
+Создание заявки
 
-print("Hello World")</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Процедура преобразования программ в байт-код различна. Это зависит от языка, виртуальной машины языка, а также инструментов и процессов, используемых этим языком.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Программы, написанные на <a href="https://www.python.org/">Python</a> часто транслируются в байт-код, но не так, как описано здесь. Следующая процедура направлена не на то, чтобы соответствовать стандартам сообщества, а на то, чтобы быть простой. Для получения практических рекомендаций по Python см. раздел
-<a href="https://docs.python.org/2/library/distribution.html">Упаковка и распространение программного обеспечения</a>.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Трансляция <code>pello.py</code> в байт-код:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ python3 -m compileall pello.py</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В рабочем каталоге создастся подкаталог <code>pycache</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ ls
-pello.py  __pycache__</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>в котором находится скомпилированный в байт-код файл:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ ls ./__pycache__
-pello.cpython-39.pyc</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Запустим его:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ python3 pello.cpython-39.pyc
-Hello world!</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_bash">Bash</h4>
+Source0: %name-%version.tar
 
+%description
+This test program displays system date and time every hour via notification
+
+%prep
+%setup -q
+
+%build
+%make_build
+
+%install
+
+mkdir -p \
+	%buildroot/bin/
+install -Dm0644 %name %buildroot/bin/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp %name.timer %name.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+
+%files
+/bin/%name
+/etc/xdg/systemd/user/%name.service
+/etc/xdg/systemd/user/%name.timer
+
+%changelog
+* Thu Apr 13 2023 Sergey Okunkov &lt;sok@altlinux.org&gt; 0.1-alt1
+- Finished my task</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В заголовке или "шапке" .spec файла описаны следующие поля:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Name: notify
+Version: 0.1
+Release: alt1
+
+Summary: Display system time every hour
+License: GPLv3+
+Group: Other
+
+BuildRequires: make
+BuildRequires: gcc-c++
+BuildRequires: libsystemd-devel
+
+Source0: %name-%version.tar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Стандартная схема Name-Version-Release, содержащая в себе имя пакета, его версию и релиз сборки. Поле Summary включает в себя краткое описание пакета. License - лицензия, под которой выпускается данное ПО. В данном случае - GPLv3. Группа - категория, к которой относится пакет. Так как это тестовый пакет для примера, выставим группу "Other". BuildRequares - пакеты, необходимые для <em>сборки</em>. Так как исходный код написан на c++, нам необходим компилятор <code>g + +</code>, система сборки программы - make и библиотека для работы с модулями systemd - <code>libsystemd-devel</code>. Source0 - путь к архиву с исходниками (%name-%version.tar). На этом заголовок .spec файла заканчивается.</p>
+</div>
+<div class="paragraph">
+<p>Тело .spec файла, или же его основная часть.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">%description
+This test program displays system date and time every hour via notification
+
+%prep
+%setup -q
+
+%build
+%make
+
+%install
+
+mkdir -p \
+	%buildroot/bin/
+install -Dm0644 %name %buildroot/bin/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp %name.timer %name.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+
+%files
+/bin/%name
+/etc/xdg/systemd/user/%name.service
+/etc/xdg/systemd/user/%name.timer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Секция %description - описание того, что делает программа. В данном примере - вывод системного уведомления с датой и временем.</p>
+</div>
+<div class="paragraph">
+<p>Секция %prep. Макрос %setup с флагом <code>-q</code> распаковывает архив, описанный в секции Source0.</p>
+</div>
+<div class="paragraph">
+<p>В секции %build происходит <em>сборка исходного кода</em>. Так как в примере присутствует Makefile для автоматизации процесса сборки, то в секции будет указан макрос %make_build, использующий Makefile для сборки программы.</p>
+</div>
+<div class="paragraph">
+<p>Секция %install</p>
+</div>
+<div class="paragraph">
+<p>Здесь происходит эмуляция конечных путей при установке файлов в систему. Мы переносим файл в buildroot в те пути, куда файлы будут помещены после установки пакета в систему пользователя. Так как файла три, для каждого пропишем конечный путь:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>notify</code> - скомпилированный бинарный файл. В Unix-подобных системах бинарные файлы располагаются в каталоге
+/bin. <code>mkdir -p %buildroot/bin</code> - строка, в которой создаётся каталог bin в окружении buildroot. Следующая строка - <code>install -Dm0644 %name %buildroot/bin/</code> - установка бинарного файла notify в каталог <code>%buildroot/bin/</code> с разрешениями 644.</p>
+</li>
+<li>
+<p><code>%name.timer</code>, <code>%name.service</code> - юниты systemd. Данные юниты относятся к пользовательским и находятся в <code>/etc/xdg/systemd/user/</code>. Как и для предыдущего файла, создадим в окружении buildroot каталог <code>mkdir -p %buildroot%_sysconfdir/xdg/systemd/user/</code>. В пути использован макрос <code>%_sysconfdir</code>, который заменяется путём
+<code>/etc</code>. Следующая строка <code>cp %name.timer %name.service %buildroot%_sysconfdir/xdg/systemd/user/</code> - переносит данные файлы по заданному пути в окружении buildroot.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Секция %files</p>
+</div>
+<div class="paragraph">
+<p>Описывает какие файлы и директории будут скопрованы в систему при установке пакета.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">/bin/%name
+/etc/xdg/systemd/user/%name.service
+/etc/xdg/systemd/user/%name.timer</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -2134,10 +2302,111 @@ Hello world!</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>На данном этапе прикреплять SSH-ключ и GPG-ключ необязательно. Остальные поля не заполняем.</p>
+<p>На данном этапе необходимо прикрепить SSH и GPG ключи. О том, как их создать и прикрепить к заявке - читайте ниже.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_создание_ssh_и_gpg_ключей">Создание SSH и GPG ключей</h3>
+<div class="sect3">
+<h4 id="_ssh_key">SSH Key</h4>
+<div class="paragraph">
+<p>Для того, чтобы создать SSH ключ, можно воспользоваться командой:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ssh keygen -t ed25519</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Мы создали заявку на вступление в ALT Linux Team. Её закрытие будет означать либо успешное прохождение процедуры и получение доступов к работе с Сизифом и вступление в Team, либо отказ в нём.</p>
+<p>На вопрос о файле сохранения ключа можно ничего не отвечать, а просто нажать Enter, чтобы принять путь файла ключа по умолчанию. Далее будет задан вопрос о пароле к ключу. Укажите придуманный пароль для защиты ключа.</p>
+</div>
+<div class="paragraph">
+<p>В каталоге <code>~/.ssh</code> появятся файлы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>id_ed25519</code> - секретный ключ</p>
+</li>
+<li>
+<p><code>id_ed25519.pub</code> - публичный ключ</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+НИКОГДА И НИКОМУ НЕ ПЕРЕСЫЛАЙТЕ СЕКРЕТНЫЙ КЛЮЧ
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gpg_key">GPG Key</h4>
+<div class="paragraph">
+<p>Для того, чтобы создать GPG-ключ, можно воспользоваться командой:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --gen-key</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В процессе ответа на вопросы выберете тип ключа <code>RSA и RSA</code>, длина ключа должна быть не менее 4096 bit, поэтому впишем 4096. Срок действия ключа - без ограничения срока действия. Для идентификации Вашего ключа необходим ID пользователя. Программа создаст его из Вашего имени, комментария и адреса электронной почты в виде: <code>Baba Yaga (pensioner) <a href="mailto:yaga@deepforest.ru">yaga@deepforest.ru</a></code>.</p>
+</div>
+<div class="paragraph">
+<p>Теперь экспортируем публичную часть ключа для отправки, используя команду:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --armor --export псевдоним@altlinux.org</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для копирования публичного ключа в файл Вы можете использовать следующую команду:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --armor --export псевдоним@altlinux.org &gt;&gt;public.key</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Экспортировать приватную часть ключа можно с помощью команды:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --armor --export-secret-keys псевдоним@altlinux.org &gt;&gt;private.key</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<strong>ВНИМАНИЕ</strong> Никогда и ни при каких условиях никому не сообщайте и не присылайте Ваши ПРИВАТНЫЕ ключи. Сохраните Ваши приватные и публичные ключи на отдельном носителе для лучшей сохранности.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Для более подробного изучения темы создания и редактирования ключей рекомендуется перейти по ссылке: <a href="https://www.altlinux.org/Работа_с_ключами_разработчика">Работа с ключами разработчика</a>.</p>
+</div>
+<div class="paragraph">
+<p>После того, как Вы создали ключи, загрузите их публичные части в комментарий к Вашей заявке. На странице заявки есть отдельный пункт <code>Приложить файл</code>.</p>
+</div>
+<div class="paragraph">
+<p>Поздравляем! Вы создали заявку на вступление в ALT Linux Team. Её закрытие будет означать либо успешное прохождение процедуры и получение доступов к работе с Сизифом и вступление в Team, либо отказ в нём.</p>
+</div>
+<div class="paragraph">
+<p>Следующие шаги по прохождению процедуры Join будут описаны позже, на данный момент документация находится на стадии разработки.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2145,7 +2414,7 @@ Hello world!</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-17 18:19:17 +0400
+Last updated 2023-04-24 18:14:55 +0400
 </div>
 </div>
 </body>
