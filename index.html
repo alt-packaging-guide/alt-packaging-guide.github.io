@@ -450,24 +450,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#pdf-version">PDF Версия</a></li>
 <li><a href="#document-conventions">Структура документации</a></li>
-</ul>
-</li>
-<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a></li>
-<li><a href="#contributing-to-this-guide">Вклад в руководство</a></li>
-<li><a href="#welcome-apt">Система управления пакетами. Знакомство с APT</a></li>
+<li><a href="#_вклад_в_руководство">Вклад в руководство</a></li>
 <li><a href="#prerequisites">Установка необходимых пакетов для процесса сборки</a></li>
-<li><a href="#RPM_Commands">Основные команды RPM</a></li>
-<li><a href="#packaging-software">Программное обеспечение для упаковки</a>
-<ul class="sectlevel2">
-<li><a href="#rpm-packages">RPM-пакеты</a>
-<ul class="sectlevel3">
-<li><a href="#what-is-an-rpm">Что такое RPM-пакет?</a></li>
-<li><a href="#rpm-packaging-tools">Инструменты для сборки RPM-пакетов</a></li>
-<li><a href="#rpm-packaging-workspace">Рабочее пространство для сборки RPM-пакетов</a></li>
-<li><a href="#what-is-a-spec-file">Что такое SPEC-файл?</a></li>
-<li><a href="#spec-example">Пример .spec-файла</a></li>
 </ul>
 </li>
+<li><a href="#Why-Package-Software-with-RPM">Введение в пакетные менеджеры</a>
+<ul class="sectlevel2">
+<li><a href="#RPM_Commands">Основные команды RPM</a></li>
+</ul>
+</li>
+<li><a href="#what-is-an-rpm">Что такое RPM-пакет?</a>
+<ul class="sectlevel2">
+<li><a href="#rpm-packaging-tools">Подготовка к сборке RPM-пакетов</a></li>
+<li><a href="#rpm-packaging-workspace">Рабочее пространство для сборки RPM-пакетов</a></li>
 </ul>
 </li>
 <li><a href="#hello-gear">Инструмент Gear</a>
@@ -549,31 +544,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#custom-macros">Пользовательские макросы</a></li>
-<li><a href="#epoch-scriptlets-and-triggers">Epoch, Скриптлеты и Триггеры</a>
-<ul class="sectlevel3">
-<li><a href="#epoch">Epoch</a></li>
-<li><a href="#triggers-and-scriptlets">Скриптлеты и Триггеры</a></li>
+<li><a href="#epoch-scriptlets-and-triggers">Epoch, Скриптлеты и Триггеры</a></li>
 </ul>
 </li>
-<li><a href="#rpm-conditionals">Условные обозначения RPM</a>
-<ul class="sectlevel3">
-<li><a href="#_синтаксис_условий_rpm">Синтаксис условий RPM</a></li>
-<li><a href="#_примеры_условий_rpm">Примеры условий RPM</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#Join">Join</a>
+<li><a href="#_hasher_start">Hasher start</a>
 <ul class="sectlevel2">
-<li><a href="#_процедура_принятия_в_team">Процедура принятия в Team</a></li>
-<li><a href="#_сбор_информации">Сбор информации</a></li>
-<li><a href="#_создание_заявки">Создание заявки</a></li>
-<li><a href="#_создание_ssh_и_gpg_ключей">Создание SSH и GPG ключей</a>
-<ul class="sectlevel3">
-<li><a href="#_ssh_key">SSH Key</a></li>
-<li><a href="#_gpg_key">GPG Key</a></li>
-</ul>
-</li>
+<li><a href="#_что_такое_hasher">Что такое hasher?</a></li>
+<li><a href="#_принцип_действия">Принцип действия</a></li>
+<li><a href="#_настройка_hasher">Настройка Hasher</a></li>
+<li><a href="#_сборка_в_hasher">Сборка в hasher</a></li>
+<li><a href="#_сборочные_зависимости">Сборочные зависимости</a></li>
+<li><a href="#_man_hasher">man hasher</a></li>
+<li><a href="#_монтирование_файловых_систем_внутри_hasher">Монтирование файловых систем внутри hasher</a></li>
 </ul>
 </li>
 </ul>
@@ -584,7 +566,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="introduction">Вступление</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Уважаемый читатель! Данное руководство нацелено на подробное изучение сборки пакетов "с нуля". Для того, чтобы следовать ему, убедительная просьба внимательно читать текст, переходить по ссылкам, которые представлены в тексте. В них может быть предоставлена дополнительная информация, раскрывающая те темы, которые кратко описаны в данной документации.</p>
+<p>Уважаемый читатель!</p>
+</div>
+<div class="paragraph">
+<p>Мы хотим обратить Ваше внимание на то, что для успешного прохождения руководства необходимо внимательно читать текст и уделять внимание деталям. Каждый раздел содержит информацию, которая поможет Вам понять процесс сборки пакетов и улучшить свои навыки в этой области.</p>
+</div>
+<div class="paragraph">
+<p>В тексте документации присутствуют ссылки на дополнительную информацию. Мы настоятельно рекомендуем Вам переходить по этим ссылкам и ознакомляться с материалами более подробно. Это поможет Вам лучше понимать темы, раскрытые в руководстве, и получить полезную дополнительную информацию.</p>
 </div>
 <div class="sect2">
 <h3 id="pdf-version">PDF Версия</h3>
@@ -637,6 +625,93 @@ Summary:</code></pre>
 <p>Названия утилит, команд и других элементов, обычно встречающихся в коде, написаны <code>моноширинным</code> шрифтом.</p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Для сокращения команд, встречающихся в тексте, будет использоваться нотация:
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>- команды без административных привилегий будут начинаться с символа &#8220;$&#8221;</p>
+</li>
+<li>
+<p>- команды с административными привилегиями будут начинаться с символа &#8220;#&#8221;</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+По умолчанию <code>sudo</code> может быть отключено. Для получения административных привилегий используется команда <code>su</code>. Для включения <code>sudo</code> в стандартном режиме можно использовать команду:
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># control sudowheel enabled</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_вклад_в_руководство">Вклад в руководство</h3>
+<div class="paragraph">
+<p>Вы можете внести свой вклад в это руководство, отправив запрос на принятие изменений  (Pull Request) в
+<a href="https://github.com/altlinux/alt-packaging-guide">репозиторий</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="prerequisites">Установка необходимых пакетов для процесса сборки</h3>
+<div class="paragraph">
+<p>Чтобы следовать данному руководству, Вам потребуется установить следующие пакеты:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Некоторые из этих пакетов устанавливаются по умолчанию в
+<a href="https://www.altlinux.org/Releases">Альт</a>. Установка проводится с правами суперпользователя.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># apt-get update
+
+Получено: 1 http://ftp.altlinux.org p10/branch/x86_64 release [4223B]
+Получено: 2 http://ftp.altlinux.org p10/branch/x86_64-i586 release [1665B]
+Получено: 3 http://ftp.altlinux.org p10/branch/noarch release [2844B]
+Получено 8732B за 0s (81,8kB/s).
+Найдено http://ftp.altlinux.org p10/branch/x86_64/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64/classic release
+Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto release
+Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic release
+Найдено http://ftp.altlinux.org p10/branch/noarch/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/noarch/classic release
+Чтение списков пакетов... Завершено
+Построение дерева зависимостей... Завершено
+
+# apt-get install gcc rpm-build rpmlint make python gear hasher patch rpmdevtools</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -702,125 +777,8 @@ Summary:</code></pre>
 </dd>
 </dl>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="contributing-to-this-guide">Вклад в руководство</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Вы можете внести свой вклад в это руководство, отправив запрос на принятие изменений  (Pull Request) в оригинальный
-<a href="https://github.com/altlinux/alt-packaging-guide">репозиторий</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="welcome-apt">Система управления пакетами. Знакомство с APT</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Для установки, удаления и обновления программ и поддержания целостности системы в Linux в первую очередь стали использоваться <em>менеджеры пакетов</em> (такие, как RPM в дистрибутивах <code>RedHat</code> или dpkg в <code>Debian GNU/Linux</code>). С точки зрения менеджера пакетов программное обеспечение представляет собой набор компонентов — программных <em>пакетов</em>. Такие компоненты содержат в себе набор исполняемых программ и вспомогательных файлов, необходимых для корректной работы ПО. Менеджеры пакетов дают возможность унифицировать и автоматизировать сборку бинарных пакетов и облегчают установку программ, позволяя проверять наличие необходимых для работы устанавливаемой программы компонент подходящей версии непосредственно в момент установки, а также производя все необходимые процедуры для регистрации программы во всех операционных средах пользователя. Сразу после установки программа оказывается доступна пользователю из командной строки и появляется в меню всех графических оболочек.</p>
-</div>
-<div class="paragraph">
-<p>Полное описание APT можно узнать, перейдя по ссылке: <a href="https://docs.altlinux.org/ru-RU/archive/2.3/html-single/junior/alt-docs-junior/ch04s09.html">Установка и удаление программ (пакетов)</a></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Установка пакетов в АЛЬТ Линукс осуществляется с помощью утилиты APT
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Для сокращения команд, встречающихся в тексте, будет использоваться нотация:
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>- команды без административных привилегий будут начинаться с символа &#8220;$&#8221;</p>
-</li>
-<li>
-<p>- команды с административными привилегиями будут начинаться с символа &#8220;#&#8221;</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-По умолчанию <code>sudo</code> может быть отключено. Для получения административных привилегий используется команда <code>su</code>. Для включения <code>sudo</code> в стандартном режиме можно использовать команду:
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash"># control sudowheel enabled</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="prerequisites">Установка необходимых пакетов для процесса сборки</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Чтобы следовать данному руководству, Вам потребуется установить следующие пакеты:</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Некоторые из этих пакетов устанавливаются по умолчанию в
-<a href="https://www.altlinux.org/Releases">Альт</a>. Установка проводится с правами суперпользователя.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash"># apt-get update
-
-Получено: 1 http://ftp.altlinux.org p10/branch/x86_64 release [4223B]
-Получено: 2 http://ftp.altlinux.org p10/branch/x86_64-i586 release [1665B]
-Получено: 3 http://ftp.altlinux.org p10/branch/noarch release [2844B]
-Получено 8732B за 0s (81,8kB/s).
-Найдено http://ftp.altlinux.org p10/branch/x86_64/classic pkglist
-Найдено http://ftp.altlinux.org p10/branch/x86_64/classic release
-Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto pkglist
-Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto release
-Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic pkglist
-Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic release
-Найдено http://ftp.altlinux.org p10/branch/noarch/classic pkglist
-Найдено http://ftp.altlinux.org p10/branch/noarch/classic release
-Чтение списков пакетов... Завершено
-Построение дерева зависимостей... Завершено
-
-# apt-get install gcc rpm-build rpmlint make python gear hasher patch</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="RPM_Commands">Основные команды RPM</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="RPM_Commands">Основные команды RPM</h3>
 <div class="paragraph">
 <p>Для ознакомления с данным разделом потребуется пакет. В качестве примера мы будем использовать пакет <a href="http://ftp.altlinux.org/pub/distributions/ALTLinux/p10/branch/noarch/RPMS.classic/yodl-docs-4.03.00-alt2.noarch.rpm">Yodl-docs</a>.</p>
 </div>
@@ -1128,19 +1086,12 @@ language is designed to be easy to use and extensible.</code></pre>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="packaging-software">Программное обеспечение для упаковки</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="rpm-packages">RPM-пакеты</h3>
-<div class="paragraph">
-<p>В этом разделе рассматриваются основы cборки RPM-пакетов. Дополнительные сведения находятся в разделе
-<a href="#advanced-topics">Дополнительные материалы</a>.</p>
 </div>
-<div class="sect3">
-<h4 id="what-is-an-rpm">Что такое RPM-пакет?</h4>
+<div class="sect1">
+<h2 id="what-is-an-rpm">Что такое RPM-пакет?</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>RPM-пакет - это архив, содержащий в себе архив <a href="https://en.wikipedia.org/wiki/Cpio">.cpio</a> с файлами (скомпилированные исполняемые файлы, библиотеки и данные), а также метаданные - имя пакета, его описание, зависимости и т.д. Менеджер пакетов RPM использует эти метаданные для проверки наличия необходимых пакетов из списка зависимостей, исполнения инструкций по установке файлов и сохранения общей информации о пакете у себя в базе.</p>
+<p>RPM-пакет - это архив, содержащий в себе архив <a href="https://en.wikipedia.org/wiki/Cpio">.cpio</a> с файлами, а также метаданные - имя пакета, его описание, зависимости и т.д.</p>
 </div>
 <div class="paragraph">
 <p>Существует два типа RPM-пакетов:</p>
@@ -1151,18 +1102,20 @@ language is designed to be easy to use and extensible.</code></pre>
 <p>SRPM-пакеты (исходники) - архив с расширением <code>.src.rpm</code></p>
 </li>
 <li>
-<p>RPM-пакеты (бинарники) - архив с расширением <code>.rpm</code></p>
+<p>RPM-пакеты - архив с расширением <code>.rpm</code>.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>SRPM и RPM-пакеты имеют общий формат и инструментарий, но имеют разное содержимое и служат разным целям. SRPM содержит исходный код, при необходимости патчи к нему и spec-файл, в котором описывается, как собрать исходный код в бинарный RPM-пакет. Бинарный RPM-пакет содержит бинарные файлы, созданные из исходных текстов и патчей, если таковые имелись.</p>
+<p>SRPM и RPM-пакеты имеют общий формат, но имеют разное содержимое и служат разным целям. SRPM содержит исходный код, при необходимости патчи к нему и spec-файл, в котором описывается, как собрать исходный код в RPM-пакет.</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="rpm-packaging-tools">Инструменты для сборки RPM-пакетов</h4>
 <div class="paragraph">
-<p>Пакет<code>rpmdevtools</code>, установленный на этапе <a href="#prerequisites">Необходимые пакеты</a>, предоставляет несколько утилит для сборки RPM-пакетов. Чтобы перечислить эти утилиты, выполните в консоли следующую команду:</p>
+<p>RPM-пакет содержит исполняемые файлы, созданные из исходного кода и патчей, если таковые имелись, библиотеки и метаданные. Менеджер пакетов RPM использует эти метаданные для проверки наличия необходимых пакетов из списка зависимостей, исполнения инструкций по установке файлов и сохранения общей информации о пакете у себя в базе.</p>
+</div>
+<div class="sect2">
+<h3 id="rpm-packaging-tools">Подготовка к сборке RPM-пакетов</h3>
+<div class="paragraph">
+<p>Пакет <code>rpmdevtools</code>, установленный на этапе <a href="#prerequisites">Необходимые пакеты</a>, предоставляет несколько утилит, упрощающие подготовку к сборке RPM-пакетов. Чтобы перечислить эти утилиты, выполните в консоли следующую команду:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1170,14 +1123,13 @@ language is designed to be easy to use and extensible.</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Для получения дополнительной информации о вышеуказанных утилитах см. их страницы руководства или диалоговые окна справки.
-/</p>
+<p>Для получения дополнительной информации о вышеуказанных утилитах см. их страницы руководства или диалоговые окна справки.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="rpm-packaging-workspace">Рабочее пространство для сборки RPM-пакетов</h4>
+<div class="sect2">
+<h3 id="rpm-packaging-workspace">Рабочее пространство для сборки RPM-пакетов</h3>
 <div class="paragraph">
-<p>Чтобы создать дерево каталогов, которое является рабочей областью сборки RPM-пакетов, используйте утилиту <code>rpmdev-setuptree</code>:</p>
+<p>Чтобы создать дерево каталогов, которое является рабочей областью сборки RPM-пакетов, используйте утилиту <code>rpmdev-setuptree</code>, или же создайте каталоги вручную, используя утилиту <code>mkdir</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1193,7 +1145,7 @@ $ tree ~/rpmbuild/
 </div>
 </div>
 <div class="paragraph">
-<p>Созданные каталоги служат следующим целям:</p>
+<p>Описание созданных каталогов:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1211,7 +1163,7 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RPMS</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь появляются готовые бинарные RPM-пакеты (<code>.rpm</code>), в подкаталогах для разных архитектур, например, в подкаталогах<code>x86_64</code> и <code>noarch</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь появляются готовые RPM-пакеты (<code>.rpm</code>) в подкаталогах для разных архитектур, например, в подкаталогах<code>x86_64</code> и <code>noarch</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SOURCES</p></td>
@@ -1227,197 +1179,34 @@ $ tree ~/rpmbuild/
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect3">
-<h4 id="what-is-a-spec-file">Что такое SPEC-файл?</h4>
 <div class="paragraph">
-<p>Spec-файл можно рассматривать как "инструкцию", который утилита <code>rpmbuild</code> использует для фактической сборки RPM-пакет. Он сообщает системе сборки, что делать, определяя инструкции в серии разделов. Разделы определены в <em>Преамбуле</em> и в <em>Основной части</em>. <em>Преамбула</em> содержит ряд элементов метаданных, которые используются в <em>Основной части</em>. Тело содержит основную часть инструкций.</p>
+<p>После создания дерева каталогов перейдём в файл <code>~/home/.rpmmacros</code>. В нём содержится следующая информация:</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="spec-example">Пример .spec-файла</h4>
-<div class="paragraph">
-<p>Данный пример взять из <a href="https://www.altlinux.org/SampleSpecs/program">ALT Linux Wiki</a>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Месторасположение структуры каталогов для сборки;</p>
+</li>
+<li>
+<p>Ключ для подписи пакетов;</p>
+</li>
+<li>
+<p>Значение поля <em>Packager</em></p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">Name: sampleprog
-Version: 1.0
-Release: alt1
+<pre class="CodeRay highlight"><code data-lang="bash">%_topdir&lt;------&gt;%homedir/RPM
+#%_tmppath&lt;----&gt;%homedir/tmp
 
-Summary: Sample program specfile
-Summary(ru_RU.UTF-8): Пример спек-файла для программы
-
-License: GPLv2+
-Group: Development/Other
-Url: http://www.altlinux.org/SampleSpecs/program
-
-Packager: Sample Packager &lt;sample@altlinux.org&gt;
-
-Source: %name-%version.tar
-Patch0: %name-1.0-alt-makefile-fixes.patch
-
-%description
-This specfile is provided as sample specfile for packages with programs.
-It contains most of usual tags and constructions used in such specfiles.
-
-%description -l ru_RU.UTF-8
-Этот спек-файл является примером спек-файла для пакета с программой. Он содержит
-основные теги и конструкции, используемые в подобных спек-файлах.
-
-%prep
-%setup
-%patch0 -p1
-
-%build
-%configure
-%make_build
-
-%install
-%makeinstall_std
-%find_lang %name
-
-%files -f %name.lang
-%doc AUTHORS ChangeLog NEWS README THANKS TODO contrib/ manual/
-%_bindir/*
-%_man1dir/*
-
-%changelog
-* Sat Sep 33 3001 Sample Packager &lt;sample@altlinux.org&gt; 1.0-alt1
-- initial build</code></pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="preamble-items">Пункты преамбулы</h5>
-<div class="paragraph">
-<p>В этой таблице перечислены элементы, используемые в разделе преамбулы файла спецификации RPM:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 30%;">
-<col style="width: 70%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SPEC Директива</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Определение</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Базовое имя пакета, которое должно совпадать с именем spec-файла.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Version</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Версия upstream-кода.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Release</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Релиз пакета используется для указания номера сборки пакета при данной версии upstream-кода. Как правило, установите начальное <code>alt1</code>  и увеличивайте его с каждым новым выпуском пакета, например: alt1, alt2, alt3 и т.д. Сбросьте значение до alt1 при создании новой версии программного обеспечения.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Summary</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Краткое, в одну строку, описание пакета.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>License</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Лицензия на собираемое программное обеспечение.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Group</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Используется для указания категории, к которой относится пакет. Указанная группа должна находиться в списке групп, известном RPM. Этот список располагается в файле /usr/lib/rpm/GROUPS, идущим вместе с пакетом rpm.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>URL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Полный URL-адрес для получения дополнительной информации о программе. Чаще всего это ссылка на <strong>GitHub</strong> upstream-проекта для собираемого программного обеспечения.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Source0</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Путь или URL-адрес к сжатому архиву исходного кода (не исправленный, исправления обрабатываются в другом месте). Этот раздел должен указывать на доступное и надежное хранилище архива, например, на upstream-страницу, а не на локальное хранилище сборщика. При необходимости можно добавить дополнительные исходные директивы, каждый раз увеличивая их количество, например: Source1, Source2, Source3 и так далее.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Patch0</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Название первого патча, который при необходимости будет применен к исходному коду. При необходимости можно добавить дополнительные директивы PatchX, увеличивая их количество каждый раз, например: Patch1, Patch2, Patch3 и так далее.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildArch</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Если пакет не зависит от архитектуры, например, если он полностью написан на интерпретируемом языке программирования, установите для этого значение <code>BuildArch: noarch</code>. Если этот параметр не задан, пакет автоматически наследует архитектуру компьютера, на котором он собран, например <code>x86_64</code>.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildRequires</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых для сборки программы. Может быть несколько записей <code>BuildRequires</code>, каждая в отдельной строке в SPEC файле.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Requires</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых программному обеспечению для запуска после установки. Это его <strong>зависимости</strong> Может быть несколько записей <code>Requires</code>, каждая в отдельной строке в SPEC файле.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ExcludeArch</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Если часть программного обеспечения не может работать на определенной архитектуре процессора, Вы можете исключить эту архитектуру здесь.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Директивы <code>Name</code>, <code>Version</code> и <code>Release</code> содержат имя RPM-пакета. Эти три директивы часто называют <strong>N-V-R</strong> или <strong>NVR</strong>, поскольку имена RPM-пакета имеют формат <code>NAME-VERSION-RELEASE</code>.</p>
-</div>
-<div class="paragraph">
-<p>Вы можете получить пример <code>NAME-VERSION-RELEASE</code>, выполнив запрос с использованием <code>rpm</code> для конкретного пакета:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -q rpmdevtools
-rpmdevtools-8.10-alt2.noarch</code></pre>
+# %packager&lt;---&gt;Joe Hacker &lt;joe@email.address&gt;
+# %_gpg_name&lt;--&gt;joe@email.address</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Здесь <code>rpmdevtools</code> - это имя пакета, <code>8.10</code> - версия, а <code>alt2</code> - релиз. Последний маркер <code>noarch</code> - сведения об архитектуре.
-В отличие от NVR, маркер архитектуры не находится под прямым управлением сборщика, а определяется средой сборки <code>rpmbuild</code>. Исключением из этого правила является архитектурно-независимый пакет <code>noarch</code>.</p>
+<p>Раскомментируйте поле <em>Packager</em>: Впишите своё имя, фамилию и почту. Поле с ключём для подписи Вы заполните позже. О том, как создавать ключи, Вы узнаете в разделе <a href="#JoinKey">Создание SSH и GPG ключей</a>.</p>
 </div>
-</div>
-<div class="sect4">
-<h5 id="body-items">Составляющие основной части</h5>
-<div class="paragraph">
-<p>В этой таблице перечислены элементы, используемые в теле файла спецификации RPM-пакета:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SPEC Директива</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Определение</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Полное описание программного обеспечения, входящего в комплект поставки RPM. Это описание может занимать несколько строк и может быть разбито на абзацы.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%prep</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для подготовки программного обеспечения к сборке, например, распаковка архива из Source0. Эта директива может содержать сценарий оболочки (shell скрипт).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%build</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для фактической сборки программного обеспечения в машинный код (для скомпилированных языков) или байт-код (для некоторых интерпретируемых языков).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%install</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Раздел, который во время сборки пакета эмулирует конечные пути установки файлов в систему. Команда или серия команд для копирования требуемых артефактов сборки из <code>%builddir</code> (где происходит сборка) в<code>%buildroot</code> каталог (который содержит структуру каталогов с файлами, подлежащими сборке). Обычно это означает копирование файлов из <code>~/rpmbuild/BUILD</code> в <code>~/rpmbuild/BUILDROOT</code> и создание необходимых каталогов <code>~/rpmbuild/BUILDROOT</code>.  Это выполняется только при создании пакета, а не при установке пакета конечным пользователем. Подробности см. в разделе <a href="#working-with-spec-files">Работа со SPEC файлом</a>.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%check</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для тестирования программного обеспечения. Обычно включает в себя такие вещи, как модульные тесты.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%files</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Список файлов, которые будут установлены в системе конечного пользователя.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%changelog</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Запись изменений, произошедших с пакетом между различными <code>Version</code> или <code>Release</code> сборками.</p></td>
-</tr>
-</tbody>
-</table>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1425,11 +1214,38 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <div class="title">Примечание</div>
 </td>
 <td class="content">
-Конструкция <code>%setup</code> в Sisyphus RPM использует флаг <code>-q</code> (quiet) по умолчанию. Запись %setup -q и %setup - полностью идентичны. Если использовать конструкцию с флагом <code>-v</code>, то будет выведена дополнительная информация в логах сборки
+Действия, описанные ниже, необходимы для корректного прохождения документации, они обязательны к выполнению!
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Итак, если Вы воспользовались утилитой <code>rpmdev-setuptree</code>, а не создали дерево каталогов вручную, обрате внимание на файл <code>~/home/.rpmmacros</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">%_topdir&lt;------&gt;%homedir/RPM
+#%_tmppath&lt;----&gt;%homedir/tmp
+
+%packager&lt;---&gt;Joe Hacker &lt;joe@email.address&gt;
+# %_gpg_name&lt;--&gt;joe@email.address
+
+%__arch_install_post \
+    [ "%{buildarch}" = "noarch" ] || QA_CHECK_RPATHS=1 ; \
+    case "${QA_CHECK_RPATHS:-}" in [1yY]*) /usr/lib/rpm/check-rpaths ;; esac \
+    /usr/lib/rpm/check-buildroot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В файле появилась секция <code>%__arch_install_post</code>. Данную секцию необходимо удалить, вернув файл к исходному состоянию, иначе процесс сборки будет завершаться с ошибкой.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">%_topdir&lt;------&gt;%homedir/RPM
+#%_tmppath&lt;----&gt;%homedir/tmp
+
+%packager&lt;---&gt;Valentin Sokolov &lt;sova@altlinux.org&gt;
+# %_gpg_name&lt;--&gt;joe@email.address</code></pre>
 </div>
 </div>
 </div>
@@ -2606,7 +2422,7 @@ dbustimer.spec  rules</code></pre>
 <p>Следующим этапом сборки будет написание <code>spec</code> файла и правил для gear.</p>
 </div>
 <div class="paragraph">
-<p>В каталоге .gear откроем файл <code>rules</code>. Заполним его следующим содержимымЖ</p>
+<p>В каталоге .gear откроем файл <code>rules</code>. Заполним его следующим содержимым:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3559,542 +3375,162 @@ Source1: %{name}-%{version}-examples.tar.gz
 <div class="paragraph">
 <p>В мире SPEC файлов RPM существуют различные разделы, которые считаются продвинутыми, поскольку они влияют не только на файл спецификации, способ сборки пакета, но и на конечный компьютер, на который устанавливается результирующий RPM. В этом разделе мы рассмотрим наиболее распространенные из них, такие как Epoch, Скриптлеты и триггеры.</p>
 </div>
-<div class="sect3">
-<h4 id="epoch">Epoch</h4>
-<div class="paragraph">
-<p>Первым в списке стоит <code>Epoch</code>, epoch - это способ определения взвешенных зависимостей на основе номеров версий. Его значение по умолчанию равно 0, если директива <code>Epoch</code>  не указана в SPEC файле. Это не рассматривалось в разделе "SPEC файл" этого руководства, потому что почти всегда вводить значени Epoch  - плохая идея, поскольку это искажает то, что вы обычно ожидаете от RPM при сравнении версий пакетов.</p>
-</div>
-<div class="paragraph">
-<p>Например, если был установлен пакет <code>foobar</code> с <code>Epoch: 1</code> и <code>Version: 1.0</code>, а кто-то другой упаковал <code>foobar</code> с<code>Version: 2.0</code> , но просто опустил директиву <code>Epoch</code> либо потому, что они не знали о её необходимости, либо просто забыли, эта новая версия никогда не будет считаться обновлением, потому что версия Epoch превалирует над традиционным маркером
-Name-Version-Release, который означает управление версиями для RPM-пакетов.</p>
-</div>
-<div class="paragraph">
-<p>Этот подход обычно используется только в случае крайней необходимости для решения проблемы с порядком обновления, которая может возникнуть как побочный эффект программного обеспечения из upstream репозитория, изменяющего схемы нумерации версий или версии, включающие буквенные символы, которые не всегда можно надёжно сравнить на основе кодирование.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="triggers-and-scriptlets">Скриптлеты и Триггеры</h4>
-<div class="paragraph">
-<p>В пакетах RPM существует ряд директив, которые можно использовать для внесения необходимых или желаемых изменений в систему во время установки RPM. Они называются <strong>скриптлеты</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Один из основных примеров того, когда и почему Вы хотели бы это сделать,  это когда установлена системная служба RPM и она предоставляет
-<a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>
-<a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">файл</a>.
-Во время установки нам нужно будет уведомить
-<a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>  о появлении нового модуля, чтобы системный администратор мог выполнить команду, аналогичную  <code>systemctl start
-foo.service</code> после установки вымышленного <code>foo</code> (который в этом примере предоставляет демон). Аналогично, нам нужно было бы отменить это действие при деинсталляции, чтобы администратор не получал ошибок из-за того, что бинарный файл демона больше не установлен, но файл модуля все еще существует в запущенной конфигурации systemd.</p>
-</div>
-<div class="paragraph">
-<p>Существует небольшая горстка распространенных скриптлетов, они похожи на “заголовки разделов”, такие как <code>%build</code> or <code>%install</code>, в том смысле, что они определяются многострочными сегментами кода, часто написанными, как стандартный сценарий оболочки
-<a href="https://en.wikipedia.org/wiki/POSIX">POSIX</a>
-, но могут быть на нескольких разных языках программирования.
-Исчерпывающий список этих доступных языков можно найти в <em>Официальной документации RPM</em>.</p>
-</div>
-<div class="paragraph">
-<p>Следующие скриптлеты:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Директива</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Описание</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%pre</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется непосредственно перед установкой пакета в целевую систему.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%post</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется сразу после установки пакета в целевой системе.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%preun</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется непосредственно перед удалением пакета из целевой системы.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%postun</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется сразу после удаления пакета из целевой системы.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Также часто для этой функции существуют макросы RPM.  В нашем предыдущем примере мы обсуждали необходимость получения  <a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>
-уведомления о новом
-<a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">unit file</a>,
-, это легко обрабатывается макросами скриптлетов systemd, как Мы можем видеть из приведенного ниже примера вывода.  Более подробную информацию об этом можно найти в
-<a href="https://fedoraproject.org/wiki/Packaging:Systemd">Fedora systemd Packaging
-Guidelines</a>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --showrc | grep systemd
--14: __transaction_systemd_inhibit      %{__plugindir}/systemd_inhibit.so
--14: _journalcatalogdir /usr/lib/systemd/catalog
--14: _presetdir /usr/lib/systemd/system-preset
--14: _unitdir   /usr/lib/systemd/system
--14: _userunitdir       /usr/lib/systemd/user
-/usr/lib/systemd/systemd-binfmt %{?*} &gt;/dev/null 2&gt;&amp;1 || :
-/usr/lib/systemd/systemd-sysctl %{?*} &gt;/dev/null 2&gt;&amp;1 || :
--14: systemd_post
--14: systemd_postun
--14: systemd_postun_with_restart
--14: systemd_preun
--14: systemd_requires
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
--14: systemd_user_post  %systemd_post --user --global %{?*}
--14: systemd_user_postun        %{nil}
--14: systemd_user_postun_with_restart   %{nil}
--14: systemd_user_preun
-systemd-sysusers %{?*} &gt;/dev/null 2&gt;&amp;1 || :
-echo %{?*} | systemd-sysusers - &gt;/dev/null 2&gt;&amp;1 || :
-systemd-tmpfiles --create %{?*} &gt;/dev/null 2&gt;&amp;1 || :
-
-$ rpm --eval %{systemd_post}
-
-if [ $1 -eq 1 ] ; then
-        # Initial installation
-        systemctl preset  &gt;/dev/null 2&gt;&amp;1 || :
-fi
-
-$ rpm --eval %{systemd_postun}
-
-systemctl daemon-reload &gt;/dev/null 2&gt;&amp;1 || :
-
-$ rpm --eval %{systemd_preun}
-
-if [ $1 -eq 0 ] ; then
-        # Package removal, not upgrade
-        systemctl --no-reload disable  &gt; /dev/null 2&gt;&amp;1 || :
-        systemctl stop  &gt; /dev/null 2&gt;&amp;1 || :
-fi</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Еще один элемент, который обеспечивает еще более детальный контроль над транзакцией RPM в целом, - это то, что известно как <strong>триггеры</strong>. По сути, это то же самое, что и скриптлет, но выполняется в очень определенном порядке операций во время транзакции установки или обновления RPM, что позволяет более точно контролировать весь процесс.</p>
-</div>
-<div class="paragraph">
-<p>Порядок, в котором выполняется каждый из них, и подробная информация о котором - приведена ниже.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">all-%pretrans
-...
-any-%triggerprein (%triggerprein from other packages set off by new install)
-new-%triggerprein
-new-%pre      for new version of package being installed
-...           (all new files are installed)
-new-%post     for new version of package being installed
-
-any-%triggerin (%triggerin from other packages set off by new install)
-new-%triggerin
-old-%triggerun
-any-%triggerun (%triggerun from other packages set off by old uninstall)
-
-old-%preun    for old version of package being removed
-...           (all old files are removed)
-old-%postun   for old version of package being removed
-
-old-%triggerpostun
-any-%triggerpostun (%triggerpostun from other packages set off by old un
-            install)
-...
-all-%posttrans</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Вышеуказанные элементы взяты из прилагаемой документации RPM, найденной в
-<code>/usr/share/doc/rpm/triggers</code> на системах Fedora и
-<code>/usr/share/doc/rpm-4.*/triggers</code> в системах RHEL 7 и CentOS 7.</p>
-</div>
-<div class="sect4">
-<h5 id="Using-Non-Shell-Scripts-in-spec-File">Использование скриптов без оболочки в SPEC файле</h5>
-<div class="paragraph">
-<p>Параметр скриптлета <code>-p</code>, в SPEC файле позволяет вызывать определенный интерпретатор вместо стандартного <code>-p&#160;/bin/sh</code>. Наглядным примером является скрипт, который выводит сообщение после установки <code>pello.py</code>.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Откройте файл <code>pello.spec</code>.</p>
-</li>
-<li>
-<p>Найдите следующую строку:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">install -m 0644 %{name}.py* %{buildroot}/usr/lib/%{name}/</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Под этой строкой вставьте следующий код:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="specfile">%post -p /usr/bin/python3
-print("This is {} code".format("python"))</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Создайте свой пакет в соответствии с главой <a href="#building-rpm">Сборка RPM</a>.</p>
-</li>
-<li>
-<p>Установите Ваш пакет:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash"># dnf install /home/&lt;username&gt;/rpmbuild/RPMS/noarch/pello-0.1.1-1.fc27.noarch.rpm</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Результатом выполнения этой команды является следующее сообщение после установки:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>Installing       : pello-0.1.1-1.fc27.noarch                              1/1
-Running scriptlet: pello-0.1.1-1.fc27.noarch                              1/1
-This is python code</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>Чтобы использовать скрипт  Python&#160;3: Напишите строку <code>%post -p /usr/bin/python3</code>  под строкой <code>install -m</code> in a SPEC file.</p>
-</li>
-<li>
-<p>Чтобы использовать скрипт Lua: Напишите строку <code>%post -p &lt;lua&gt;</code> под строкой
-<code>install&#160;-m</code> в SPEC файле.</p>
-</li>
-<li>
-<p>Таким образом, в SPEC файле может быть указан любой интерпретатор.</p>
-</li>
-</ul>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="rpm-conditionals">Условные обозначения RPM</h3>
-<div class="paragraph">
-<p>Условные обозначения RPM позволяют условно включать различные разделы SPEC файла.</p>
-</div>
-<div class="paragraph">
-<p>Чаще всего условные обозначения имеют дело с:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>разделами, относящимися к конкретной архитектуре</p>
-</li>
-<li>
-<p>разделами, относящимися к конкретной операционной системе</p>
-</li>
-<li>
-<p>проблемами совместимости между различными версиями операционных систем</p>
-</li>
-<li>
-<p>существованием и определением макросов</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_синтаксис_условий_rpm">Синтаксис условий RPM</h4>
-<div class="paragraph">
-<p>Если <em>expression</em> истинно, то выполните какое-нибудь действие:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if expression
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Если <em>expression</em> истинно, то выполните какое-нибудь действие, в другом случае выполните другое действие:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if expression
-...
-%else
-...
-%endif</pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_примеры_условий_rpm">Примеры условий RPM</h4>
-<div class="sect4">
-<h5 id="_обозначение_if">Обозначение <code>%if</code></h5>
-<div class="literalblock">
-<div class="content">
-<pre>%if 0%{?rhel} == 6
-sed -i '/AS_FUNCTION_DESCRIBE/ s/^/#/' configure.in
-sed -i '/AS_FUNCTION_DESCRIBE/ s/^/#/' acinclude.m4
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие обрабатывает совместимость между  RHEL6 и другими операционными системами с точки зрения поддержки макроса AS_FUNCTION_DESCRIBE. Когда пакет создается для RHEL, определяется макрос <code>%rhel</code> , и он расширяется до версии RHEL. Если его значение равно 6, что означает, что пакет создан для RHEL 6, , то ссылки на
-AS_FUNCTION_DESCRIBE, который не поддерживается RHEL6,  удаляются из сценариев автоконфигурации.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if 0%{?el6}
-%global ruby_sitearch %(ruby -rrbconfig -e 'puts Config::CONFIG["sitearchdir"]')
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие регулирует совместимость между Fedora версии 17 и новее и RHEL 6 с точки зрения поддержки макроса  <code>%ruby_sitearch</code> macro. Fedora версии 17 и никогда не определяет <code>%ruby_sitearch</code> по умолчанию, но RHEL6 не поддерживает этот макрос. Условие проверяет, является ли операционная система RHEL 6. Если это так,
-<code>%ruby_sitearch</code> определяется явно. Обратите внимание, что  <code>0%{?el6}</code> имеет то же значение, что и <code>0%{?rhel} == 6</code> из предыдущего примера, и он проверяет, построен ли пакет на RHEL 6.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%if 0%{?fedora} &gt;= 19
-%global with_rubypick 1
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие обрабатывает поддержку инструмента выбора ruby. Если операционная система Fedora версии 19 или новее, поддерживается rubypick.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%define ruby_archive %{name}-%{ruby_version}
-%if 0%{?milestone:1}%{?revision:1} != 0
-%define ruby_archive %{ruby_archive}-%{?milestone}%{?!milestone:%{?revision:r%{revision}}}
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Это условие обрабатывает определение макросов. Если заданы макросы <code>%milestone</code> или
-<code>%revision</code>, переопределяется макрос <code>%ruby_archive</code>, который определяет имя вышестоящего файла архива.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_специальные_варианты_обозначения_if">Специальные варианты обозначения <code>%if</code></h5>
-<div class="paragraph">
-<p>Условные обозначения <code>%ifarch</code>, <code>%ifnarch</code> и <code>%ifos</code> являются специализированными вариантами условных обозначений <code>%if</code>. Эти варианты обычно используются, поэтому у них есть свои собственные макросы.</p>
-</div>
-<div class="sect5">
-<h6 id="_обозначениеifarch">Обозначение`%ifarch`</h6>
-<div class="paragraph">
-<p>Условие <code>%ifarch</code> спользуется для начала блока SPEC файла, который зависит от архитектуры. За ним следует один или несколько спецификаторов архитектуры, каждый из которых разделен запятыми или пробелами.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%ifarch i386 sparc
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Все содержимое SPEC файла между <code>%ifarch</code> и <code>%endif</code> обрабатывается только на 32-разрядных архитектурах AMD и Intel или системах на базе Sun SPARC.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_условное_обозначение_ifnarch">Условное обозначение <code>%ifnarch</code></h6>
-<div class="paragraph">
-<p>Условие <code>%ifnarch</code> имеет обратную логику, чем условие  <code>%ifarch</code>.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%ifnarch alpha
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Все содержимое SPEC файла между <code>%ifnarch</code> и <code>%endif</code> обрабатывается только в том случае, если оно не выполняется в системе на основе Digital Alpha/AXP.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_условие_ifos">Условие <code>%ifos</code></h6>
-<div class="paragraph">
-<p>Условие <code>%ifos</code>  используется для управления обработкой на основе операционной системы сборки. За ним может следовать одно или несколько имен операционной системы.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>%ifos linux
-...
-%endif</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Все содержимое SPEC файла между <code>%ifos</code> и <code>%endif</code> обрабатывается только в том случае, если сборка была выполнена в системе Linux.</p>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="Join">Join</h2>
+<h2 id="_hasher_start">Hasher start</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_что_такое_hasher">Что такое hasher?</h3>
 <div class="paragraph">
-<p>Если Вы считаете, что какого-то пакета в Сизифе не хватает, или какой-то пакет заслуживает большего внимания и готовы заняться им — значит, настало время присоединиться к команде
- <a href="https://www.altlinux.org/ALT_Linux_Team">ALT Linux Team</a>.</p>
+<p><strong>Hasher</strong> — это инструмент безопасной и воспроизводимой сборки пакетов. Все пакеты репозитория <a href="https://www.altlinux.org/Sisyphus"><code><strong><em>Сизиф</em></strong></code></a> собираются с его помощью.</p>
 </div>
-<div class="paragraph">
-<p>Процедура Join - это процесс вступления в ALT Linux Team, результатом которого является возможность непосредственно участвовать в разработке репозитория Сизиф. После прохождения Join Вы станете мейнтейнером.</p>
-</div>
-<div class="paragraph">
-<p>Кто такой мейнтейнер?  У каждого пакета в репозитории Сизиф есть один или несколько мейнтейнеров — это те участники ALT Linux Team, которые собирают новые версии пакета, следят за ошибками, которые заводят пользователи в багтрекере и общаются с upstream-разработчиками программы.</p>
 </div>
 <div class="sect2">
-<h3 id="_процедура_принятия_в_team">Процедура принятия в Team</h3>
+<h3 id="_принцип_действия">Принцип действия</h3>
 <div class="paragraph">
-<p>Для принятия человека в Team создаётся небольшая команда заинтересованных в этом тимовцев:</p>
+<p><strong><code>Hasher</code></strong> — инструмент для сборки пакетов в «чистой» и контролируемой среде. Это достигается с помощью создания в chroot минимальной сборочной среды, установки туда указанных в source-пакете сборочных зависимостей и сборке пакета в свежесозданной среде. Для сборки каждого пакета сборочная среда создаётся заново.</p>
+</div>
+<div class="paragraph">
+<p>Такой принцип сборки имеет несколько следствий:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Секретарь команды. В его обязанность входит отслеживать стадии принятия и выполнять административные действия.</p>
+<p>Все необходимые для сборки зависимости должны быть указаны в пакете. Для облегчения поддержки сборочных зависимостей в актуальном состоянии в <a href="https://www.altlinux.org/Sisyphus"><code><strong><em>Сизифе</em></strong></code></a> придуман инструмент под названием buildreq,</p>
 </li>
 <li>
-<p>Ментор вступающего. Он помогает кандидату со вступлением, отвечает на его вопросы и принимает решение о готовности кандидата.</p>
+<p>Сборка не зависит от конфигурации компьютера пользователя, собирающего пакет, и может быть повторена на другом компьютере,</p>
 </li>
 <li>
-<p>Рецензент работы вступающего. Он проводит независимую оценку готовности вступающего по результатам его работы и подтверждает его готовность.</p>
-</li>
-<li>
-<p>Сам кандидат.</p>
+<p>Изолированность среды сборки позволяет с лёгкостью собирать на одном компьютере пакеты для разных дистрибутивов и веток репозитория — для этого достаточно лишь направить hasher на различные репозитории для каждого сборочного окружения.</p>
 </li>
 </ol>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_сбор_информации">Сбор информации</h3>
+<h3 id="_настройка_hasher">Настройка Hasher</h3>
 <div class="paragraph">
-<p>Для принятия в <a href="https://www.altlinux.org/ALT_Linux_Team">ALT Linux Team</a> необходима следующая информация:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Имя ментора — участника команды, имеющего желание помогать в процессе приёма в Team. Менторов можно искать в <a href="https://www.altlinux.org/Списки_рассылки">списках рассылки</a>, канале <a href="https://telegram.me/alt_linux">Telegram</a>, или узнать у Ваших знакомых членов сообщества ALT Linux Team, если таковые есть, готовы ли они стать Вашим ментором.</p>
-</li>
-<li>
-<p>Псевдоним участника (имя пользователя). Выбирается им самим. Имя должно начинаться с буквы, содержать только строчные латинские буквы и цифры, быть не короче трёх символов.</p>
-</li>
-</ol>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Псевдоним — это фактичеcки Ваше второе имя в команде. Так Вас будут называть в глаза и за глаза, по нему на Вас будут ссылаться. Поэтому псевдоним лучше выбирать короткий, запоминающийся и не отягощённый мусором. Например, <code>yoda</code> — удобный псевдоним, а <code>travellingwilburys1998</code> — неудобный. Список уже занятых имён можно посмотреть в пакете <a href="https://git.altlinux.org/gears/a/alt-gpgkeys.git?p=alt-gpgkeys.git;a=tree;f=keys">alt-gpgkeys</a>.
-</td>
-</tr>
-</table>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Адрес почты, на который будет производиться пересылка с адреса <em>псевдоним@altlinux.org</em>;</p>
-</li>
-<li>
-<p>SSH-ключ (ED25519 или RSA &gt;= 4096bit). Принимающему нужна публичная часть ключа. Этот ключ будет использоваться для SSH-доступа на ресурсы Sisyphus (<a href="https://www.altlinux.org/Git.alt">git.alt</a> и другие);</p>
-</li>
-<li>
-<p>GPG-ключ (RSA &gt;= 4096bit). В ключе должны быть имя в формате "&lt;First name&gt; &lt;Last name&gt;" и uid вида <em>псевдоним@altlinux.org</em>. Принимающему нужна публичная часть ключа. Этот ключ будет использоваться для подписи пакетов и для удостоверения личности в почте.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Если у Вас ещё нет SSH- или GPG-ключа, прочтите статью <a href="https://www.altlinux.org/Работа_с_ключами_разработчика">Работа с ключами разработчика</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_создание_заявки">Создание заявки</h3>
-<div class="paragraph">
-<p>Когда Вы нашли своего куратора процедуры join - ментора, Вам необходимо зафиксировать начало вашей работы. На этом этапе вам понадобится <a href="https://bugzilla.altlinux.org">BugZilla</a>. В данном случае bugzilla выступает площадкой для процедуры вступления в ALT Linux Team. Здесь ведётся официальный диалог с участниками, Вы можете посмотреть прогресс других кандидатов, узнать, какие задачи они взяли. Введите в поиске <code>join</code> и увидите список, относящийся к этой тематике.</p>
-</div>
-<div class="paragraph">
-<p>Для начала необходимо пройти регистрацию на <a href="https://bugzilla.altlinux.org">BugZilla</a>.</p>
-</div>
-<div class="paragraph">
-<p>После того, как Вы прошли регистрацию и нашли ментора, можно начинать регистрировать заявку. Регистрация заявки происходит следующим образом: на главной странице сайта ALT Bugzilla выберите <code>"Зарегистрировать ошибку"</code> или <code>"Новая ошибка"</code>. Будущие участники ALT Linux Team регистрируются в разделе
-<code>Team Accounts: ALT Linux Team: присоединение</code>.
-При наведении мыши будут видны подсказки к заполнению полей формы. Клик по любому из пунктов формы приведёт Вас на страницу <a href="https://bugzilla.altlinux.org/page.cgi?id=fields.html#short_desc">Поля ошибок</a> с описанием терминов. Выберите компонент <em>Join</em>. Если Вы посмотрите другие компоненты, то убедитесь, что они не так популярны. При выборе уровня важности задачи учитывайте, что мейнтейнеры просматривают ошибки в том числе по этому фильтру. Также будет видно, к какому разделу относится ваша задача. (Важность определяете Вы сами, исходя из своих возможностей и целеполагания. Скорее, это параметр для Вас.) Поставим здесь средний приоритет <code>Р3</code>. Платформа определяется автоматически. Здесь же Вы можете изменить значения, в том числе поставить all, и научиться собирать пакеты для любых платформ.</p>
-</div>
-<div class="paragraph">
-<p>Отметим новое состояние нашей заявки.</p>
-</div>
-<div class="paragraph">
-<p>Поля <em>Исполнитель</em> и <em>Приёмка</em> заполнятся автоматически. В пункте <em>Подписчики</em> укажем всех, кто заинтересован в решении этой задачи. В случае join - это ментор.</p>
-</div>
-<div class="paragraph">
-<p>В стандартной форме bugzilla есть поле для заполнения адреса URL, с которым может быть связана ошибка. Так как мы регистрируем по сути наше участие в прохождении Join, отметьте страницу на вики <a href="https://www.altlinux.org/Team/Join">Join</a></p>
-</div>
-<div class="paragraph">
-<p>Поле Аннотация предназначено для краткого описания сути ошибки. Так как мы заводим эту ошибку в рамках вступления в ALT Linux Team, напишем join с указанием предполагаемой почты: <code>join user@</code>.</p>
-</div>
-<div class="paragraph">
-<p>Пример комментария к открытой заявке на вступление в ALT Linux Team.</p>
+<p>Установка Hasher:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Псевдоним: sova
-Почта: Valentin Sokolov &lt;sova@altlinux.org&gt;
-Адрес пересылки почты: sokolovvaly.158@gmail.com
-Имя ментора: Grigory Ustinov
-Почта ментора: grenka@altlinux.org
-
-Хочу научиться собирать пакеты.</pre>
+<pre class="CodeRay highlight"><code data-lang="bash"># apt-get install hasher</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>На данном этапе необходимо прикрепить SSH и GPG ключи. О том, как их создать и прикрепить к заявке - читайте ниже.</p>
+<p>Добавление пользователя:</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_создание_ssh_и_gpg_ключей">Создание SSH и GPG ключей</h3>
-<div class="sect3">
-<h4 id="_ssh_key">SSH Key</h4>
 <div class="paragraph">
-<p>Для того, чтобы создать SSH ключ, можно воспользоваться командой:</p>
+<p>Hasher использует специальных вспомогательных пользователей и группу <code>hashman</code> для своей работы, поэтому каждого пользователя, желающего использовать <code>hasher</code>, перед началом работы нужно зарегистрировать:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ ssh keygen -t ed25519</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash"># hasher-useradd USER</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>На вопрос о файле сохранения ключа можно ничего не отвечать, а просто нажать Enter, чтобы принять путь файла ключа по умолчанию. Далее будет задан вопрос о пароле к ключу. Укажите придуманный пароль для защиты ключа.</p>
+<p>Настройка сборочной среды:</p>
 </div>
 <div class="paragraph">
-<p>В каталоге <code>~/.ssh</code> появятся файлы:</p>
+<p>Для работы <code>hasher</code> требуется создать директорию, в которой будет строиться сборочная среда:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ mkdir ~/.hasher</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Рабочий каталог (в данном случае ~/.hasher) должен быть доступен на запись пользователю, запускающему сборку.</p>
+</div>
+<div class="paragraph">
+<p>Кроме того, его нельзя располагать на файловой системе, которая смонтирована с опциями <code>noexec</code> или <code>nodev</code> — в таких условиях <code>hasher</code> не сможет создать корректное сборочное окружение.</p>
+</div>
+<div class="paragraph">
+<p>Сборочное окружение можно создать явно:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ hsh --initroot-only ~/.hasher</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Явное создание необязательно — при необходимости оно будет произведено при первой сборке пакета.</p>
+</div>
+<div class="paragraph">
+<p>Hasher берёт пакеты для установки из APT-источников. По умолчанию в сборочную среду копируется список источников, указанный в конфигурации APT хост-системы; также можно явно задать дополнительные репозитории, указав альтернативный файл конфигурации APT:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ hsh --apt-config=branch4.1-apt.conf --initroot-only ~/.hasher</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В таком файле конфигурации необходимо указать расположение файла с APT-источниками:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ hsh --apt-config=branch4.1-apt.conf --initroot-only ~/.hasher</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_сборка_в_hasher">Сборка в hasher</h3>
+<div class="paragraph">
+<p>Сборка происходит от обычного пользователя, добавленного с помощью hasher-useradd:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">hsh ~/.hasher /home/work/rpm/package.src.rpm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>При удачной сборке полученные пакеты будут лежать в <code><strong>~/.hasher/repo/&lt;платформа&gt;/RPMS.hasher/</strong></code>, в противном случае на stdout будет выведена информация об ошибках сборки.</p>
+</div>
+<div class="paragraph">
+<p>Создаваемый hasher репозиторий является обычным APT-репозиторием и может быть использован в sources.list[3]. Также он будет использован при дальнейшей сборке пакетов (это поведение можно регулировать ключом --without-stuff).</p>
+</div>
+<div class="paragraph">
+<p>Если вы держите сборочную среду в tmpfs (см. ниже), каталог ~/.hasher/repo, вероятно, не переживёт перезагрузку системы. Репозиторий можно переместить в постоянное место, указав в настроечном файле hasher .hasher/config параметр def_repo=постоянное_хранилище (или вызвав hasher с ключом --repo).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_сборочные_зависимости">Сборочные зависимости</h3>
+<div class="paragraph">
+<p>Сборочные зависимости RPM делятся на два вида:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>необходимые для корректного создания src.rpm из spec-файла (содержащие определения RPM-макросов, используемых в spec-файле),</p>
+</li>
+<li>
+<p>все остальные (необходимые для непосредственной сборки).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Поскольку <code>hasher</code> собирает пакеты из src.rpm (не считая поддержки <code>gear</code>), то для сборки необходимо иметь в хост-системе установленные   сборочные зависимости первого типа. Большинство таких зависимостей (но пока не все) содержатся в пакетах с названием <code>rpm-build-*</code>.</p>
+</div>
+<div class="paragraph">
+<p>Поскольку сборка src.rpm либо завершается неудачно (при отсутствии сборочной зависимости первого типа), либо корректно, то собирать src.rpm-пакеты в хост системе можно с помощью <code><strong>--nodeps</strong></code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">rpm -bs --nodeps package.spec</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Сам <code>hasher</code>, в отличие от <code>gear</code>, не предъявляет никаких требований к разделению сборочных зависимостей на первый и второй тип. Однако для совместимости с <code>gear</code> и для улучшения описания spec-файла рекомендуется распределять их так:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>id_ed25519</code> - секретный ключ</p>
+<p>В поле BuildRequires(pre) помещать сборочные зависимости, требуемые для сборки src.rpm,</p>
 </li>
 <li>
-<p><code>id_ed25519.pub</code> - публичный ключ</p>
+<p>В поле BuildRequires — все остальные.</p>
 </li>
 </ul>
 </div>
@@ -4105,73 +3541,44 @@ AS_FUNCTION_DESCRIBE, который не поддерживается RHEL6,  �
 <div class="title">Примечание</div>
 </td>
 <td class="content">
-НИКОГДА И НИКОМУ НЕ ПЕРЕСЫЛАЙТЕ СЕКРЕТНЫЙ КЛЮЧ
+в поле BuildRequires(pre) нельзя использовать макросы.
 </td>
 </tr>
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_gpg_key">GPG Key</h4>
+<div class="sect2">
+<h3 id="_man_hasher">man hasher</h3>
 <div class="paragraph">
-<p>Для того, чтобы создать GPG-ключ, можно воспользоваться командой:</p>
+<p>Для получение подробной справки и пояснении команд - воспользуйтесь мануалом <code>hasher</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --gen-key</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ man hsh</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_монтирование_файловых_систем_внутри_hasher">Монтирование файловых систем внутри hasher</h3>
+<div class="paragraph">
+<p>Некоторым приложениям для сборки требуется смонтированная файловая система (например, /proc). hasher поддерживает монтирование дополнительных файловых систем в сборочную среду.</p>
 </div>
 <div class="paragraph">
-<p>В процессе ответа на вопросы выберете тип ключа <code>RSA и RSA</code>, длина ключа должна быть не менее 4096 bit, поэтому впишем 4096. Срок действия ключа - без ограничения срока действия. Для идентификации Вашего ключа необходим ID пользователя. Программа создаст его из Вашего имени, комментария и адреса электронной почты в виде: <code>Baba Yaga (pensioner) <a href="mailto:yaga@deepforest.ru">yaga@deepforest.ru</a></code>.</p>
+<p>Монтирование происходит при одновременном выполнении следующих четырех условий:</p>
 </div>
-<div class="paragraph">
-<p>Теперь экспортируем публичную часть ключа для отправки, используя команду:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --armor --export псевдоним@altlinux.org</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Для копирования публичного ключа в файл Вы можете использовать следующую команду:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --armor --export псевдоним@altlinux.org &gt;&gt;public.key</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Экспортировать приватную часть ключа можно с помощью команды:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ gpg --armor --export-secret-keys псевдоним@altlinux.org &gt;&gt;private.key</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<strong>ВНИМАНИЕ</strong> Никогда и ни при каких условиях никому не сообщайте и не присылайте Ваши ПРИВАТНЫЕ ключи. Сохраните Ваши приватные и публичные ключи на отдельном носителе для лучшей сохранности.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Для более подробного изучения темы создания и редактирования ключей рекомендуется перейти по ссылке: <a href="https://www.altlinux.org/Работа_с_ключами_разработчика">Работа с ключами разработчика</a>.</p>
-</div>
-<div class="paragraph">
-<p>После того, как Вы создали ключи, загрузите их публичные части в комментарий к Вашей заявке. На странице заявки есть отдельный пункт <code>Приложить файл</code>.</p>
-</div>
-<div class="paragraph">
-<p>Поздравляем! Вы создали заявку на вступление в ALT Linux Team. Её закрытие будет означать либо успешное прохождение процедуры и получение доступов к работе с Сизифом и вступление в Team, либо отказ в нём.</p>
-</div>
-<div class="paragraph">
-<p>Следующие шаги по прохождению процедуры Join будут описаны позже, на данный момент документация находится на стадии разработки.</p>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>файловая система описана в файле <code><strong>/etc/hasher-priv/fstab</strong></code>, либо является одной из предопределённых: <code><strong>/proc</strong></code>, <code><strong>/dev/pts</strong></code>, <code><strong>/sys</strong></code>;
+в конфигурации hasher-priv <code><strong>(/etc/hasher-priv/system)</strong></code> ФС указана в опции <code>allowed_mountpoints</code>;</p>
+</li>
+<li>
+<p>файловая система указана в опции <code>--mountpoints</code> при запуске <code>hasher</code>, либо, аналогично, в ключе <code>known_mountpoints</code> конфигурационного файла hasher <code><strong>(~/.hasher/config)</strong></code>;</p>
+</li>
+<li>
+<p>файловая система указана сборочной зависимостью <code><strong>(например, BuildReq: /proc)</strong></code> собираемого пакета, прямой или косвенной (через зависимости сборочных зависимостей пакета).</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -4179,7 +3586,7 @@ AS_FUNCTION_DESCRIBE, который не поддерживается RHEL6,  �
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-05 11:52:45 +0400
+Last updated 2023-07-12 19:02:56 +0400
 </div>
 </div>
 </body>
