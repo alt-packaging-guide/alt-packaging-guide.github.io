@@ -472,6 +472,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#body-items">Составляющие основной части</a></li>
 </ul>
 </li>
+<li><a href="#alt-macro">RPM Макросы</a>
+<ul class="sectlevel1">
+<li><a href="#_макросы_путей_системных_каталогов">Макросы путей системных каталогов</a>
+<ul class="sectlevel2">
+<li><a href="#_макросы_меню">Макросы меню</a></li>
+<li><a href="#_другие_системные_макросы">Другие системные макросы</a></li>
+<li><a href="#_прочие_макросы">Прочие макросы</a></li>
+</ul>
+</li>
+<li><a href="#_пользовательские_макросы">Пользовательские макросы</a></li>
 <li><a href="#hello-gear">Инструмент Gear</a>
 <ul class="sectlevel2">
 <li><a href="#_вступление">Вступление</a>
@@ -507,6 +517,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_подготовка_пространства">Подготовка пространства</a></li>
 <li><a href="#_написание_spec_файла_и_правил_gear">Написание spec файла и правил Gear</a></li>
 <li><a href="#_описание_пакета_с_исходными_текстами_на_c">Описание пакета с исходными текстами на C++</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1042,7 +1054,7 @@ language is designed to be easy to use and extensible.</code></pre>
 <h2 id="what-is-an-rpm">Что такое RPM-пакет?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>RPM-пакет - это архив, содержащий в себе архив <a href="https://en.wikipedia.org/wiki/Cpio">.cpio</a> с файлами, а также метаданные - имя пакета, его описание, зависимости и т.д.</p>
+<p>RPM-пакет - это архив, содержащий в себе архив <a href="https://en.wikipedia.org/wiki/Cpio">.cpio</a> с файлами, а также метаданные - имя пакета, его описание, зависимости и т.д. Менеджер пакетов RPM использует эти метаданные для проверки наличия необходимых пакетов из списка зависимостей, исполнения инструкций по установке файлов и сохранения общей информации о пакете у себя в базе.</p>
 </div>
 <div class="paragraph">
 <p>Существует два типа RPM-пакетов:</p>
@@ -1050,18 +1062,12 @@ language is designed to be easy to use and extensible.</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>SRPM-пакеты (исходники) - архив с расширением <code>.src.rpm</code></p>
+<p>SRPM-пакеты (исходники) - архив с расширением <code>.src.rpm</code>. SRPM содержит исходный код, при необходимости патчи к нему и spec-файл, в котором описывается, как собрать исходный код в RPM-пакет.</p>
 </li>
 <li>
-<p>RPM-пакеты - архив с расширением <code>.rpm</code>.</p>
+<p>RPM-пакеты - архив с расширением <code>.rpm</code>. RPM содержит исполняемые файлы и библиотеки.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>SRPM и RPM-пакеты имеют общий формат, но имеют разное содержимое и служат разным целям. SRPM содержит исходный код, при необходимости патчи к нему и spec-файл, в котором описывается, как собрать исходный код в RPM-пакет.</p>
-</div>
-<div class="paragraph">
-<p>RPM-пакет содержит исполняемые файлы, созданные из исходного кода и патчей, если таковые имелись, библиотеки и метаданные. Менеджер пакетов RPM использует эти метаданные для проверки наличия необходимых пакетов из списка зависимостей, исполнения инструкций по установке файлов и сохранения общей информации о пакете у себя в базе.</p>
 </div>
 <div class="sect2">
 <h3 id="rpm-packaging-tools">Подготовка к сборке RPM-пакетов</h3>
@@ -1070,7 +1076,30 @@ language is designed to be easy to use and extensible.</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -ql rpmdevtools | grep bin</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -ql rpmdevtools | grep bin
+
+/usr/bin/rpmdev-bumpspec
+/usr/bin/rpmdev-checksig
+/usr/bin/rpmdev-cksum
+/usr/bin/rpmdev-diff
+/usr/bin/rpmdev-extract
+/usr/bin/rpmdev-md5
+/usr/bin/rpmdev-newinit
+/usr/bin/rpmdev-newspec
+/usr/bin/rpmdev-packager
+/usr/bin/rpmdev-rmdevelrpms
+/usr/bin/rpmdev-setuptree
+/usr/bin/rpmdev-sha1
+/usr/bin/rpmdev-sha224
+/usr/bin/rpmdev-sha256
+/usr/bin/rpmdev-sha384
+/usr/bin/rpmdev-sha512
+/usr/bin/rpmdev-sort
+/usr/bin/rpmdev-sum
+/usr/bin/rpmdev-vercmp
+/usr/bin/rpmdev-wipetree
+/usr/bin/rpminfo
+/usr/bin/rpmls</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1114,7 +1143,7 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RPMS</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь появляются готовые RPM-пакеты (<code>.rpm</code>) в подкаталогах для разных архитектур, например, в подкаталогах<code>x86_64</code> и <code>noarch</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь формируются собранные RPM-пакеты (<code>.rpm</code>) в подкаталогах для разных архитектур, например, в подкаталогах<code>x86_64</code> и <code>noarch</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SOURCES</p></td>
@@ -1347,25 +1376,6 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <p>Здесь <code>rpmdevtools</code> - это имя пакета, <code>8.10</code> - версия, а <code>alt2</code> - релиз. Последний маркер <code>noarch</code> - сведения об архитектуре.
 В отличие от NVR, маркер архитектуры не находится под прямым управлением сборщика, а определяется средой сборки <code>rpmbuild</code>. Исключением из этого правила является архитектурно-независимый пакет <code>noarch</code>.</p>
 </div>
-<div class="paragraph">
-<p>| <code>%build</code>   | Команда или серия команд для фактической сборки программного обеспечения в машинный код (для скомпилированных языков) или байт-код (для некоторых интерпретируемых языков).
-| <code>%install</code>     | Раздел, который во время сборки пакета эмулирует конечные пути установки файлов в систему. Команда или серия команд для копирования требуемых артефактов сборки из <code>%builddir</code> (где происходит сборка) в<code>%buildroot</code> каталог (который содержит структуру каталогов с файлами, подлежащими сборке). Обычно это означает копирование файлов из <code>~/rpmbuild/BUILD</code> в <code>~/rpmbuild/BUILDROOT</code> и создание необходимых каталогов <code>~/rpmbuild/BUILDROOT</code>.  Это выполняется только при создании пакета, а не при установке пакета конечным пользователем. Подробности см. в разделе <a href="#working-with-spec-files">Работа со SPEC файлом</a>.
-| <code>%check</code>       | Команда или серия команд для тестирования программного обеспечения. Обычно включает в себя такие вещи, как модульные тесты.
-| <code>%files</code>       | Список файлов, которые будут установлены в системе конечного пользователя.
-| <code>%changelog</code>   | Запись изменений, произошедших с пакетом между различными <code>Version</code> или <code>Release</code> сборками.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Конструкция <code>%setup</code> в Sisyphus RPM использует флаг <code>-q</code> (quiet) по умолчанию. Запись %setup -q и %setup - полностью идентичны. Если использовать конструкцию с флагом <code>-v</code>, то будет выведена дополнительная информация в логах сборки.
-</td>
-</tr>
-</table>
-</div>
 </div>
 <div class="sect2">
 <h3 id="body-items">Составляющие основной части</h3>
@@ -1419,12 +1429,312 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <div class="title">Примечание</div>
 </td>
 <td class="content">
-Конструкция <code>%setup</code> в Sisyphus RPM использует флаг <code>-q</code> (quiet) по умолчанию. Запись %setup -q и %setup - полностью идентичны. Если использовать конструкцию с флагом <code>-v</code>, то будет выведена дополнительная информация в логах сборки
+Конструкция <code>%setup</code> в Sisyphus RPM использует флаг <code>-q</code> (quiet) по умолчанию. Запись %setup -q и %setup - полностью идентичны. Если использовать конструкцию с флагом <code>-v</code>, то будет выведена дополнительная информация в логах сборки.
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>"Каркас" файла спецификации с кратким описанием составляющих:</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Name: mypackage
+Version: 1.0
+Release: 1
+Summary: Однострочное описание пакета.
+
+%description
+Общее описание пакета. Примерно 1 абзац.
+
+%prep
+# Подготовка исходных файлов для сборки
+
+%build
+# Компиляция и сборка пакета
+
+%install
+# Установка файлов в директорию сборки
+install -D -m 0644 %{SOURCE1} %{buildroot}/путь/к/файлу/example.txt
+
+%files
+# Перечисление файлов и директорий, которые будут включены в пакет
+%{buildroot}/путь/к/файлу/example.txt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Пример выше - достаточно простой. <code>Spec-файл</code> может быть куда больше, включать больше секций и команд. В некоторых случаях один <code>spec-файл</code> используется для сборки множества пакетов.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="alt-macro" class="sect0">RPM Макросы</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>Макросы RPM — это прямые текстовые подстановки, которые происходят путем замены определенных выражений и условий на соответствующий текст во время процесса сборки пакета. Имена макросов начинаются с символа <code><strong>%</strong></code>. Они представляют собой сокращенные псевдонимы для часто используемых фрагментов текста.</p>
+</div>
+<div class="paragraph">
+<p>Для чего нужны макросы:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Обеспечить желаемую функциональность:</strong>
+Пакеты в репозитории Сизиф должны отвечать определённым правилам, для этого <code>spec</code>-файлы должны обеспечивать выполнение этих правил.</p>
+</li>
+<li>
+<p><strong>Помощь разработчику:</strong>
+<code>spec</code>-файлы пишут люди, следовательно, их работу нужно свести к минимуму, который и требует участия человека. Майнтейнер не должен копировать блоки кода из файла в файл, так как данная работа занимает время, силы, и чревата ошибками. Для таких случаев существуют <strong>макросы</strong>.  Если какой-то код появляется в разных <code>spec</code>-файлах более одного раза, то надо написать макрос(ы).</p>
+</li>
+<li>
+<p><strong>Сделать spec-файлы более читабельными:</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Людям, пересобирающим пакет, или собирающим новый аналогичный пакет, опираясь на другие <code>spec</code>-файлы, будет удобнее, если в наименовании, расположении и использовании различных элементов <code>spec</code>-файлов будет определенный порядок.</p>
+</div>
+<div class="paragraph">
+<p>Просмотреть список доступных макросов и их значения можно, выполнив команду:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">rpm --showrc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Получить значение, раскрываемое макросом можно, использовав команду <code>rpm --eval {&lt;имя_макроса&gt;}</code>.</p>
+</div>
+<div class="paragraph">
+<p>У нас есть макрос <code>%_sysconfdir</code>. Раскроем его:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --eval %_sysconfdir
+
+/etc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Макросы можно использовать внутри других макросов. Так, например, если название архива исходных текстов проекта формируется из его имени и версии (директивы Name и Version транслируются в определённые макросы, о чём будет рассказано ниже), то директива задания пути к файлу может выглядеть следующим образом:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Source0: %{name}-%{version}.tar.gz</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_макросы_путей_системных_каталогов">Макросы путей системных каталогов</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В этой таблице представлены макросы системных путей</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Макрос</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Замена</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Описание</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_usr	</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">------</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_var</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/var</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_bindir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/bin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_sbindir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/sbin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_libexecdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/lib</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_localstatedir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/var/lib</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_datadir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/share</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_tmpfilesdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/lib/tmpfiles.d</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_desctopdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/share/application</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_макросы_меню">Макросы меню</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_menudir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/lib/menu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_iconsdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/share/icons</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_miconsdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/share/icons/hicolor/16x16/apps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_liconsdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/usr/share/icons/hicolor/48x48/apps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_другие_системные_макросы">Другие системные макросы</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_initdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/etc/rc.d/init.d</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_lockdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/var/lock</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_logdir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/var/log</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_прочие_макросы">Прочие макросы</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%intel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">i386 i486 i586 i686 i786 i886 i986 pentium2 pentium3 pentium4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cписок архитектур <em>intel</em>, совместимых с <em>i386</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%amd</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">k6 athlon athlon_xp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cписок архитектур <em>amd</em>, совместимых с <em>i386</em>,</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%ix86</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">i386 i486 i586 i686 i786 i886 i986 pentium2 pentium3 pentium4 k6 athlon athlon_xp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cписок всех архитектур, совместимых с <em>i386</em>;</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%_</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Подробный список предопределённых макросов Вы можете найти на страницах: <a href="https://www.altlinux.org/Spec/Предопределенные_макросы">Предопределённые макросы</a> и <a href="https://www.altlinux.org/Особенности_написания_спек_файлов_в_ALT_Linux">Макросы по категориям</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_пользовательские_макросы">Пользовательские макросы</h2>
+<div class="sectionbody">
+
 </div>
 </div>
 <div class="sect1">
@@ -1433,7 +1743,10 @@ rpmdevtools-8.10-alt2.noarch</code></pre>
 <div class="sect2">
 <h3 id="_вступление">Вступление</h3>
 <div class="paragraph">
-<p>Gear (Get Every Archive from git package Repository) - система для работы с произвольными архивами программ. В качестве хранилища данных gear использует <code>git</code>, что позволяет работать с полной историей проекта.</p>
+<p>Gear (Get Every Archive from git package Repository) - это инструмент для создания пакетов RPM из репозиториев git</p>
+</div>
+<div class="paragraph">
+<p>система для работы с произвольными архивами программ. В качестве хранилища данных gear использует <code>git</code>, что позволяет работать с полной историей проекта.</p>
 </div>
 <div class="paragraph">
 <p>Основной смысл хранения исходного кода пакетов в <code>git-репозитории</code> заключается в более эффективной и удобной совместной разработке, а также в минимизации используемого дискового пространства для хранения архива репозитория за длительный срок и минимизации трафика при обновлении исходного кода.</p>
@@ -1677,7 +1990,7 @@ drwxr-xr-x 3 4096 Aug 12 34:56 foobar-plugins
 </div>
 </li>
 <li>
-<p>При необходимости в файл правил можно вносить изменения. Например, можно убрать сжатие исходников (соответствующие изменения следует вносить и в spec-файл).</p>
+<p>При необходимости в файл правил можно вносить изменения. Например, можно убрать сжатие исходников (соответствующие изменения следует вносить и в <code>.gear/rules</code>).</p>
 </li>
 </ol>
 </div>
@@ -2435,7 +2748,7 @@ cp %name.timer %name.service \
 <p><strong>Секция %files</strong></p>
 </div>
 <div class="paragraph">
-<p>Описывает какие файлы и директории будут скопрованы в систему при установке пакета.</p>
+<p>Описывает какие файлы и директории будут скопированы в систему при установке пакета.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2450,7 +2763,7 @@ cp %name.timer %name.service \
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-19 17:23:48 +0400
+Last updated 2023-07-26 19:16:29 +0400
 </div>
 </div>
 <style>
